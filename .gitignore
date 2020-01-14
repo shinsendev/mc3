@@ -15,5 +15,8 @@
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
-
+###> custom ###
 .idea
+.env
+###< custom ###
+
