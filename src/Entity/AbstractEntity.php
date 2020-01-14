@@ -1,19 +1,22 @@
 <?php
 
-
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 
-class AbstractEntity
+/**
+ * Class AbstractEntity
+ */
+abstract class AbstractEntity
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected $id;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

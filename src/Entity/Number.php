@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\NumberRepository")
  */
-class Number extends AbstractEntity
+class Number extends AbstractTarget
 {
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
