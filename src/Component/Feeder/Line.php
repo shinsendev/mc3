@@ -4,7 +4,7 @@ namespace App\Component\Feeder;
 
 use App\Entity\Film;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectRepository;
+use Ramsey\Uuid\Uuid;
 
 class Line
 {
@@ -22,11 +22,12 @@ class Line
             $film = new Film();
             $film->setTitle($line[1]);
             $film->setReleasedYear($line[3]);
+            $film->setUuid(Uuid::uuid4());
 
             $em->persist($film);
             $em->flush();
-
             dd($film);
+
         }
     }
 }
