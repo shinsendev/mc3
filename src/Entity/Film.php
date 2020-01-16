@@ -36,6 +36,21 @@ class Film extends AbstractTarget
      */
     private $numbers;
 
+    /**
+     * @ORM\Column(name="length", type="integer", nullable=true)
+     */
+    private $length;
+
+    /**
+     * @ORM\Column(name="negative", type="integer", nullable=true)
+     */
+    private $negative;
+
+    /**
+     * @ORM\Column(name="remake", type="boolean", nullable=true)
+     */
+    private $remake;
+
     public function __construct()
     {
         $this->numbers = new ArrayCollection();
@@ -122,5 +137,53 @@ class Film extends AbstractTarget
     public function setImdb($imdb): void
     {
         $this->imdb = $imdb;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLength()
+    {
+        return $this->length;
+    }
+
+    /**
+     * @param mixed $length
+     */
+    public function setLength($length): void
+    {
+        $this->length = $length;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNegative()
+    {
+        return $this->negative;
+    }
+
+    /**
+     * @param mixed $negative
+     */
+    public function setNegative($negative): void
+    {
+        $this->negative = $negative;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRemake()
+    {
+        return $this->remake;
+    }
+
+    /**
+     * @param mixed $remake
+     */
+    public function setRemake($remake): void
+    {
+        $this->remake = $remake;
     }
 }

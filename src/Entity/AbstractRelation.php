@@ -1,7 +1,8 @@
 <?php
 
-
 namespace App\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class AbstractRelation
@@ -9,7 +10,7 @@ namespace App\Entity;
  *
  * todo : remove id, must be supperclass at the end
  */
-class AbstractRelation extends AbstractEntity
+abstract class AbstractRelation extends AbstractEntity
 {
     /**
      * @ORM\Column(type="integer")
