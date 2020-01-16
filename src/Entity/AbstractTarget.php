@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Class AbstractTarget
@@ -25,6 +26,16 @@ abstract class AbstractTarget extends AbstractEntity
      * @ORM\Column(type="guid")
      */
     protected $uuid;
+
+    /**
+     * AbstractTarget constructor.
+     * @throws \Exception
+     */
+    public function __construct()
+    {
+        $uuidGenerator = Uuid::uuid4();
+        $this->setUuid($uuidGenerator->toString());
+    }
 
     /**
      * @return datetime
