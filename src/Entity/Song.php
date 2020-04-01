@@ -9,5 +9,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Song extends AbstractTarget
 {
-    
+    private $title;
+
+    private $type;
+
+    private $released;
+
+    private $lyricists;
+
+    private $composers;
 }

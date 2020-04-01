@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Work extends AbstractRelation
 {
+    // the primary key could be a composite key with personId an professionId or at least we must have an unicity key for that
+
     /**
      * @ORM\Column(type="integer")
      */

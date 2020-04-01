@@ -9,4 +9,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Person extends AbstractTarget
 {
+    private $groupname;
+
+    private $firstname;
+
+    private $lastname;
+
+    private $gender;
+
+    private $imdb;
 }
