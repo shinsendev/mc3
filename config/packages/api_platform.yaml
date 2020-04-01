@@ -1,7 +1,22 @@
 api_platform:
+    # The title of the API.
+    title: 'MC3 API'
+
+    # The description of the API.
+    description: 'MC3 API : MC3 is reseach project studying the hollywood musicals'
+
+    # The version of the API.
+    version: '0.0.1'
+
+    # Set this to false if you want Webby to disappear.
+    show_webby: false
+
     mapping:
-        paths: ['%kernel.project_dir%/src/Entity']
+        paths: ['%kernel.project_dir%/src/Component/DTO']
     patch_formats:
         json: ['application/merge-patch+json']
     swagger:
         versions: [3]
+
+    # Convert Camel case into snake case
+#    name_converter: 'Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter'

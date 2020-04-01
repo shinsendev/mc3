@@ -43,14 +43,10 @@ class Film extends AbstractTarget
     private $length;
 
     /**
-     * @ORM\Column(name="negative", type="integer", nullable=true)
+     * @ORM\Column(name="references", type="text", nullable=true)
      */
-    private $negative;
+    private $comments;
 
-    /**
-     * @ORM\Column(name="remake", type="boolean", nullable=true)
-     */
-    private $remake;
 
     public function __construct()
     {
@@ -155,36 +151,5 @@ class Film extends AbstractTarget
     {
         $this->length = $length;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getNegative()
-    {
-        return $this->negative;
-    }
-
-    /**
-     * @param mixed $negative
-     */
-    public function setNegative($negative): void
-    {
-        $this->negative = $negative;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRemake()
-    {
-        return $this->remake;
-    }
-
-    /**
-     * @param mixed $remake
-     */
-    public function setRemake($remake): void
-    {
-        $this->remake = $remake;
-    }
+    
 }
