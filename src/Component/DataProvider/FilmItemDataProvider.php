@@ -29,14 +29,14 @@ class FilmItemDataProvider implements ItemDataProviderInterface, RestrictedDataP
 
     public function getItem(string $resourceClass, $uuid, string $operationName = null, array $context = []) :?FilmPayloadDTO
     {
-        if (!$fiction = $this->em->getRepository(Film::class)->findOneByUuid($uuid)) {
+        if (!$film = $this->em->getRepository(Film::class)->findOneByUuid($uuid)) {
             throw new NotFoundHttpException("No film found with uuid " . $uuid);
         }
 
         /** @var FilmPayloadDTO  */
-//        return (new DTOContext(new FictionDTOGetItem(), null, $this->em, $fiction))->proceed();
         $filmDTO = new FilmPayloadDTO();
-        $filmDTO->setTitle('Film title');
+        $filmDTO->setTitle($film->getTitle());
+        $filmDTO->setUuid($film->getUuid());
 
         return $filmDTO;
     }

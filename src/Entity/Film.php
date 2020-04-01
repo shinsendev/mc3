@@ -43,13 +43,13 @@ class Film extends AbstractTarget
     private $length;
 
     /**
-     * @ORM\Column(name="references", type="text", nullable=true)
+     * @ORM\Column(name="comments", type="text", nullable=true)
      */
     private $comments;
 
-
     public function __construct()
     {
+        parent::__construct();
         $this->numbers = new ArrayCollection();
     }
 
@@ -151,5 +151,21 @@ class Film extends AbstractTarget
     {
         $this->length = $length;
     }
-    
+
+    /**
+     * @return mixed
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param mixed $comments
+     */
+    public function setComments($comments): void
+    {
+        $this->comments = $comments;
+    }
+
 }
