@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Heredity\AbstractRelation;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
