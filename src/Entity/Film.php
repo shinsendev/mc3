@@ -28,7 +28,7 @@ class Film extends AbstractTarget
     private $releasedYear;
 
     /**
-     * @ORM\Column(name="imdb", type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $imdb;
 
@@ -38,14 +38,65 @@ class Film extends AbstractTarget
     private $numbers;
 
     /**
-     * @ORM\Column(name="length", type="integer", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $length;
 
     /**
-     * @ORM\Column(name="comments", type="text", nullable=true)
+     * @ORM\Column(type="boolean", nullable=true)
      */
-    private $comments;
+    private $remake;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $sample;
+
+    /**
+     * Description: in fact it is more a comment, only 4 texts (ex = Jewish comic, PCA afraid of the nude drawings and statues in the setting)
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $pca;
+
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $stageshows;
+
+    /**
+     * todo: validate with Marguerite
+     * Description: New field for stageshow reference - to be confirmed
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $viaf;
+
+//    //thesaurus many to one // censorship
+//    private $adaptation;
+//
+//    // thesaurus many to one // censorship
+//    private $verdict;
+//
+//    // thesaurus many to one // censorship
+//    private $legion;
+//
+//    // thesaurus many to one // censorship
+//    private $protestant;
+//
+//    // thesaurus many to one // censorship
+//    private $harrison;
+//
+//    // thesaurus many to one
+//    private $board;
+//
+//    // many to one thesaurus, old censorship table
+//    private $censorship;
+
+//    /**
+//     * @ORM\Column(name="comments", type="text", nullable=true)
+//     */
+//    private $comments;
+
 
     public function __construct()
     {
@@ -168,4 +219,83 @@ class Film extends AbstractTarget
         $this->comments = $comments;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getRemake()
+    {
+        return $this->remake;
+    }
+
+    /**
+     * @param mixed $remake
+     */
+    public function setRemake($remake): void
+    {
+        $this->remake = $remake;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSample()
+    {
+        return $this->sample;
+    }
+
+    /**
+     * @param mixed $sample
+     */
+    public function setSample($sample): void
+    {
+        $this->sample = $sample;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPca()
+    {
+        return $this->pca;
+    }
+
+    /**
+     * @param mixed $pca
+     */
+    public function setPca($pca): void
+    {
+        $this->pca = $pca;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStageshows()
+    {
+        return $this->stageshows;
+    }
+
+    /**
+     * @param mixed $stageshows
+     */
+    public function setStageshows($stageshows): void
+    {
+        $this->stageshows = $stageshows;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getViaf()
+    {
+        return $this->viaf;
+    }
+
+    /**
+     * @param mixed $viaf
+     */
+    public function setViaf($viaf): void
+    {
+        $this->viaf = $viaf;
+    }
 }
