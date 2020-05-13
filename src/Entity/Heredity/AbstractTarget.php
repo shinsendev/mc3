@@ -11,17 +11,19 @@ use Ramsey\Uuid\Uuid;
 abstract class AbstractTarget extends AbstractEntity
 {
     /**
-     * @var datetime
+     * @var \DateTime
      *
      * @ORM\Column(type="datetime")
      */
-    private $createdAt;
+    protected $createdAt;
+
     /**
-     * @var datetime
+     * @var \DateTime
      *
      * @ORM\Column(type="datetime")
      */
-    private $updatedAt;
+    protected $updatedAt;
+
     /**
      * @ORM\Column(type="guid")
      */
@@ -35,36 +37,38 @@ abstract class AbstractTarget extends AbstractEntity
     {
         $uuidGenerator = Uuid::uuid4();
         $this->setUuid($uuidGenerator->toString());
+        $this->setCreatedAt(new \DateTime());
+        $this->setUpdatedAt(new \DateTime());
     }
 
     /**
-     * @return datetime
+     * @return \DateTime
      */
-    public function getCreatedAt(): datetime
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
     /**
-     * @param datetime $createdAt
+     * @param \DateTime $createdAt
      */
-    public function setCreatedAt(datetime $createdAt): void
+    public function setCreatedAt(\DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
     /**
-     * @return datetime
+     * @return \DateTime
      */
-    public function getUpdatedAt(): datetime
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
     }
 
     /**
-     * @param datetime $updatedAt
+     * @param \DateTime $updatedAt
      */
-    public function setUpdatedAt(datetime $updatedAt): void
+    public function setUpdatedAt(\DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }

@@ -2,36 +2,96 @@
 
 namespace App\Entity;
 
-use App\Entity\Heredity\AbstractRelation;
+use App\Entity\Heredity\AbstractTarget;
 use Doctrine\ORM\Mapping as ORM;
 
-// le thesausurus = le moins normé, ce que le projet a inventé, nos descripteurs
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AttributeRepository")
  */
-class Attribute extends AbstractRelation
+class Attribute extends AbstractTarget
 {
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      */
-    private $thesaurusId;
-
-    // le type du thesaurus comme number, film, etc.
-    private $type;
+    private $title;
 
     /**
-     * @return mixed
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="attributes")
      */
-    public function getThesaurusId()
+    private $category;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $example;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $linkedEntityType;
+
+    public function getTitle(): ?string
     {
-        return $this->thesaurusId;
+        return $this->title;
     }
 
-    /**
-     * @param mixed $thesaurusId
-     */
-    public function setThesaurusId($thesaurusId): void
+    public function setTitle(string $title): self
     {
-        $this->thesaurusId = $thesaurusId;
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getExample(): ?string
+    {
+        return $this->example;
+    }
+
+    public function setExample(?string $example): self
+    {
+        $this->example = $example;
+
+        return $this;
+    }
+
+    public function getLinkedEntityType(): ?string
+    {
+        return $this->linkedEntityType;
+    }
+
+    public function setLinkedEntityType(?string $linkedEntityType): self
+    {
+        $this->linkedEntityType = $linkedEntityType;
+
+        return $this;
     }
 }
