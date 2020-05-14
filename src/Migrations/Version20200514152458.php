@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200116225720 extends AbstractMigration
+final class Version20200514152458 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,9 +22,7 @@ final class Version20200116225720 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('ALTER TABLE film ADD length INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE film ADD negative INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE film ADD remake BOOLEAN DEFAULT NULL');
+        $this->addSql('ALTER TABLE category ADD model VARCHAR(255) DEFAULT NULL');
     }
 
     public function down(Schema $schema) : void
@@ -33,8 +31,6 @@ final class Version20200116225720 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
         $this->addSql('CREATE SCHEMA public');
-        $this->addSql('ALTER TABLE film DROP length');
-        $this->addSql('ALTER TABLE film DROP negative');
-        $this->addSql('ALTER TABLE film DROP remake');
+        $this->addSql('ALTER TABLE category DROP model');
     }
 }

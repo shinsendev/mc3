@@ -71,6 +71,11 @@ class Film extends AbstractTarget
      */
     private $viaf;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Attribute")
+     */
+    private $attributes;
+
 //    //thesaurus many to one // censorship
 //    private $adaptation;
 //
@@ -102,6 +107,7 @@ class Film extends AbstractTarget
     {
         parent::__construct();
         $this->numbers = new ArrayCollection();
+        $this->attributes = new ArrayCollection();
     }
 
     public function getTitle(): ?string
@@ -297,5 +303,31 @@ class Film extends AbstractTarget
     public function setViaf($viaf): void
     {
         $this->viaf = $viaf;
+    }
+
+    /**
+     * @return Collection|Attribute[]
+     */
+    public function getAttributes(): Collection
+    {
+        return $this->attributes;
+    }
+
+    public function addAttribute(Attribute $attribute): self
+    {
+        if (!$this->attributes->contains($attribute)) {
+            $this->attributes[] = $attribute;
+        }
+
+        return $this;
+    }
+
+    public function removeAttribute(Attribute $attribute): self
+    {
+        if ($this->attributes->contains($attribute)) {
+            $this->attributes->removeElement($attribute);
+        }
+
+        return $this;
     }
 }

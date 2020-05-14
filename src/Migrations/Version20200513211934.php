@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200513143447 extends AbstractMigration
+final class Version20200513211934 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,8 +22,11 @@ final class Version20200513143447 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('CREATE TABLE category (id SERIAL NOT NULL, title VARCHAR(255) NOT NULL, code VARCHAR(255) NOT NULL, description TEXT DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, uuid UUID NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('ALTER TABLE attribute DROP thesaurus_id');
+        $this->addSql('CREATE TABLE film_attribute (film_id INT NOT NULL, attribute_id INT NOT NULL, PRIMARY KEY(film_id, attribute_id))');
+        $this->addSql('CREATE INDEX IDX_CEB6B1C8567F5183 ON film_attribute (film_id)');
+        $this->addSql('CREATE INDEX IDX_CEB6B1C8B6E62EFA ON film_attribute (attribute_id)');
+        $this->addSql('ALTER TABLE film_attribute ADD CONSTRAINT FK_CEB6B1C8567F5183 FOREIGN KEY (film_id) REFERENCES film (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE film_attribute ADD CONSTRAINT FK_CEB6B1C8B6E62EFA FOREIGN KEY (attribute_id) REFERENCES attribute (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
     public function down(Schema $schema) : void
@@ -32,7 +35,6 @@ final class Version20200513143447 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
         $this->addSql('CREATE SCHEMA public');
-        $this->addSql('DROP TABLE category');
-        $this->addSql('ALTER TABLE attribute ADD thesaurus_id INT NOT NULL');
+        $this->addSql('DROP TABLE film_attribute');
     }
 }

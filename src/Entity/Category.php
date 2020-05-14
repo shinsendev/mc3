@@ -32,6 +32,11 @@ class Category extends AbstractTarget
      */
     private $attributes;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $model;
+
     public function __construct()
     {
         parent::__construct();
@@ -101,6 +106,18 @@ class Category extends AbstractTarget
                 $attribute->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getModel(): ?string
+    {
+        return $this->model;
+    }
+
+    public function setModel(?string $model): self
+    {
+        $this->model = $model;
 
         return $this;
     }
