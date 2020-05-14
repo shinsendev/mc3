@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Entity\Heredity\AbstractTarget;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,6 +42,17 @@ class Number extends AbstractTarget
      * @ORM\Column(type="text", nullable=true)
      */
     private $quotation;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Attribute")
+     */
+    private $attributes;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->attributes = new ArrayCollection();
+    }
 
     public function getTitle(): ?string
     {
@@ -109,6 +122,32 @@ class Number extends AbstractTarget
     public function setQuotation(?string $quotation): self
     {
         $this->quotation = $quotation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Attribute[]
+     */
+    public function getAttributes(): Collection
+    {
+        return $this->attributes;
+    }
+
+    public function addAttribute(Attribute $attribute): self
+    {
+        if (!$this->attributes->contains($attribute)) {
+            $this->attributes[] = $attribute;
+        }
+
+        return $this;
+    }
+
+    public function removeAttribute(Attribute $attribute): self
+    {
+        if ($this->attributes->contains($attribute)) {
+            $this->attributes->removeElement($attribute);
+        }
 
         return $this;
     }
