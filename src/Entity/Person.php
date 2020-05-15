@@ -21,7 +21,7 @@ class Person extends AbstractTarget
     private $lastname;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $groupname;
 
