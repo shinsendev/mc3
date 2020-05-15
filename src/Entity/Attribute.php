@@ -30,11 +30,6 @@ class Attribute extends AbstractTarget
      */
     private $example;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $linkedEntityType;
-
     public function getTitle(): ?string
     {
         return $this->title;
@@ -79,18 +74,6 @@ class Attribute extends AbstractTarget
     public function setExample(?string $example): self
     {
         $this->example = $example;
-
-        return $this;
-    }
-
-    public function getLinkedEntityType(): ?string
-    {
-        return $this->linkedEntityType;
-    }
-
-    public function setLinkedEntityType(?string $linkedEntityType): self
-    {
-        $this->linkedEntityType = $linkedEntityType;
 
         return $this;
     }
