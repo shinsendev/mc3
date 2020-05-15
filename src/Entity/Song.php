@@ -10,13 +10,54 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Song extends AbstractTarget
 {
+    /**
+     * @ORM\Column(type="string", length=510)
+     */
     private $title;
 
-    private $type;
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $year;
 
-    private $released;
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $lyrics;
 
-    private $lyricists;
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
 
-    private $composers;
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
+    public function setYear(?int $year): self
+    {
+        $this->year = $year;
+
+        return $this;
+    }
+
+    public function getLyrics(): ?string
+    {
+        return $this->lyrics;
+    }
+
+    public function setLyrics(?string $lyrics): self
+    {
+        $this->lyrics = $lyrics;
+
+        return $this;
+    }
 }
