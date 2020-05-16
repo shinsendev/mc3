@@ -41,7 +41,7 @@ class Number extends AbstractTarget
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $quotation;
+    private $references;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Attribute")
@@ -114,14 +114,14 @@ class Number extends AbstractTarget
         return $this;
     }
 
-    public function getQuotation(): ?string
+    public function getReferences(): ?string
     {
-        return $this->quotation;
+        return $this->references;
     }
 
-    public function setQuotation(?string $quotation): self
+    public function setReferences(?string $references): self
     {
-        $this->quotation = $quotation;
+        $this->references = $references;
 
         return $this;
     }
