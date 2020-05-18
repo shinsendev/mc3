@@ -81,6 +81,16 @@ class Film extends AbstractTarget
     private $comments;
 
     /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Studio", inversedBy="films")
+     */
+    private $studios;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Distributor", inversedBy="films")
+     */
+    private $Distributor;
+
+    /**
      * Film constructor.
      * @throws \Exception
      */
@@ -90,6 +100,8 @@ class Film extends AbstractTarget
         $this->numbers = new ArrayCollection();
         $this->attributes = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->studios = new ArrayCollection();
+        $this->Distributor = new ArrayCollection();
     }
 
     public function getTitle(): ?string
@@ -326,6 +338,58 @@ class Film extends AbstractTarget
     {
         if ($this->comments->contains($comment)) {
             $this->comments->removeElement($comment);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Studio[]
+     */
+    public function getStudios(): Collection
+    {
+        return $this->studios;
+    }
+
+    public function addStudio(Studio $studio): self
+    {
+        if (!$this->studios->contains($studio)) {
+            $this->studios[] = $studio;
+        }
+
+        return $this;
+    }
+
+    public function removeStudio(Studio $studio): self
+    {
+        if ($this->studios->contains($studio)) {
+            $this->studios->removeElement($studio);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Distributor[]
+     */
+    public function getDistributor(): Collection
+    {
+        return $this->Distributor;
+    }
+
+    public function addDistributor(Distributor $distributor): self
+    {
+        if (!$this->Distributor->contains($distributor)) {
+            $this->Distributor[] = $distributor;
+        }
+
+        return $this;
+    }
+
+    public function removeDistributor(Distributor $distributor): self
+    {
+        if ($this->Distributor->contains($distributor)) {
+            $this->Distributor->removeElement($distributor);
         }
 
         return $this;

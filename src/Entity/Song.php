@@ -23,11 +23,6 @@ class Song extends AbstractTarget
     private $year;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $lyrics;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Comment")
      */
     private $comments;
@@ -63,18 +58,6 @@ class Song extends AbstractTarget
     public function setYear(?int $year): self
     {
         $this->year = $year;
-
-        return $this;
-    }
-
-    public function getLyrics(): ?string
-    {
-        return $this->lyrics;
-    }
-
-    public function setLyrics(?string $lyrics): self
-    {
-        $this->lyrics = $lyrics;
 
         return $this;
     }
