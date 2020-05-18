@@ -32,6 +32,11 @@ class Song extends AbstractTarget
      */
     private $comments;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $externalId;
+
     public function __construct()
     {
         parent::__construct();
@@ -96,6 +101,18 @@ class Song extends AbstractTarget
         if ($this->comments->contains($comment)) {
             $this->comments->removeElement($comment);
         }
+
+        return $this;
+    }
+
+    public function getExternalId(): ?string
+    {
+        return $this->externalId;
+    }
+
+    public function setExternalId(string $externalId): self
+    {
+        $this->externalId = $externalId;
 
         return $this;
     }
