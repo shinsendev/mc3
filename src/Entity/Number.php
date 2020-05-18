@@ -48,10 +48,16 @@ class Number extends AbstractTarget
      */
     private $attributes;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Comment")
+     */
+    private $comments;
+
     public function __construct()
     {
         parent::__construct();
         $this->attributes = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getTitle(): ?string
@@ -147,6 +153,32 @@ class Number extends AbstractTarget
     {
         if ($this->attributes->contains($attribute)) {
             $this->attributes->removeElement($attribute);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
         }
 
         return $this;

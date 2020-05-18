@@ -76,6 +76,11 @@ class Film extends AbstractTarget
      */
     private $attributes;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Comment")
+     */
+    private $comments;
+
 //    //thesaurus many to one // censorship
 //    private $adaptation;
 //
@@ -108,6 +113,7 @@ class Film extends AbstractTarget
         parent::__construct();
         $this->numbers = new ArrayCollection();
         $this->attributes = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getTitle(): ?string
@@ -326,6 +332,24 @@ class Film extends AbstractTarget
     {
         if ($this->attributes->contains($attribute)) {
             $this->attributes->removeElement($attribute);
+        }
+
+        return $this;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
         }
 
         return $this;

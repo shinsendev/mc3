@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Entity\Heredity\AbstractTarget;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -24,6 +26,17 @@ class Song extends AbstractTarget
      * @ORM\Column(type="text", nullable=true)
      */
     private $lyrics;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Comment")
+     */
+    private $comments;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->comments = new ArrayCollection();
+    }
 
     public function getTitle(): ?string
     {
@@ -57,6 +70,32 @@ class Song extends AbstractTarget
     public function setLyrics(?string $lyrics): self
     {
         $this->lyrics = $lyrics;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+        }
 
         return $this;
     }
