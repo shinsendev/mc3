@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Heredity\AbstractRelation;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -24,6 +23,16 @@ class Work
      * @ORM\Id()
      */
     private $targetUuid;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=false)
+     */
+    private $targetType;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=false)
+     */
+    private $profession;
 
     /**
      * @var \DateTime
@@ -103,5 +112,21 @@ class Work
     public function setCreatedAt(\DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTargetType()
+    {
+        return $this->targetType;
+    }
+
+    /**
+     * @param mixed $targetType
+     */
+    public function setTargetType($targetType): void
+    {
+        $this->targetType = $targetType;
     }
 }
