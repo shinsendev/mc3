@@ -32,6 +32,11 @@ class Song extends AbstractTarget
      */
     private $externalId;
 
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $contributors = [];
+
     public function __construct()
     {
         parent::__construct();
@@ -96,6 +101,18 @@ class Song extends AbstractTarget
     public function setExternalId(string $externalId): self
     {
         $this->externalId = $externalId;
+
+        return $this;
+    }
+
+    public function getContributors(): ?array
+    {
+        return $this->contributors;
+    }
+
+    public function setContributors(?array $contributors): self
+    {
+        $this->contributors = $contributors;
 
         return $this;
     }

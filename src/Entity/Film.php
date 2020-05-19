@@ -91,6 +91,11 @@ class Film extends AbstractTarget
     private $Distributor;
 
     /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $contributors = [];
+
+    /**
      * Film constructor.
      * @throws \Exception
      */
@@ -391,6 +396,18 @@ class Film extends AbstractTarget
         if ($this->Distributor->contains($distributor)) {
             $this->Distributor->removeElement($distributor);
         }
+
+        return $this;
+    }
+
+    public function getContributors(): ?array
+    {
+        return $this->contributors;
+    }
+
+    public function setContributors(?array $contributors): self
+    {
+        $this->contributors = $contributors;
 
         return $this;
     }

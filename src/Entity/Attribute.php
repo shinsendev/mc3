@@ -30,6 +30,11 @@ class Attribute extends AbstractTarget
      */
     private $example;
 
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $contributors = [];
+
     public function getTitle(): ?string
     {
         return $this->title;
@@ -74,6 +79,18 @@ class Attribute extends AbstractTarget
     public function setExample(?string $example): self
     {
         $this->example = $example;
+
+        return $this;
+    }
+
+    public function getContributors(): ?array
+    {
+        return $this->contributors;
+    }
+
+    public function setContributors(?array $contributors): self
+    {
+        $this->contributors = $contributors;
 
         return $this;
     }

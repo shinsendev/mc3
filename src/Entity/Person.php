@@ -35,6 +35,11 @@ class Person extends AbstractTarget
      */
     private $viaf;
 
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $contributors = [];
+
     public function getFirstname(): ?string
     {
         return $this->firstname;
@@ -91,6 +96,18 @@ class Person extends AbstractTarget
     public function setViaf(?string $viaf): self
     {
         $this->viaf = $viaf;
+
+        return $this;
+    }
+
+    public function getContributors(): ?array
+    {
+        return $this->contributors;
+    }
+
+    public function setContributors(?array $contributors): self
+    {
+        $this->contributors = $contributors;
 
         return $this;
     }

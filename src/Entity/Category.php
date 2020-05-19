@@ -37,6 +37,11 @@ class Category extends AbstractTarget
      */
     private $model;
 
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $contributors = [];
+
     public function __construct()
     {
         parent::__construct();
@@ -118,6 +123,18 @@ class Category extends AbstractTarget
     public function setModel(?string $model): self
     {
         $this->model = $model;
+
+        return $this;
+    }
+
+    public function getContributors(): ?array
+    {
+        return $this->contributors;
+    }
+
+    public function setContributors(?array $contributors): self
+    {
+        $this->contributors = $contributors;
 
         return $this;
     }

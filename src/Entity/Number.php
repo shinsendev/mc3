@@ -53,6 +53,11 @@ class Number extends AbstractTarget
      */
     private $comments;
 
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $contributors = [];
+
     public function __construct()
     {
         parent::__construct();
@@ -180,6 +185,18 @@ class Number extends AbstractTarget
         if ($this->comments->contains($comment)) {
             $this->comments->removeElement($comment);
         }
+
+        return $this;
+    }
+
+    public function getContributors(): ?array
+    {
+        return $this->contributors;
+    }
+
+    public function setContributors(?array $contributors): self
+    {
+        $this->contributors = $contributors;
 
         return $this;
     }
