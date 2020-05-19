@@ -15,6 +15,11 @@ class Comment extends AbstractTarget
      */
     private $content;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
+     */
+    private $author;
+
     public function getContent(): ?string
     {
         return $this->content;
@@ -23,6 +28,18 @@ class Comment extends AbstractTarget
     public function setContent(string $content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }
