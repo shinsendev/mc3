@@ -46,7 +46,7 @@ class SongItemDataProvider implements ItemDataProviderInterface, RestrictedDataP
 
         /** @var SongPayloadDTO  */
         $songDTO = new SongPayloadDTO();
-        $songDTO->hydrate(['song' => $song]);
+        $songDTO->hydrate(['song' => $song], $this->em);
 
         return $songDTO;
     }

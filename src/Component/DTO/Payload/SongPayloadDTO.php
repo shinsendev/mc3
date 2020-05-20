@@ -6,6 +6,9 @@ namespace App\Component\DTO\Payload;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
+use App\Component\DTO\Nested\NumberNestedDTO;
+use App\Entity\Number;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class NarrativeDTO
@@ -25,16 +28,24 @@ class SongPayloadDTO extends AbstractUniqueDTO
     /** @var string */
     private $externalId;
 
+    /** @var NumberNestedDTO[] */
+    private $numbers;
+
     /**
      * @param array $data
      */
-    public function hydrate(array $data):void
+    public function hydrate(array $data, EntityManagerInterface $em):void
     {
         $song = $data['song'];
         $this->setTitle($song->getTitle());
         $this->setYear($song->getYear());
         $this->setExternalId($song->getExternalId());
         $this->setUuid($song->getUuid());
+
+        // get Nested Numbers
+        dd($song->getNumbers());
+        $numbers = $em->getRepository(Number::class);
+        $this->setNumbers($numbers);
     }
 
     /**
@@ -84,5 +95,22 @@ class SongPayloadDTO extends AbstractUniqueDTO
     {
         $this->externalId = $externalId;
     }
+
+    /**
+     * @return NumberNestedDTO[]
+     */
+    public function getNumbers(): ?array
+    {
+        return $this->numbers;
+    }
+
+    /**
+     * @param NumberNestedDTO[] $numbers
+     */
+    public function setNumbers(array $numbers): void
+    {
+        $this->numbers = $numbers;
+    }
+
 
 }
