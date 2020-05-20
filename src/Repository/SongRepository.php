@@ -19,32 +19,21 @@ class SongRepository extends ServiceEntityRepository
         parent::__construct($registry, Song::class);
     }
 
-    // /**
-    //  * @return Song[] Returns an array of Song objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param $uuid
+     * @return int|mixed|string
+     */
+    public function getFilms($uuid)
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $query = $this->getEntityManager()->createQuery('
+            SELECT DISTINCT f.title, f.uuid FROM App\Entity\Song s 
+                INNER JOIN s.numbers n
+                INNER JOIN n.film f
+            WHERE s.uuid = :uuid
+        ');
+        $query->setParameters([
+            'uuid' => $uuid
+        ]);
+        return $query->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Song
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

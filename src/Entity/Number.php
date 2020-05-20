@@ -58,11 +58,17 @@ class Number extends AbstractTarget
      */
     private $contributors = [];
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Song", inversedBy="numbers")
+     */
+    private $songs;
+
     public function __construct()
     {
         parent::__construct();
         $this->attributes = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->songs = new ArrayCollection();
     }
 
     public function getTitle(): ?string
@@ -200,4 +206,31 @@ class Number extends AbstractTarget
 
         return $this;
     }
+
+    /**
+     * @return Collection|Song[]
+     */
+    public function getSongs(): Collection
+    {
+        return $this->songs;
+    }
+
+    public function addSong(Song $song): self
+    {
+        if (!$this->songs->contains($song)) {
+            $this->songs[] = $song;
+        }
+
+        return $this;
+    }
+
+    public function removeSong(Song $song): self
+    {
+        if ($this->songs->contains($song)) {
+            $this->songs->removeElement($song);
+        }
+
+        return $this;
+    }
+
 }
