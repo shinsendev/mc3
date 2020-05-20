@@ -6,8 +6,9 @@ namespace App\Component\DTO\Payload;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
+use App\Component\DTO\Nested\FilmsNestedDTO;
 use App\Component\DTO\Nested\NumberNestedDTO;
-use App\Entity\Number;
+use App\Entity\Song;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -30,7 +31,10 @@ class SongPayloadDTO extends AbstractUniqueDTO
 
     /** @var NumberNestedDTO[] */
     private $numbers;
-    
+
+    /** @var FilmsNestedDTO[] */
+    private $films;
+
     /**
      * @param array $data
      */
@@ -49,9 +53,23 @@ class SongPayloadDTO extends AbstractUniqueDTO
             $nestedNumbersListDTO[] = $nestedNumberDTO;
         }
 
-        if ($nestedNumbersListDTO) {
+        if (isset($nestedNumbersListDTO)) {
             $this->setNumbers($nestedNumbersListDTO);
         }
+
+        // get films
+        $films = $em->getRepository(Song::class)->getFilms($song->getUuid());
+        foreach($films as $film) {
+            $nestedFilmDTO = new FilmsNestedDTO();
+            $nestedFilmDTO->hydrate(['film' => $film], $em);
+            $nestedFilmsListDTO[] = $nestedFilmDTO;
+        }
+
+        if (isset($nestedFilmsListDTO)) {
+            $this->setFilms($nestedFilmsListDTO);
+        }
+
+        // get films connected to the number connected to the song
     }
 
     /**
@@ -118,5 +136,20 @@ class SongPayloadDTO extends AbstractUniqueDTO
         $this->numbers = $numbers;
     }
 
+    /**
+     * @return FilmsNestedDTO[]
+     */
+    public function getFilms(): ?array
+    {
+        return $this->films;
+    }
+
+    /**
+     * @param FilmsNestedDTO[] $films
+     */
+    public function setFilms(array $films): void
+    {
+        $this->films = $films;
+    }
 
 }

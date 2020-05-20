@@ -18,11 +18,15 @@ class NumberNestedDTO
     /** @var string */
     private $uuid;
 
+    /** @var string */
+    private $film;
+
     public function hydrate(array $data, EntityManagerInterface $em):void
     {
         $number = $data['number'];
         $this->setTitle($number->getTitle());
         $this->setUuid($number->getUuid());
+        $this->setFilm($number->getFilm()->getTitle());
     }
 
     /**
@@ -56,4 +60,21 @@ class NumberNestedDTO
     {
         $this->uuid = $uuid;
     }
+
+    /**
+     * @return string
+     */
+    public function getFilm(): string
+    {
+        return $this->film;
+    }
+
+    /**
+     * @param string $film
+     */
+    public function setFilm(string $film): void
+    {
+        $this->film = $film;
+    }
+
 }
