@@ -46,7 +46,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
         $this->setExternalId($song->getExternalId());
         $this->setUuid($song->getUuid());
 
-        // get Nested Numbers
+        // get nested numbers
         foreach ($song->getNumbers() as $number) {
             $nestedNumberDTO = new NumberNestedDTO();
             $nestedNumberDTO->hydrate(['number' => $number], $em);
@@ -57,7 +57,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
             $this->setNumbers($nestedNumbersListDTO);
         }
 
-        // get films
+        // get nested films (films deduced by numbers linked to song)
         $films = $em->getRepository(Song::class)->getFilms($song->getUuid());
         foreach($films as $film) {
             $nestedFilmDTO = new FilmsNestedDTO();
@@ -68,8 +68,6 @@ class SongPayloadDTO extends AbstractUniqueDTO
         if (isset($nestedFilmsListDTO)) {
             $this->setFilms($nestedFilmsListDTO);
         }
-
-        // get films connected to the number connected to the song
     }
 
     /**
