@@ -25,7 +25,10 @@ class SongPayloadDTO extends AbstractUniqueDTO
     /** @var string */
     private $externalId;
 
-    public function hydrate(array $data)
+    /**
+     * @param array $data
+     */
+    public function hydrate(array $data):void
     {
         $song = $data['song'];
         $this->setTitle($song->getTitle());
