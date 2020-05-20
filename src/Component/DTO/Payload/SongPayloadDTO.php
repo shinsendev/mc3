@@ -30,7 +30,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
 
     /** @var NumberNestedDTO[] */
     private $numbers;
-
+    
     /**
      * @param array $data
      */
@@ -43,9 +43,15 @@ class SongPayloadDTO extends AbstractUniqueDTO
         $this->setUuid($song->getUuid());
 
         // get Nested Numbers
-        dd($song->getNumbers());
-        $numbers = $em->getRepository(Number::class);
-        $this->setNumbers($numbers);
+        foreach ($song->getNumbers() as $number) {
+            $nestedNumberDTO = new NumberNestedDTO();
+            $nestedNumberDTO->hydrate(['number' => $number], $em);
+            $nestedNumbersListDTO[] = $nestedNumberDTO;
+        }
+
+        if ($nestedNumbersListDTO) {
+            $this->setNumbers($nestedNumbersListDTO);
+        }
     }
 
     /**

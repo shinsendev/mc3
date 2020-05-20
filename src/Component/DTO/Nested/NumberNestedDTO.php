@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Component\DTO\Nested;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 /**
  * Class NumberNestedDTO
  * @package App\Component\DTO\Nested
@@ -11,25 +13,32 @@ namespace App\Component\DTO\Nested;
 class NumberNestedDTO
 {
     /** @var string */
-    private $name;
+    private $title;
 
     /** @var string */
     private $uuid;
 
-    /**
-     * @return string
-     */
-    public function getName(): string
+    public function hydrate(array $data, EntityManagerInterface $em):void
     {
-        return $this->name;
+        $number = $data['number'];
+        $this->setTitle($number->getTitle());
+        $this->setUuid($number->getUuid());
     }
 
     /**
-     * @param string $name
+     * @return string
      */
-    public function setName(string $name): void
+    public function getTitle(): string
     {
-        $this->name = $name;
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle(string $title): void
+    {
+        $this->title = $title;
     }
 
     /**

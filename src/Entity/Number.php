@@ -59,7 +59,7 @@ class Number extends AbstractTarget
     private $contributors = [];
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Song", mappedBy="numbers")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Song", inversedBy="numbers")
      */
     private $songs;
 
@@ -219,7 +219,6 @@ class Number extends AbstractTarget
     {
         if (!$this->songs->contains($song)) {
             $this->songs[] = $song;
-            $song->addNumber($this);
         }
 
         return $this;
@@ -229,9 +228,9 @@ class Number extends AbstractTarget
     {
         if ($this->songs->contains($song)) {
             $this->songs->removeElement($song);
-            $song->removeNumber($this);
         }
 
         return $this;
     }
+
 }
