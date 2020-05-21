@@ -6,18 +6,26 @@ declare(strict_types=1);
 namespace App\Component\DTO\Payload;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Component\DTO\Composition\UniqueDTOTrait;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
 use App\Component\DTO\Nested\AttributeNestedDTO;
-use App\Entity\Attribute;
 use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Controller\NotFoundController;
+
 
 /**
  * Class NarrativeDTO
  * @package App\Component\DTO
  * @ApiResource(
- *     shortName="category"
+ *     shortName="category",
+ *     collectionOperations={"get"},
+ *     itemOperations={
+ *         "get"={
+ *             "controller"= NotFoundController::class,
+ *             "read"=false,
+ *             "output"=false,
+ *         }
+ *     }
  * )
  */
 class CategoryPayloadDTO extends AbstractUniqueDTO
