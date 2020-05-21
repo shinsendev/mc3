@@ -70,7 +70,7 @@ class CategoryPayloadDTO extends AbstractUniqueDTO
             $attributeDTO->hydrate(['attribute' => $attribute, 'model' => $model], $em);
             $attributesList[] = $attributeDTO;
         }
-        
+
         if (isset($attributesList)) {
             $this->setAttributes($attributesList);
         }
