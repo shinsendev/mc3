@@ -14,37 +14,44 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class FilmRepository extends ServiceEntityRepository
 {
+    /**
+     * FilmRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Film::class);
     }
 
-    // /**
-    //  * @return Film[] Returns an array of Film objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param $attributeUuid
+     * @return array|null
+     */
+    public function countAttributes($attributeUuid):?int
     {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('f.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $query = $this->getEntityManager()->createQuery('
+            SELECT COUNT(DISTINCT f.uuid) FROM App\Entity\Film f
+                INNER JOIN f.attributes a
+            WHERE a.uuid = :uuid
+        ');
+        $query->setParameters([
+            'uuid' => $attributeUuid
+        ]);
 
-    /*
-    public function findOneBySomeField($value): ?Film
-    {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $query->getSingleScalarResult();
     }
-    */
+
+    public function getAttributes($attributeUuid):?array
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT DISTINCT f.title, f.uuid FROM App\Entity\Film f
+                INNER JOIN f.attributes a
+            WHERE a.uuid = :uuid
+        ');
+        $query->setParameters([
+            'uuid' => $attributeUuid
+        ]);
+
+        return $query->getResult();
+    }
 }

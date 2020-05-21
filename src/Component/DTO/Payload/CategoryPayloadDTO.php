@@ -8,6 +8,8 @@ namespace App\Component\DTO\Payload;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Component\DTO\Composition\UniqueDTOTrait;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
+use App\Component\DTO\Nested\AttributeNestedDTO;
+use App\Entity\Attribute;
 use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -20,6 +22,8 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class CategoryPayloadDTO extends AbstractUniqueDTO
 {
+    CONST model = 'other';
+
     /** @var string */
     private $title;
 
@@ -32,6 +36,9 @@ class CategoryPayloadDTO extends AbstractUniqueDTO
     /** @var array */
     private $attributes;
 
+    /** @var int */
+    private $attributesCount;
+
     public function hydrate(array $data, EntityManagerInterface $em):void
     {
         /** @var Category $category */
@@ -41,11 +48,12 @@ class CategoryPayloadDTO extends AbstractUniqueDTO
 
         // catch empty models
         if ($category->getModel()) {
-            $this->setModel($category->getModel());
+            $model = $category->getModel();
         }
         else {
-            $this->setModel('autre');
+            $model = self::model;
         }
+        $this->setModel($model);
 
         // optional params
         if ($category->getDescription()) {
@@ -53,6 +61,19 @@ class CategoryPayloadDTO extends AbstractUniqueDTO
         }
 
         // add nested attributes DTO
+        $attributes = $category->getAttributes();
+        $this->setAttributesCount(count($attributes));
+
+        foreach ($attributes as $attribute)
+        {
+            $attributeDTO = new AttributeNestedDTO();
+            $attributeDTO->hydrate(['attribute' => $attribute, 'model' => $model], $em);
+            $attributesList[] = $attributeDTO;
+        }
+        
+        if (isset($attributesList)) {
+            $this->setAttributes($attributesList);
+        }
     }
 
     /**
@@ -117,5 +138,21 @@ class CategoryPayloadDTO extends AbstractUniqueDTO
     public function setAttributes(array $attributes): void
     {
         $this->attributes = $attributes;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAttributesCount(): int
+    {
+        return $this->attributesCount;
+    }
+
+    /**
+     * @param int $attributesCount
+     */
+    public function setAttributesCount(int $attributesCount): void
+    {
+        $this->attributesCount = $attributesCount;
     }
 }
