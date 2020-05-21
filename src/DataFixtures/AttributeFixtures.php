@@ -10,7 +10,7 @@ use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
 
-class CategoryFixtures extends Fixture
+class AttributeFixtures extends Fixture
 {
     /** @var Generator */
     protected $faker;
@@ -20,8 +20,8 @@ class CategoryFixtures extends Fixture
         $this->faker = Factory::create();
 
         for ($i = 0; $i < 3; $i++) {
-            $category = $this->generateCategory($i);
-            $manager->persist($category);
+            $song = $this->generateCategory($i);
+            $manager->persist($song);
         }
 
         $manager->flush();

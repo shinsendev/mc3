@@ -97,7 +97,6 @@ class AttributePayloadDTO extends AbstractUniqueDTO
                 $this->setElements($elementsNestedDTOList);
             }
         }
-
     }
 
     /**
