@@ -19,32 +19,41 @@ class NumberRepository extends ServiceEntityRepository
         parent::__construct($registry, Number::class);
     }
 
-    // /**
-    //  * @return Number[] Returns an array of Number objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param $attributeUuid
+     * @return int|null
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function countAttributes($attributeUuid):?int
     {
-        return $this->createQueryBuilder('n')
-            ->andWhere('n.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('n.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $query = $this->getEntityManager()->createQuery('
+            SELECT COUNT(DISTINCT f.uuid) FROM App\Entity\Number n
+                INNER JOIN n.attributes a
+            WHERE a.uuid = :uuid
+        ');
+        $query->setParameters([
+            'uuid' => $attributeUuid
+        ]);
 
-    /*
-    public function findOneBySomeField($value): ?Number
-    {
-        return $this->createQueryBuilder('n')
-            ->andWhere('n.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $query->getSingleScalarResult();
     }
-    */
+
+    /**
+     * @param $attributeUuid
+     * @return array|null
+     */
+    public function getAttributes(int $attributeUuid):?array
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT DISTINCT n.title, n.uuid FROM App\Entity\Number n
+                INNER JOIN f.attributes a
+            WHERE a.uuid = :uuid
+        ');
+        $query->setParameters([
+            'uuid' => $attributeUuid
+        ]);
+
+        return $query->getResult();
+    }
 }

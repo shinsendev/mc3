@@ -44,18 +44,18 @@ class AttributeNestedDTO extends AbstractUniqueDTO
         }
 
         // set elements if it's not "other"
-        if ($data['model'] !== CategoryPayloadDTO::model) {
+        if ($data['model'] !== CategoryPayloadDTO::CURRENT_MODEL) {
             switch ($data['model']) {
-                case 'number':
-                    // select all numbers with this attribute
+                case CategoryPayloadDTO::MODEL_NUMBER:
+                    // count all numbers with this attribute
                     $this->setElementsCount($em->getRepository(Number::class)->countAttributes($uuid));
                     break;
-                case 'film':
-                    // select all films with this attribute
+                case CategoryPayloadDTO::MODEL_FILM:
+                    // count all films with this attribute
                     $this->setElementsCount($em->getRepository(Film::class)->countAttributes($uuid));
                     break;
-                case 'song':
-                    // select all songs with this attribute
+                case CategoryPayloadDTO::MODEL_SONG:
+                    // count all songs with this attribute
                     $this->setElementsCount($em->getRepository(Song::class)->countAttributes($uuid));
                     break;
                 default:

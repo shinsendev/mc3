@@ -12,14 +12,13 @@ use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\NotFoundController;
 
-
 /**
  * Class NarrativeDTO
  * @package App\Component\DTO
  * @ApiResource(
  *     shortName="category",
- *     collectionOperations={"get"},
- *     itemOperations={
+ *     itemOperations={"get"},
+ *     collectionOperations={
  *         "get"={
  *             "controller"= NotFoundController::class,
  *             "read"=false,
@@ -30,7 +29,10 @@ use App\Controller\NotFoundController;
  */
 class CategoryPayloadDTO extends AbstractUniqueDTO
 {
-    CONST model = 'other';
+    CONST CURRENT_MODEL = 'other';
+    CONST MODEL_NUMBER = 'number';
+    CONST MODEL_FILM = 'film';
+    CONST MODEL_SONG = 'song';
 
     /** @var string */
     private $title;
@@ -59,7 +61,7 @@ class CategoryPayloadDTO extends AbstractUniqueDTO
             $model = $category->getModel();
         }
         else {
-            $model = self::model;
+            $model = self::CURRENT_MODEL;
         }
         $this->setModel($model);
 

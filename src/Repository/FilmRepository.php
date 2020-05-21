@@ -25,7 +25,9 @@ class FilmRepository extends ServiceEntityRepository
 
     /**
      * @param $attributeUuid
-     * @return array|null
+     * @return int|null
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function countAttributes($attributeUuid):?int
     {
@@ -41,6 +43,10 @@ class FilmRepository extends ServiceEntityRepository
         return $query->getSingleScalarResult();
     }
 
+    /**
+     * @param $attributeUuid
+     * @return array|null
+     */
     public function getAttributes($attributeUuid):?array
     {
         $query = $this->getEntityManager()->createQuery('
