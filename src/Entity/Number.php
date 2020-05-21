@@ -18,7 +18,7 @@ class Number extends AbstractTarget
     private $title;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\film", inversedBy="numbers")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Film", inversedBy="numbers")
      * @ORM\JoinColumn(nullable=false)
      */
     private $film;
