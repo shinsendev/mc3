@@ -37,11 +37,22 @@ class CategoryPayloadDTO extends AbstractUniqueDTO
         /** @var Category $category */
         $category = $data['category'];
         $this->setTitle($category->getTitle());
-        $this->setDescription($category->getDescription());
         $this->setUuid($category->getUuid());
-        $this->setModel($category->getModel());
 
-        // add attributes DTO
+        // catch empty models
+        if ($category->getModel()) {
+            $this->setModel($category->getModel());
+        }
+        else {
+            $this->setModel('autre');
+        }
+
+        // optional params
+        if ($category->getDescription()) {
+            $this->setDescription($category->getDescription());
+        }
+
+        // add nested attributes DTO
     }
 
     /**
@@ -63,7 +74,7 @@ class CategoryPayloadDTO extends AbstractUniqueDTO
     /**
      * @return string
      */
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -95,7 +106,7 @@ class CategoryPayloadDTO extends AbstractUniqueDTO
     /**
      * @return array
      */
-    public function getAttributes(): array
+    public function getAttributes(): ?array
     {
         return $this->attributes;
     }
