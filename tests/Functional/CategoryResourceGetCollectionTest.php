@@ -13,7 +13,7 @@ class CategoryResourceGetCollectionTest extends AbstractFunctionalTest
                 'Content-Type' => 'application/json',
             ],
         ]);
-        
+
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $arrayResponse = $response->toArray();
