@@ -15,7 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
  * Class NarrativeDTO
  * @package App\Component\DTO
  * @ApiResource(
- *     shortName="thesaurus"
+ *     shortName="category"
  * )
  */
 class CategoryPayloadDTO extends AbstractUniqueDTO
@@ -25,9 +25,6 @@ class CategoryPayloadDTO extends AbstractUniqueDTO
 
     /** @var string */
     private $description;
-
-    /** @var string */
-    private $uuid;
 
     /** @var string */
     private $model;
@@ -77,22 +74,6 @@ class CategoryPayloadDTO extends AbstractUniqueDTO
     public function setDescription(string $description): void
     {
         $this->description = $description;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUuid(): string
-    {
-        return $this->uuid;
-    }
-
-    /**
-     * @param string $uuid
-     */
-    public function setUuid(string $uuid): void
-    {
-        $this->uuid = $uuid;
     }
 
     /**
