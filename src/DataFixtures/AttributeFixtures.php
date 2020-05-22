@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\Entity\Attribute;
 use App\Entity\Category;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -19,8 +20,8 @@ class AttributeFixtures extends Fixture
     {
         $this->faker = Factory::create();
 
-        for ($i = 0; $i < 3; $i++) {
-            $song = $this->generateCategory($i);
+        for ($i = 0; $i < 5; $i++) {
+            $song = $this->generateAttribute($i);
             $manager->persist($song);
         }
 
@@ -30,21 +31,22 @@ class AttributeFixtures extends Fixture
     /**
      * @return Category
      */
-    public function generateCategory(int $i): Category
+    public function generateAttribute(int $i): Attribute
     {
-        $titles = ["Ethnic stereotypes", "Exoticism", "censorship"];
-        $codes = ["stereotype", "exoticism_thesaurus", "censorship"];
-        $uuids = ["6d9ade45-877a-4b99-bb1b-408d9e3087f4", "d720cdfc-ab15-4363-8d56-e9a1ae2fe9e7", "0b16d192-976b-477b-9bcd-24df71564b0b"];
-        $models = ['number', null, 'film'];
-        $descriptions = ["Multiple choices. Ethnic impersonation. Includes all racial and national stereotypes (accents, costumes, make-up, etc.).", "Multiple choices. General themes of the number as far as non American cultures are concerned. Depends on the music, dancing, costumes, setting.", null];
+        $titles = ["dialogue", "lyrics-unsignificant", "narrative-minor problem", "asian", "savage"];
+        $descriptions = ["", "", "", "Generally asian but no specific country or area is identifiable", "Any type of number involving savage and wild dances but without a specific location (could be African, Haitian...)"];
+        $examples = ["", "", "", "", "\"Monkey Doodle-Doo\" in The Cocoanuts"];
+        $uuids = ["27b11176-9555-4fa5-bda9-85aa76147843", "c713385e-a147-49a1-a3fe-6baf47450556", "06172795-8184-4858-89c3-f8313486dfbd", "29a0dfee-abb4-423b-8b3d-54b69904fa95", "6c2bc54f-6d47-4638-adc0-7692803065d6"];
 
-        $category = new Category();
-        $category->setTitle($titles[$i]);
-        $category->setDescription($descriptions[$i]);
-        $category->setCode($codes[$i]);
-        $category->setModel($models[$i]);
-        $category->setUuid($uuids[$i]);
+        $attribute = new Attribute();
+        $attribute->setTitle($titles[$i]);
+        $attribute->setDescription($descriptions[$i]);
+        $attribute->setExample($examples[$i]);
+        $attribute->setUuid($uuids[$i]);
 
-        return $category;
+        $category = '';
+        $attribute->setCategory($category);
+
+        return $attribute;
     }
 }
