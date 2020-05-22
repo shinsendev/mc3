@@ -32,6 +32,7 @@ class CategoryFixtures extends Fixture
      */
     public function generateCategory(int $i): Category
     {
+
         $titles = ["Ethnic stereotypes", "Exoticism", "censorship"];
         $codes = ["stereotype", "exoticism_thesaurus", "censorship"];
         $uuids = ["6d9ade45-877a-4b99-bb1b-408d9e3087f4", "d720cdfc-ab15-4363-8d56-e9a1ae2fe9e7", "0b16d192-976b-477b-9bcd-24df71564b0b"];

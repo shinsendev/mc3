@@ -6,12 +6,14 @@ namespace App\DataFixtures;
 
 use App\Entity\Attribute;
 use App\Entity\Category;
+use App\Repository\CategoryRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
 
-class AttributeFixtures extends Fixture
+class AttributeFixtures extends Fixture implements DependentFixtureInterface
 {
     /** @var Generator */
     protected $faker;
@@ -21,7 +23,7 @@ class AttributeFixtures extends Fixture
         $this->faker = Factory::create();
 
         for ($i = 0; $i < 5; $i++) {
-            $song = $this->generateAttribute($i);
+            $song = $this->generateAttribute($i, $manager);
             $manager->persist($song);
         }
 
@@ -29,9 +31,11 @@ class AttributeFixtures extends Fixture
     }
 
     /**
-     * @return Category
+     * @param int $i
+     * @param ObjectManager $manager
+     * @return Attribute
      */
-    public function generateAttribute(int $i): Attribute
+    public function generateAttribute(int $i, ObjectManager $manager): Attribute
     {
         $titles = ["dialogue", "lyrics-unsignificant", "narrative-minor problem", "asian", "savage"];
         $descriptions = ["", "", "", "Generally asian but no specific country or area is identifiable", "Any type of number involving savage and wild dances but without a specific location (could be African, Haitian...)"];
@@ -44,9 +48,26 @@ class AttributeFixtures extends Fixture
         $attribute->setExample($examples[$i]);
         $attribute->setUuid($uuids[$i]);
 
-        $category = '';
+        /** @var CategoryRepository $categoryRepository */
+        $categoryRepository = $manager->getRepository(Category::class);
+        if ($i < 3) {
+            /** @var Category $category */
+            $category = $categoryRepository->findOneByUuid("0b16d192-976b-477b-9bcd-24df71564b0b");
+
+        }
+        else {
+            /** @var Category $category */
+            $category = $categoryRepository->findOneByUuid("d720cdfc-ab15-4363-8d56-e9a1ae2fe9e7");
+        }
         $attribute->setCategory($category);
 
         return $attribute;
+    }
+
+    public function getDependencies()
+    {
+        return array(
+            CategoryFixtures::class,
+        );
     }
 }
