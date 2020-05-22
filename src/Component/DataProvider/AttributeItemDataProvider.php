@@ -9,6 +9,8 @@ namespace App\Component\DataProvider;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Component\DTO\Payload\AttributePayloadDTO;
+use App\Component\Factory\DTOFactory;
+use App\Component\Model\ModelConstants;
 use App\Entity\Attribute;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -33,7 +35,7 @@ class AttributeItemDataProvider implements ItemDataProviderInterface, Restricted
             throw new NotFoundHttpException("No attribute found with uuid " . $uuid);
         }
 
-        $attributeDTO = new AttributePayloadDTO();
+        $attributeDTO =  DTOFactory::create(ModelConstants::ATTRIBUTE_PAYLOAD_MODEL);
         $attributeDTO->hydrate(['attribute' => $attribute], $this->em);
 
         return $attributeDTO;
