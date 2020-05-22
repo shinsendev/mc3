@@ -17,8 +17,8 @@ use App\Controller\NotFoundController;
  * @package App\Component\DTO
  * @ApiResource(
  *     shortName="category",
- *     itemOperations={"get"},
- *     collectionOperations={
+ *     collectionOperations={"get"},
+ *     itemOperations={
  *         "get"={
  *             "controller"= NotFoundController::class,
  *             "read"=false,

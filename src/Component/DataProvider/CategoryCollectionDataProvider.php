@@ -29,7 +29,7 @@ class CategoryCollectionDataProvider implements CollectionDataProviderInterface
      * @param string|null $operationName
      * @return \Generator|iterable
      */
-    public function getCollection(string $resourceClass, string $operationName = null)
+    public function getCollection(string $resourceClass, string $operationName = null): \Generator
     {
         $categories = $this->em->getRepository(Category::class)->findAll();
 

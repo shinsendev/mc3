@@ -21,6 +21,7 @@ abstract class AbstractFunctionalTest extends ApiTestCase
         $this->loadFixtures([
             'App\DataFixtures\SongFixtures',
             'App\DataFixtures\CategoryFixtures',
+            'App\DataFixtures\AttributeFixtures',
         ]);
     }
 }
