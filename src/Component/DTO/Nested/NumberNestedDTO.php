@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Component\DTO\Nested;
 
+use App\Component\DTO\Hierarchy\AbstractDTO;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class NumberNestedDTO
  * @package App\Component\DTO\Nested
  */
-class NumberNestedDTO
+class NumberNestedDTO extends AbstractDTO
 {
     /** @var string */
     private $title;

@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\NotFoundController;
 
 /**
- * Class NarrativeDTO
+ *
  * @package App\Component\DTO
  * @ApiResource(
  *     shortName="category",

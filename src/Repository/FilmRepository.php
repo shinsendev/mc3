@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Film;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * @method Film|null find($id, $lockMode = null, $lockVersion = null)
@@ -21,6 +22,45 @@ class FilmRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Film::class);
+    }
+
+    /**
+     * @return int
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException`
+     */
+    public function countFilms():int
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT COUNT(f.uuid) FROM App\Entity\Film f
+        ');
+        return $query->getSingleScalarResult();
+    }
+
+    /**
+     * @return int
+     */
+    public function countFilmsWithNumbers():int
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT COUNT(DISTINCT (f.uuid)) FROM App\Entity\Film f JOIN f.numbers n
+        ');
+        return $query->getSingleScalarResult();
+    }
+
+    /**
+     * @param int $limit
+     * @param int $offset
+     * @return array
+     */
+    public function findPaginatedFilmsWithNumbers(int $limit, int $offset):Paginator
+    {
+        $dql = "SELECT f FROM App\Entity\Film f JOIN f.numbers n";
+        $query = $this->getEntityManager()->createQuery($dql)
+            ->setFirstResult(0)
+            ->setMaxResults(10);
+
+        return new Paginator($query, $fetchJoinCollection = true);
     }
 
     /**
