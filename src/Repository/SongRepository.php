@@ -36,4 +36,38 @@ class SongRepository extends ServiceEntityRepository
         ]);
         return $query->getResult();
     }
+
+    /**
+     * @param $attributeUuid
+     * @return int|null
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function countAttributes($attributeUuid):?int
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT COUNT(DISTINCT s.uuid) FROM App\Entity\Song s
+                INNER JOIN s.attributes a
+            WHERE a.uuid = :uuid
+        ');
+        $query->setParameters([
+            'uuid' => $attributeUuid
+        ]);
+
+        return $query->getSingleScalarResult();
+    }
+
+    public function getAttributes(int $attributeUuid):?array
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT DISTINCT s.title, s.uuid FROM App\Entity\Song s
+                INNER JOIN s.attributes a
+            WHERE a.uuid = :uuid
+        ');
+        $query->setParameters([
+            'uuid' => $attributeUuid
+        ]);
+
+        return $query->getResult();
+    }
 }

@@ -10,7 +10,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
  * Class AbstractUniqueDTO
  * @package App\Component\DTO\Hierarchy
  */
-abstract class AbstractUniqueDTO
+abstract class AbstractUniqueDTO extends AbstractDTO
 {
     /**
      * @ApiProperty(identifier=true)

@@ -2,12 +2,13 @@
 
 namespace App\Entity\Heredity;
 
+use App\Entity\Definition\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class AbstractEntity
  */
-abstract class AbstractEntity
+abstract class AbstractEntity implements EntityInterface
 {
     /**
      * @ORM\Id()

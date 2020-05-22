@@ -6,7 +6,7 @@ namespace App\Component\DTO\Payload;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
-use App\Component\DTO\Nested\FilmsNestedDTO;
+use App\Component\DTO\Nested\FilmNestedDTO;
 use App\Component\DTO\Nested\NumberNestedDTO;
 use App\Entity\Song;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,7 +32,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
     /** @var NumberNestedDTO[] */
     private $numbers;
 
-    /** @var FilmsNestedDTO[] */
+    /** @var FilmNestedDTO[] */
     private $films;
 
     /**
@@ -46,7 +46,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
         $this->setExternalId($song->getExternalId());
         $this->setUuid($song->getUuid());
 
-        // get Nested Numbers
+        // get nested numbers
         foreach ($song->getNumbers() as $number) {
             $nestedNumberDTO = new NumberNestedDTO();
             $nestedNumberDTO->hydrate(['number' => $number], $em);
@@ -57,10 +57,11 @@ class SongPayloadDTO extends AbstractUniqueDTO
             $this->setNumbers($nestedNumbersListDTO);
         }
 
-        // get films
+        // get nested films (films deduced by numbers linked to song)
         $films = $em->getRepository(Song::class)->getFilms($song->getUuid());
+
         foreach($films as $film) {
-            $nestedFilmDTO = new FilmsNestedDTO();
+            $nestedFilmDTO = new FilmNestedDTO();
             $nestedFilmDTO->hydrate(['film' => $film], $em);
             $nestedFilmsListDTO[] = $nestedFilmDTO;
         }
@@ -68,8 +69,6 @@ class SongPayloadDTO extends AbstractUniqueDTO
         if (isset($nestedFilmsListDTO)) {
             $this->setFilms($nestedFilmsListDTO);
         }
-
-        // get films connected to the number connected to the song
     }
 
     /**
@@ -137,7 +136,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return FilmsNestedDTO[]
+     * @return FilmNestedDTO[]
      */
     public function getFilms(): ?array
     {
@@ -145,7 +144,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @param FilmsNestedDTO[] $films
+     * @param FilmNestedDTO[] $films
      */
     public function setFilms(array $films): void
     {

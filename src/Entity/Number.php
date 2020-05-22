@@ -18,7 +18,7 @@ class Number extends AbstractTarget
     private $title;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\film", inversedBy="numbers")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Film", inversedBy="numbers")
      * @ORM\JoinColumn(nullable=false)
      */
     private $film;
@@ -62,6 +62,11 @@ class Number extends AbstractTarget
      * @ORM\ManyToMany(targetEntity="App\Entity\Song", inversedBy="numbers")
      */
     private $songs;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $dubbing;
 
     public function __construct()
     {
@@ -229,6 +234,18 @@ class Number extends AbstractTarget
         if ($this->songs->contains($song)) {
             $this->songs->removeElement($song);
         }
+
+        return $this;
+    }
+
+    public function getDubbing(): ?string
+    {
+        return $this->dubbing;
+    }
+
+    public function setDubbing(?string $dubbing): self
+    {
+        $this->dubbing = $dubbing;
 
         return $this;
     }

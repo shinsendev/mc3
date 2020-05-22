@@ -8,10 +8,10 @@ namespace App\Component\DTO\Nested;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
- * Class FilmsNestedDTO
+ * Class FilmNestedDTO
  * @package App\Component\DTO\Nested
  */
-class FilmsNestedDTO
+class FilmNestedDTO
 {
     /** @var string */
     private $title;
