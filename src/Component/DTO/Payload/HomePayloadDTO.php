@@ -61,8 +61,6 @@ class HomePayloadDTO extends AbstractUniqueDTO
             $this->setPerformers($performers);
         }
 
-        //todo: continue the collect of persons
-
         // get paginated films with data = with numbers
         if (isset($data['filmsWithNumber'])) {
             $limit= $data['filmsWithNumber']['limit'];
