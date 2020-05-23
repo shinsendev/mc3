@@ -28,7 +28,7 @@ class NumberRepository extends ServiceEntityRepository
     public function countAttributes($attributeUuid):?int
     {
         $query = $this->getEntityManager()->createQuery('
-            SELECT COUNT(DISTINCT f.uuid) FROM App\Entity\Number n
+            SELECT COUNT(DISTINCT n.uuid) FROM App\Entity\Number n
                 INNER JOIN n.attributes a
             WHERE a.uuid = :uuid
         ');

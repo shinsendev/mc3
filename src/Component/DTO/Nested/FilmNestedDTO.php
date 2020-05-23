@@ -17,6 +17,9 @@ class FilmNestedDTO extends AbstractUniqueDTO
     /** @var string */
     private $title;
 
+    /** @var int|void */
+    private $released;
+
 
     /**
      * @param array $data
@@ -27,6 +30,9 @@ class FilmNestedDTO extends AbstractUniqueDTO
         $film = $data['film'];
         $this->setTitle($film['title']);
         $this->setUuid($film['uuid']);
+        if (isset($data['released'])) {
+            $this->setReleased($data['released']);
+        }
     }
 
     /**
@@ -43,6 +49,22 @@ class FilmNestedDTO extends AbstractUniqueDTO
     public function setTitle($title): void
     {
         $this->title = $title;
+    }
+
+    /**
+     * @return int|void
+     */
+    public function getReleased()
+    {
+        return $this->released;
+    }
+
+    /**
+     * @param int|void $released
+     */
+    public function setReleased($released): void
+    {
+        $this->released = $released;
     }
 
 }

@@ -22,11 +22,6 @@ class Work
     protected $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $personId;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $targetUuid;
@@ -49,6 +44,12 @@ class Work
     protected $createdAt;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Person", inversedBy="works")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $person;
+
+    /**
      * AbstractTarget constructor.
      * @throws \Exception
      */
@@ -60,22 +61,6 @@ class Work
     public function getId(): int
     {
         return $this->id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPersonId()
-    {
-        return $this->personId;
-    }
-
-    /**
-     * @param mixed $personId
-     */
-    public function setPersonId($personId): void
-    {
-        $this->personId = $personId;
     }
 
     /**
@@ -141,4 +126,17 @@ class Work
     {
         $this->targetType = $targetType;
     }
+
+    public function getPerson(): ?Person
+    {
+        return $this->person;
+    }
+
+    public function setPerson(?Person $person): self
+    {
+        $this->person = $person;
+
+        return $this;
+    }
+
 }

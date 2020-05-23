@@ -11,23 +11,12 @@ use App\Component\Factory\DTOFactory;
 use App\Component\Model\ModelConstants;
 use App\Controller\NotFoundController;
 use App\Entity\Film;
+use App\Entity\Person;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
- *
- * @package App\Component\DTO
- * @ApiResource(
- *     shortName="home",
- *     itemOperations={"get"},
- *     collectionOperations={
- *         "get"={
- *             "controller"= NotFoundController::class,
- *             "read"=false,
- *             "output"=false,
- *         }
- *     }
- * )
+ * Class HomePayloadDTO
+ * @package App\Component\DTO\Payload
  */
 class HomePayloadDTO extends AbstractUniqueDTO
 {
@@ -64,6 +53,12 @@ class HomePayloadDTO extends AbstractUniqueDTO
         //todo : add articles with pagination
 
         // get 30 performers with the most numbers associated
+        $persons = $em->getRepository(Person::class)->findPopularPersons(30);
+        foreach ($persons as $person) {
+            dd($person);
+        }
+        dd($persons->count());
+        //todo: continue the collect of persons
 
         // get paginated films with data = with numbers
         if (isset($data['filmsWithNumber'])) {
@@ -89,9 +84,6 @@ class HomePayloadDTO extends AbstractUniqueDTO
         if(isset($filmsDTOList)) {
             $this->setFilms($filmsDTOList);
         }
-
-        $this->setUuid($data['uuid']);
-
     }
 
     /**
