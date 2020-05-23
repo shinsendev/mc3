@@ -5,19 +5,21 @@ declare(strict_types=1);
 
 namespace App\Component\DTO\Nested;
 
+use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class FilmNestedDTO
  * @package App\Component\DTO\Nested
  */
-class FilmNestedDTO
+class FilmNestedDTO extends AbstractUniqueDTO
 {
     /** @var string */
     private $title;
 
-    /** @var string */
-    private $uuid;
+    /** @var int|void */
+    private $released;
+
 
     /**
      * @param array $data
@@ -28,6 +30,9 @@ class FilmNestedDTO
         $film = $data['film'];
         $this->setTitle($film['title']);
         $this->setUuid($film['uuid']);
+        if (isset($data['released'])) {
+            $this->setReleased($data['released']);
+        }
     }
 
     /**
@@ -47,18 +52,19 @@ class FilmNestedDTO
     }
 
     /**
-     * @return mixed
+     * @return int|void
      */
-    public function getUuid()
+    public function getReleased()
     {
-        return $this->uuid;
+        return $this->released;
     }
 
     /**
-     * @param mixed $uuid
+     * @param int|void $released
      */
-    public function setUuid($uuid): void
+    public function setReleased($released): void
     {
-        $this->uuid = $uuid;
+        $this->released = $released;
     }
+
 }

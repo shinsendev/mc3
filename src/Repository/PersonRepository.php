@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Person;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * @method Person|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,32 +20,28 @@ class PersonRepository extends ServiceEntityRepository
         parent::__construct($registry, Person::class);
     }
 
-    // /**
-    //  * @return Person[] Returns an array of Person objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param int $limit
+     * @param string $profession
+     * @return Paginator
+     */
+    public function findPopularPersonsByJob(int $limit, string $profession):Paginator
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        // get $limit persons with the most numbers associated
+        $dql = '
+            SELECT p as person, COUNT(p.id) as nb FROM App\Entity\Person p
+                INNER JOIN p.works w
+                WHERE w.profession = :job
+                GROUP BY p.id
+                ORDER BY nb DESC
+        ';
+        $query = $this->getEntityManager()->createQuery($dql)
+            ->setParameters([
+                'job' => $profession
+            ])
+            ->setFirstResult(0)
+            ->setMaxResults($limit);
 
-    /*
-    public function findOneBySomeField($value): ?Person
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return new Paginator($query, $fetchJoinCollection = true);
     }
-    */
 }
