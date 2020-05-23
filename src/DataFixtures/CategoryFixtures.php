@@ -28,6 +28,7 @@ class CategoryFixtures extends Fixture
     }
 
     /**
+     * @param int $i
      * @return Category
      */
     public function generateCategory(int $i): Category
