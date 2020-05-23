@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\Component\DTO\Payload;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
 use App\Component\DTO\Nested\FilmNestedDTO;
 use App\Component\Factory\DTOFactory;
 use App\Component\Model\ModelConstants;
-use App\Controller\NotFoundController;
 use App\Entity\Film;
 use App\Entity\Person;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,7 +28,6 @@ class HomePayloadDTO extends AbstractUniqueDTO
     /** @var void|array */
     private $blogArticles;
 
-    //todo: add PersonNestedDTO
     /** @var void|array */
     private $performers;
 
@@ -53,11 +50,17 @@ class HomePayloadDTO extends AbstractUniqueDTO
         //todo : add articles with pagination
 
         // get 30 performers with the most numbers associated
-        $persons = $em->getRepository(Person::class)->findPopularPersons(30);
-        foreach ($persons as $person) {
-            dd($person);
+        $personsData = $em->getRepository(Person::class)->findPopularPersonsByJob(30, 'performer');
+        foreach ($personsData as $personData) {
+            $personDTO = DTOFactory::create(ModelConstants::PERSON_NESTED_DTO_MODEL);
+            $personDTO->hydrate($personData, $em);
+            $performers[] = $personDTO;
         }
-        dd($persons->count());
+
+        if(isset($performers)) {
+            $this->setPerformers($performers);
+        }
+
         //todo: continue the collect of persons
 
         // get paginated films with data = with numbers
@@ -73,7 +76,7 @@ class HomePayloadDTO extends AbstractUniqueDTO
         $films = $filmRepository->findPaginatedFilmsWithNumbers($limit, $offset);
 
         foreach ($films as $film) {
-            $filmDTO = DTOFactory::create(ModelConstants::NESTED_FILM_MODEL);
+            $filmDTO = DTOFactory::create(ModelConstants::FILM_NESTED_DTO_MODEL);
             $filmArray = [
                 'title' => $film->getTitle(),
                 'uuid' => $film->getUuid(),

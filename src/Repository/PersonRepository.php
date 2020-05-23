@@ -21,19 +21,24 @@ class PersonRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $limit
+     * @param int $limit
+     * @param string $profession
      * @return Paginator
      */
-    public function findPopularPersons($limit):Paginator
+    public function findPopularPersonsByJob(int $limit, string $profession):Paginator
     {
         // get $limit persons with the most numbers associated
         $dql = '
-            SELECT p, COUNT(p.id) as nb FROM App\Entity\Person p
+            SELECT p as person, COUNT(p.id) as nb FROM App\Entity\Person p
                 INNER JOIN p.works w
+                WHERE w.profession = :job
                 GROUP BY p.id
                 ORDER BY nb DESC
         ';
         $query = $this->getEntityManager()->createQuery($dql)
+            ->setParameters([
+                'job' => $profession
+            ])
             ->setFirstResult(0)
             ->setMaxResults($limit);
 

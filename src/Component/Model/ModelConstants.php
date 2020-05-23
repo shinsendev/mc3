@@ -15,12 +15,13 @@ class ModelConstants
     const NUMBER_MODEL = 'number';
     const NUMBER_PAYLOAD_MODEL = 'numberPayload';
     const FILM_MODEL = 'film';
-    const NESTED_FILM_MODEL = 'nestedFilm';
+    const FILM_NESTED_DTO_MODEL = 'filmNestedDTOModel';
     const FILM_PAYLOAD_MODEL = 'filmPayload';
     const SONG_MODEL = 'song';
     const SONG_PAYLOAD_MODEL = 'songPayload';
     const PERSON_MODEL = 'person';
     const PERSON_PAYLOAD_MODEL = 'personPayload';
+    const PERSON_NESTED_DTO_MODEL = 'personNestedDTOModel';
 
     const HOME_PAYLOAD_MODEL='home';
 }
