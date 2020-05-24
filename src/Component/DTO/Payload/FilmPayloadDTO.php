@@ -113,4 +113,261 @@ class FilmPayloadDTO
     {
         $this->imdb = $imdb;
     }
+
+    /**
+     * @return int
+     */
+    public function getProductionYear(): int
+    {
+        return $this->productionYear;
+    }
+
+    /**
+     * @param int $productionYear
+     */
+    public function setProductionYear(int $productionYear): void
+    {
+        $this->productionYear = $productionYear;
+    }
+
+    /**
+     * @return int
+     */
+    public function getReleasedYear(): int
+    {
+        return $this->releasedYear;
+    }
+
+    /**
+     * @param int $releasedYear
+     */
+    public function setReleasedYear(int $releasedYear): void
+    {
+        $this->releasedYear = $releasedYear;
+    }
+
+    /**
+     * @return string
+     */
+    public function getViaf(): string
+    {
+        return $this->viaf;
+    }
+
+    /**
+     * @param string $viaf
+     */
+    public function setViaf(string $viaf): void
+    {
+        $this->viaf = $viaf;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSample(): bool
+    {
+        return $this->sample;
+    }
+
+    /**
+     * @param bool $sample
+     */
+    public function setSample(bool $sample): void
+    {
+        $this->sample = $sample;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRemake(): bool
+    {
+        return $this->remake;
+    }
+
+    /**
+     * @param bool $remake
+     */
+    public function setRemake(bool $remake): void
+    {
+        $this->remake = $remake;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCensorships(): array
+    {
+        return $this->censorships;
+    }
+
+    /**
+     * @param array $censorships
+     */
+    public function setCensorships(array $censorships): void
+    {
+        $this->censorships = $censorships;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStageshows(): string
+    {
+        return $this->stageshows;
+    }
+
+    /**
+     * @param string $stageshows
+     */
+    public function setStageshows(string $stageshows): void
+    {
+        $this->stageshows = $stageshows;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAdaptation(): string
+    {
+        return $this->adaptation;
+    }
+
+    /**
+     * @param string $adaptation
+     */
+    public function setAdaptation(string $adaptation): void
+    {
+        $this->adaptation = $adaptation;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPca(): string
+    {
+        return $this->pca;
+    }
+
+    /**
+     * @param string $pca
+     */
+    public function setPca(string $pca): void
+    {
+        $this->pca = $pca;
+    }
+
+    /**
+     * @return array
+     */
+    public function getNumbers(): array
+    {
+        return $this->numbers;
+    }
+
+    /**
+     * @param array $numbers
+     */
+    public function setNumbers(array $numbers): void
+    {
+        $this->numbers = $numbers;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberRatio(): int
+    {
+        return $this->numberRatio;
+    }
+
+    /**
+     * @param int $numberRatio
+     */
+    public function setNumberRatio(int $numberRatio): void
+    {
+        $this->numberRatio = $numberRatio;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAverageNumberLength(): int
+    {
+        return $this->averageNumberLength;
+    }
+
+    /**
+     * @param int $averageNumberLength
+     */
+    public function setAverageNumberLength(int $averageNumberLength): void
+    {
+        $this->averageNumberLength = $averageNumberLength;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGlobalAverageNumberLength(): int
+    {
+        return $this->globalAverageNumberLength;
+    }
+
+    /**
+     * @param int $globalAverageNumberLength
+     */
+    public function setGlobalAverageNumberLength(int $globalAverageNumberLength): void
+    {
+        $this->globalAverageNumberLength = $globalAverageNumberLength;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumbersLength(): int
+    {
+        return $this->numbersLength;
+    }
+
+    /**
+     * @param int $numbersLength
+     */
+    public function setNumbersLength(int $numbersLength): void
+    {
+        $this->numbersLength = $numbersLength;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLength(): int
+    {
+        return $this->length;
+    }
+
+    /**
+     * @param int $length
+     */
+    public function setLength(int $length): void
+    {
+        $this->length = $length;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGlobalNumbersLength()
+    {
+        return $this->globalNumbersLength;
+    }
+
+    /**
+     * @param mixed $globalNumbersLength
+     */
+    public function setGlobalNumbersLength($globalNumbersLength): void
+    {
+        $this->globalNumbersLength = $globalNumbersLength;
+    }
+    
 }
