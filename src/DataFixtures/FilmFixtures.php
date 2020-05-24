@@ -7,11 +7,12 @@ namespace App\DataFixtures;
 use App\Entity\Attribute;
 use App\Entity\Film;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
 
-class FilmFixtures extends Fixture
+class FilmFixtures extends Fixture implements DependentFixtureInterface
 {
     /** @var Generator */
     protected $faker;
@@ -83,4 +84,10 @@ class FilmFixtures extends Fixture
         return $film;
     }
 
+    public function getDependencies()
+    {
+        return array(
+            AttributeFixtures::class,
+        );
+    }
 }
