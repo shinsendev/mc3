@@ -50,11 +50,13 @@ class AttributeFixtures extends Fixture implements DependentFixtureInterface
 
         /** @var CategoryRepository $categoryRepository */
         $categoryRepository = $manager->getRepository(Category::class);
+        // censorship category
         if ($i < 3) {
             /** @var Category $category */
             $category = $categoryRepository->findOneByUuid("0b16d192-976b-477b-9bcd-24df71564b0b");
 
         }
+        // exoticism
         else {
             /** @var Category $category */
             $category = $categoryRepository->findOneByUuid("d720cdfc-ab15-4363-8d56-e9a1ae2fe9e7");

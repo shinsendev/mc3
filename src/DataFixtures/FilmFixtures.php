@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\Entity\Attribute;
 use App\Entity\Film;
-use App\Entity\Song;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -21,7 +21,7 @@ class FilmFixtures extends Fixture
         $this->faker = Factory::create();
 
         for ($i = 0;  $i <2; $i++) {
-            $film = $this->generateFilm($i);
+            $film = $this->generateFilm($i, $manager);
             $manager->persist($film);
         }
 
@@ -32,7 +32,7 @@ class FilmFixtures extends Fixture
      * @param int $index
      * @return Film
      */
-    public function generateFilm(int $index) :Film
+    public function generateFilm(int $index, ObjectManager $manager) :Film
     {
         $titles = ["West Side Story ", "The Jazz Singer"];
         $uuidList = ['18d2c4f3-e16b-4885-908c-46f7e2cd8e38', 'd863687a-7f74-4c45-a904-65480220ade1'];
@@ -52,7 +52,34 @@ class FilmFixtures extends Fixture
         $film->setImdb($imdbIds[$index]);
         $film->setRemake($remakes[$index]);
         $film->setSample($samples[$index]);
-        
+
+        // add numbers
+        //todo : add links to numbers
+
+        // add censorship attributes
+        $attributeRepository = $manager->getRepository(Attribute::class);
+
+        if ($index === 0) {
+            // dialog
+            $attributes[] = $attributeRepository->findOneByUuid('27b11176-9555-4fa5-bda9-85aa76147843');
+
+            //lyrics-unsignificant
+            $attributes[] = $attributeRepository->findOneByUuid('c713385e-a147-49a1-a3fe-6baf47450556');
+
+            //narrative-minor problem
+            $attributes[] = $attributeRepository->findOneByUuid('06172795-8184-4858-89c3-f8313486dfbd');
+        }
+
+        else {
+            //dialog
+            $attributes[] = $attributeRepository->findOneByUuid('27b11176-9555-4fa5-bda9-85aa76147843');
+        }
+
+        foreach ($attributes as $attribute) {
+            $film->addAttribute($attribute);
+        }
+
+
         return $film;
     }
 
