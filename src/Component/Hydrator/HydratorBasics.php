@@ -40,14 +40,7 @@ class HydratorBasics
 
         // manage mandatory and remove them from array
         if (isset($mandatory)) {
-            foreach ($propertiesList as $index => $property) {
-                if (in_array($property->getName(), $mandatory)) {
-                    $getter = 'get'.ucfirst($property->getName());
-                    $setter = 'set'.ucfirst($property->getName());
-                    $dto->$setter($entity->$getter());
-                    array_splice($propertiesList, $index, 1);
-                }
-            }
+            $propertiesList = self::handleMandatory($propertiesList, $mandatory, $dto, $entity);
         }
 
         // treat the other properties
@@ -79,9 +72,25 @@ class HydratorBasics
 
         return $propertiesList;
     }
-    
-    public static function handleMandatory()
-    {
 
+    /**
+     * @param array $propertiesList
+     * @param array $mandatory
+     * @param DTOInterface $dto
+     * @param $entity
+     * @return array
+     */
+    public static function handleMandatory(array $propertiesList, array $mandatory, DTOInterface $dto, $entity):array
+    {
+        foreach ($propertiesList as $index => $property) {
+            if (in_array($property->getName(), $mandatory)) {
+                $getter = 'get'.ucfirst($property->getName());
+                $setter = 'set'.ucfirst($property->getName());
+                $dto->$setter($entity->$getter());
+                array_splice($propertiesList, $index, 1);
+            }
+        }
+
+        return $propertiesList;
     }
 }
