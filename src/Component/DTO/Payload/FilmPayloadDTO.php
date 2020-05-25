@@ -23,7 +23,6 @@ use Doctrine\ORM\EntityManagerInterface;
 class FilmPayloadDTO extends AbstractUniqueDTO
 {
     // general infos
-
     /** @var string */
     private $title;
 

@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-
 namespace App\Component\Hydrator;
-
 
 use App\Component\DTO\Definition\DTOInterface;
 use App\Component\Error\Mc3Error;
+use App\Entity\Definition\EntityInterface;
 
 class HydratorBasics
 {
@@ -80,7 +79,7 @@ class HydratorBasics
      * @param $entity
      * @return array
      */
-    public static function handleMandatory(array $propertiesList, array $mandatory, DTOInterface $dto, $entity):array
+    public static function handleMandatory(array $propertiesList, array $mandatory, DTOInterface $dto, EntityInterface $entity):array
     {
         foreach ($propertiesList as $index => $property) {
             if (in_array($property->getName(), $mandatory)) {

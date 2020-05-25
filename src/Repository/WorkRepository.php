@@ -19,32 +19,23 @@ class WorkRepository extends ServiceEntityRepository
         parent::__construct($registry, Work::class);
     }
 
-    // /**
-    //  * @return Work[] Returns an array of Work objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findPersonByTargetAndProfession(string $model, string $targetUuid, string $profession)
     {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('w.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $dql = '
+            SELECT p FROM App\Entity\Person p
+                JOIN p.works w 
+            WHERE w.targetUuid = :target 
+            AND w.targetType = :model 
+            AND w.profession = :profession
+        ';
+       $query = $this->getEntityManager()->createQuery($dql);
+       $query->setParameters([
+           'model' => $model,
+           'target' => $targetUuid,
+           'profession' => $profession
+       ]);
 
-    /*
-    public function findOneBySomeField($value): ?Work
-    {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+       return $query->getResult();
     }
-    */
+
 }

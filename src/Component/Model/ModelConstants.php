@@ -12,8 +12,11 @@ class ModelConstants
     const ATTRIBUTE_PAYLOAD_MODEL = 'attributePayload';
     const CATEGORY_MODEL = 'category';
     const CATEGORY_PAYLOAD_MODEL = 'categoryPayload';
+
     const NUMBER_MODEL = 'number';
     const NUMBER_PAYLOAD_MODEL = 'numberPayload';
+    const NUMBER_NESTED_IN_FILM_DTO_MODEL = 'numberNestedInFilmDTO';
+
     const FILM_MODEL = 'film';
     const FILM_NESTED_DTO_MODEL = 'filmNestedDTOModel';
     const FILM_PAYLOAD_MODEL = 'filmPayload';
