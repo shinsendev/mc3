@@ -7,6 +7,11 @@ namespace App\Component\DTO\Payload;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Component\DTO\Composition\UniqueDTOTrait;
+use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
+use App\Component\DTO\Nested\FilmNestedDTO;
+use App\Component\Hydrator\FilmPayloadHydrator;
+use App\Component\Hydrator\HydratorInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class NarrativeDTO
@@ -15,47 +20,45 @@ use App\Component\DTO\Composition\UniqueDTOTrait;
  *     shortName="film"
  * )
  */
-class FilmPayloadDTO
+class FilmPayloadDTO extends AbstractUniqueDTO
 {
-    use UniqueDTOTrait;
-
     // general infos
 
     /** @var string */
     private $title;
 
-    /** @var int */
+    /** @var void|int */
     private $productionYear;
 
-    /** @var int */
+    /** @var void|int */
     private $releasedYear;
 
     /** @var string */
     private $imdb;
 
-    /** @var string */
+    /** @var void|string */
     private $viaf;
 
-    /** @var bool */
+    /** @var void|bool */
     private $sample;
 
     // recycling
 
-    /** @var bool */
+    /** @var void|bool */
     private $remake;
 
     /** @var array */
     private $censorships;
 
-    /** @var string */
+    /** @var void|string */
     private $stageshows;
 
-    // todo : add adaptation from thesaurus
-    /** @var  string */
+    // todo : add adaptation from thesaurus, is it a many to many?
+    /** @var  void|string */
     private $adaptation;
 
     // censorship
-    /** @var string */
+    /** @var void|string */
     private $pca;
 
     // numbers linked to the film
@@ -64,84 +67,67 @@ class FilmPayloadDTO
 
     // stats
     /** @var int */
-    private $numberRatio;
+    private $numberRatio = 0;
 
     /** @var int */
-    private $averageNumberLength;
+    private $averageNumberLength = 0;
 
     /** @var int */
-    private $globalAverageNumberLength;
+    private $globalAverageNumberLength = 0;
 
     /** @var int */
-    private $numbersLength;
+    private $numbersLength = 0;
 
     /** @var int */
-    private $length;
+    private $length = 0;
 
-    private $globalNumbersLength;
-    // timeline dataviz data
-    // todo : add dataviz
+    /** @var int */
+    private $globalNumbersLength = 0;
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
     /**
-     * @param mixed $title
+     * @param string $title
      */
-    public function setTitle($title): void
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
     /**
-     * @return mixed
+     * @return int|void
      */
-    public function getImdb()
-    {
-        return $this->imdb;
-    }
-
-    /**
-     * @param mixed $imdb
-     */
-    public function setImdb($imdb): void
-    {
-        $this->imdb = $imdb;
-    }
-
-    /**
-     * @return int
-     */
-    public function getProductionYear(): int
+    public function getProductionYear()
     {
         return $this->productionYear;
     }
 
     /**
-     * @param int $productionYear
+     * @param int|void $productionYear
      */
-    public function setProductionYear(int $productionYear): void
+    public function setProductionYear($productionYear): void
     {
         $this->productionYear = $productionYear;
     }
 
     /**
-     * @return int
+     * @return int|void
      */
-    public function getReleasedYear(): int
+    public function getReleasedYear()
     {
         return $this->releasedYear;
     }
 
     /**
-     * @param int $releasedYear
+     * @param int|void $releasedYear
      */
-    public function setReleasedYear(int $releasedYear): void
+    public function setReleasedYear($releasedYear): void
     {
         $this->releasedYear = $releasedYear;
     }
@@ -149,47 +135,63 @@ class FilmPayloadDTO
     /**
      * @return string
      */
-    public function getViaf(): string
+    public function getImdb(): string
+    {
+        return $this->imdb;
+    }
+
+    /**
+     * @param string $imdb
+     */
+    public function setImdb(string $imdb): void
+    {
+        $this->imdb = $imdb;
+    }
+
+    /**
+     * @return string|void
+     */
+    public function getViaf()
     {
         return $this->viaf;
     }
 
     /**
-     * @param string $viaf
+     * @param string|void $viaf
      */
-    public function setViaf(string $viaf): void
+    public function setViaf($viaf): void
     {
         $this->viaf = $viaf;
     }
 
     /**
-     * @return bool
+     * @return bool|void
      */
-    public function isSample(): bool
+    public function getSample()
     {
         return $this->sample;
     }
 
     /**
-     * @param bool $sample
+     * @param bool|void $sample
      */
-    public function setSample(bool $sample): void
+    public function setSample($sample): void
     {
         $this->sample = $sample;
     }
 
     /**
-     * @return bool
+     * @return bool|void
      */
-    public function isRemake(): bool
+    public function getRemake()
     {
         return $this->remake;
     }
 
     /**
-     * @param bool $remake
+     * @param bool|void $remake
      */
-    public function setRemake(bool $remake): void
+    public function setRemake($remake): void
     {
         $this->remake = $remake;
     }
@@ -197,7 +199,7 @@ class FilmPayloadDTO
     /**
      * @return array
      */
-    public function getCensorships(): array
+    public function getCensorships(): ?array
     {
         return $this->censorships;
     }
@@ -211,49 +213,49 @@ class FilmPayloadDTO
     }
 
     /**
-     * @return string
+     * @return string|void
      */
-    public function getStageshows(): string
+    public function getStageshows()
     {
         return $this->stageshows;
     }
 
     /**
-     * @param string $stageshows
+     * @param string|void $stageshows
      */
-    public function setStageshows(string $stageshows): void
+    public function setStageshows($stageshows): void
     {
         $this->stageshows = $stageshows;
     }
 
     /**
-     * @return string
+     * @return string|void
      */
-    public function getAdaptation(): string
+    public function getAdaptation()
     {
         return $this->adaptation;
     }
 
     /**
-     * @param string $adaptation
+     * @param string|void $adaptation
      */
-    public function setAdaptation(string $adaptation): void
+    public function setAdaptation($adaptation): void
     {
         $this->adaptation = $adaptation;
     }
 
     /**
-     * @return string
+     * @return string|void
      */
-    public function getPca(): string
+    public function getPca()
     {
         return $this->pca;
     }
 
     /**
-     * @param string $pca
+     * @param string|void $pca
      */
-    public function setPca(string $pca): void
+    public function setPca($pca): void
     {
         $this->pca = $pca;
     }
@@ -261,7 +263,7 @@ class FilmPayloadDTO
     /**
      * @return array
      */
-    public function getNumbers(): array
+    public function getNumbers(): ?array
     {
         return $this->numbers;
     }
@@ -355,19 +357,21 @@ class FilmPayloadDTO
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getGlobalNumbersLength()
+    public function getGlobalNumbersLength(): int
     {
         return $this->globalNumbersLength;
     }
 
     /**
-     * @param mixed $globalNumbersLength
+     * @param int $globalNumbersLength
      */
-    public function setGlobalNumbersLength($globalNumbersLength): void
+    public function setGlobalNumbersLength(int $globalNumbersLength): void
     {
         $this->globalNumbersLength = $globalNumbersLength;
     }
-    
+    // timeline dataviz data
+    // todo : add dataviz
+
 }

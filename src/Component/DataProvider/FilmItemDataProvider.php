@@ -7,6 +7,9 @@ namespace App\Component\DataProvider;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Component\DTO\Payload\FilmPayloadDTO;
+use App\Component\Factory\DTOFactory;
+use App\Component\Hydrator\Strategy\FilmPayloadHydrator;
+use App\Component\Model\ModelConstants;
 use App\Entity\Film;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -33,11 +36,15 @@ class FilmItemDataProvider implements ItemDataProviderInterface, RestrictedDataP
             throw new NotFoundHttpException("No film found with uuid " . $uuid);
         }
 
+        // create film DTO with factory
         /** @var FilmPayloadDTO  */
-        $filmDTO = new FilmPayloadDTO();
-        $filmDTO->setTitle($film->getTitle());
-        $filmDTO->setUuid($film->getUuid());
+        $filmDTO = DTOFactory::create( ModelConstants::FILM_PAYLOAD_MODEL);
 
+        // hydrate DTO with data from $film
+        /** @var FilmPayloadDTO $filmDTO */
+        $filmDTO = FilmPayloadHydrator::hydrate($filmDTO, ['film' => $film], $this->em);
+
+        // return the payload
         return $filmDTO;
     }
 
