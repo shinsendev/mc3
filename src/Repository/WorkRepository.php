@@ -19,7 +19,7 @@ class WorkRepository extends ServiceEntityRepository
         parent::__construct($registry, Work::class);
     }
 
-    public function findPersonByTargetAndProfession(string $model, string $targetUuid, string $profession)
+    public function findPersonByTargetAndProfession(string $model, string $targetUuid, string $profession):array
     {
         $dql = '
             SELECT p FROM App\Entity\Person p

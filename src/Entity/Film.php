@@ -34,6 +34,7 @@ class Film extends AbstractTarget
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Number", mappedBy="film", orphanRemoval=true)
+     * @ORM\OrderBy({"beginTc" = "ASC"})
      */
     private $numbers;
 
@@ -411,4 +412,5 @@ class Film extends AbstractTarget
 
         return $this;
     }
+
 }
