@@ -10,6 +10,7 @@ use App\Component\DTO\Nested\PersonNestedDTO;
 use App\Component\DTO\Payload\FilmPayloadDTO;
 use App\Component\Factory\DTOFactory;
 use App\Component\Hydrator\Description\HydratorDTOInterface;
+use App\Component\Hydrator\Helper\PersonHelper;
 use App\Component\Hydrator\HydratorBasics;
 use App\Component\Model\ModelConstants;
 use App\Entity\Definition\EntityInterface;
@@ -52,9 +53,9 @@ class FilmPayloadHydrator implements HydratorDTOInterface
         // get attributes
         //todo: add list of attributes
 
+
         // get director
-        //todo: add list of persons
-        $directors = self::getPersonsByProfession('director', ModelConstants::FILM_MODEL, $film, $em);
+        $directors = PersonHelper::getPersonsByProfession('director', ModelConstants::FILM_MODEL, $film, $em);
         $dto->setDirectors($directors);
 
         // get stats
@@ -113,25 +114,6 @@ class FilmPayloadHydrator implements HydratorDTOInterface
         return $numbersDTOList;
     }
 
-    /**
-     * @param string $profession
-     * @param string $model
-     * @param EntityInterface $entity
-     * @param EntityManagerInterface $em
-     * @return array
-     */
-    public static function getPersonsByProfession(string $profession, string $model, EntityInterface $entity, EntityManagerInterface $em)
-    {
-        $persons = $em->getRepository(Work::class)->findPersonByTargetAndProfession($model, $entity->getUuid(), $profession);
-        $personsDTO = [];
-        foreach ($persons as $person) {
-            /** @var PersonNestedDTO $personDTO */
-            $personDTO = DTOFactory::create(ModelConstants::PERSON_NESTED_DTO_MODEL);
-            $personDTO->hydrate(['person' => $person], $em);
-            $personsDTO[] = $personDTO;
-        }
 
-        return $personsDTO;
-    }
 
 }
