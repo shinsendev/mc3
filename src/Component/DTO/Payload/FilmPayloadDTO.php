@@ -6,12 +6,8 @@ declare(strict_types=1);
 namespace App\Component\DTO\Payload;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Component\DTO\Composition\UniqueDTOTrait;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
-use App\Component\DTO\Nested\FilmNestedDTO;
-use App\Component\Hydrator\FilmPayloadHydrator;
-use App\Component\Hydrator\HydratorInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Component\DTO\Nested\PersonNestedDTO;
 
 /**
  * Class NarrativeDTO
@@ -46,7 +42,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /** @var void|bool */
     private $remake;
 
-    /** @var array */
+    /** @var void|array */
     private $censorships;
 
     /** @var void|string */
@@ -60,9 +56,28 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /** @var void|string */
     private $pca;
 
+    /** @var void|array */
+    private $states;
+
+    /** @var void|string */
+    private $legion;
+
+    /** @var void|string */
+    private $protestant;
+
+    /** @var void|string */
+    private $harrison;
+
+    /** @var void|string */
+    private $board;
+
     // numbers linked to the film
     /** @var array */
     private  $numbers;
+
+    // persons
+    /** @var PersonNestedDTO[] */
+    private $directors;
 
     // stats
     /** @var int */
@@ -276,6 +291,22 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
+     * @return PersonNestedDTO[]
+     */
+    public function getDirectors(): array
+    {
+        return $this->directors;
+    }
+
+    /**
+     * @param PersonNestedDTO[] $directors
+     */
+    public function setDirectors(array $directors): void
+    {
+        $this->directors = $directors;
+    }
+
+    /**
      * @return int
      */
     public function getNumberRatio(): int
@@ -370,6 +401,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     {
         $this->globalNumbersLength = $globalNumbersLength;
     }
+
     // timeline dataviz data
     // todo : add dataviz
 
