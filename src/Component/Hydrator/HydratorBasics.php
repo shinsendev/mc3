@@ -61,11 +61,12 @@ class HydratorBasics
      * @param array $excludes
      * @return array
      */
-    public function handleExclusion(array $propertiesList, array $excludes):array
+    public static function handleExclusion(array $propertiesList, array $excludes):array
     {
         foreach ($propertiesList as $index => $property) {
             if (in_array($property->getName(), $excludes)) {
-                array_splice($propertiesList, $index, 1);
+                // remove and not update the index
+                unset($propertiesList[$index]);
             }
         }
 

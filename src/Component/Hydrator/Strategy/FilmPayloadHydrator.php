@@ -6,14 +6,12 @@ namespace App\Component\Hydrator\Strategy;
 
 use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Nested\NumberNestedInFilmDTO;
-use App\Component\DTO\Nested\PersonNestedDTO;
 use App\Component\DTO\Payload\FilmPayloadDTO;
 use App\Component\Factory\DTOFactory;
 use App\Component\Hydrator\Description\HydratorDTOInterface;
 use App\Component\Hydrator\Helper\PersonHelper;
 use App\Component\Hydrator\HydratorBasics;
 use App\Component\Model\ModelConstants;
-use App\Entity\Definition\EntityInterface;
 use App\Entity\Film;
 use App\Entity\Work;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,7 +28,7 @@ class FilmPayloadHydrator implements HydratorDTOInterface
     {
         $params = [];
         // set excludes paramaters to treate manually
-        $params['excludes'] = ['numbers'];
+        $params['excludes'] = ['numbers', 'studios'];
         $params['mandatory'] = ['uuid', 'title', 'imdb'];
 
         $data['model'] = 'film';
@@ -50,9 +48,54 @@ class FilmPayloadHydrator implements HydratorDTOInterface
             }
         }
 
-        // get attributes
-        //todo: add list of attributes
+        $manyToMany = ['censorship', 'state'];
 
+        // get attributes
+        foreach ($film->getAttributes() as $attribute) {
+
+            $code = $attribute->getCategory()->getCode();
+
+            // error
+            if ($code === 'structure') {
+                //todo : remove structure in import and add it to number
+                continue;
+            }
+
+            // handle exception
+            if ($code === 'verdict') { // is this pca verdict?
+                $dto->setPca($attribute->getTitle());
+                continue;
+            }
+
+            // handle many to many
+            if (in_array($code, $manyToMany)) {
+                $manyToManyAttributes[$code][] = $attribute->getTitle();
+                continue;
+            }
+
+            // for all normal many to one
+            $setter = 'set'.ucfirst($attribute->getCategory()->getCode());
+            $dto->$setter($attribute->getTitle());
+        }
+
+        // still for attributes : set many to many
+        foreach ($manyToMany as $category) {
+            if(isset($manyToManyAttributes[$category])) {
+                $setter = 'set'.ucfirst($category.'s'); // be carefull ad change if a word already finish with a s
+                $dto->$setter($manyToManyAttributes[$category]);
+            }
+        }
+
+        // get studios
+        $studiosDTO = [];
+        foreach($film->getStudios() as $studio) {
+            $studiosDTO[] = [
+                'name' => $studio->getName(),
+                'uuid' => $studio->getUuid()
+            ];
+        }
+
+        $dto->setStudios($studiosDTO);
 
         // get director
         $directors = PersonHelper::getPersonsByProfession('director', ModelConstants::FILM_MODEL, $film, $em);

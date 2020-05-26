@@ -79,6 +79,10 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /** @var PersonNestedDTO[] */
     private $directors;
 
+    // studios
+    /** @var array */
+    private $studios;
+
     // stats
     /** @var int */
     private $numberRatio = 0;
@@ -307,6 +311,22 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
+     * @return array
+     */
+    public function getStudios(): ?array
+    {
+        return $this->studios;
+    }
+
+    /**
+     * @param array $studios
+     */
+    public function setStudios(array $studios): void
+    {
+        $this->studios = $studios;
+    }
+
+    /**
      * @return int
      */
     public function getNumberRatio(): int
@@ -400,6 +420,86 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     public function setGlobalNumbersLength(int $globalNumbersLength): void
     {
         $this->globalNumbersLength = $globalNumbersLength;
+    }
+
+    /**
+     * @return array|void
+     */
+    public function getStates()
+    {
+        return $this->states;
+    }
+
+    /**
+     * @param array|void $states
+     */
+    public function setStates($states): void
+    {
+        $this->states = $states;
+    }
+
+    /**
+     * @return string|void
+     */
+    public function getLegion()
+    {
+        return $this->legion;
+    }
+
+    /**
+     * @param string|void $legion
+     */
+    public function setLegion($legion): void
+    {
+        $this->legion = $legion;
+    }
+
+    /**
+     * @return string|void
+     */
+    public function getProtestant()
+    {
+        return $this->protestant;
+    }
+
+    /**
+     * @param string|void $protestant
+     */
+    public function setProtestant($protestant): void
+    {
+        $this->protestant = $protestant;
+    }
+
+    /**
+     * @return string|void
+     */
+    public function getHarrison()
+    {
+        return $this->harrison;
+    }
+
+    /**
+     * @param string|void $harrison
+     */
+    public function setHarrison($harrison): void
+    {
+        $this->harrison = $harrison;
+    }
+
+    /**
+     * @return string|void
+     */
+    public function getBoard()
+    {
+        return $this->board;
+    }
+
+    /**
+     * @param string|void $board
+     */
+    public function setBoard($board): void
+    {
+        $this->board = $board;
     }
 
     // timeline dataviz data
