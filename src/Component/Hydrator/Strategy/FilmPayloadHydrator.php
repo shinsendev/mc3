@@ -97,11 +97,12 @@ class FilmPayloadHydrator implements HydratorDTOInterface
 
         $dto->setStudios($studiosDTO);
 
-        // get director
+        // get directors
         $directors = PersonHelper::getPersonsByProfession('director', ModelConstants::FILM_MODEL, $film, $em);
         $dto->setDirectors($directors);
 
         // get stats
+        // todo: add stats from a stats table
 
         return $dto;
     }

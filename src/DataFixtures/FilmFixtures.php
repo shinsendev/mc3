@@ -35,7 +35,7 @@ class FilmFixtures extends Fixture implements DependentFixtureInterface
      */
     public function generateFilm(int $index, ObjectManager $manager) :Film
     {
-        $titles = ["West Side Story ", "The Jazz Singer"];
+        $titles = ["West Side Story", "The Jazz Singer"];
         $uuidList = ['18d2c4f3-e16b-4885-908c-46f7e2cd8e38', 'd863687a-7f74-4c45-a904-65480220ade1'];
         $lengths = [6000, 5288];
         $releasedYears = [1961,1927];

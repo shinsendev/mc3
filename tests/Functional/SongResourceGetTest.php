@@ -12,7 +12,6 @@ class SongResourceGetTest extends AbstractFunctionalTest
         $response = $this->client->request('GET', 'api/songs/'.$uuid);
         $this->assertResponseIsSuccessful();
 
-
         $arrayResponse = $response->toArray();
         $this->assertEquals($arrayResponse['title'], "It's a Grand Night for Singing");
         $this->assertEquals($arrayResponse['year'], 1919);
