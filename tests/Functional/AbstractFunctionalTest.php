@@ -22,6 +22,7 @@ abstract class AbstractFunctionalTest extends ApiTestCase
             'App\DataFixtures\SongFixtures',
             'App\DataFixtures\CategoryFixtures',
             'App\DataFixtures\AttributeFixtures',
+            'App\DataFixtures\FilmFixtures',
         ]);
     }
 }

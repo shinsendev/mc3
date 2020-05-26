@@ -9,6 +9,7 @@ namespace App\Component\Factory;
 use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Hierarchy\AbstractDTO;
 use App\Component\DTO\Nested\FilmNestedDTO;
+use App\Component\DTO\Nested\NumberNestedInFilmDTO;
 use App\Component\DTO\Nested\PersonNestedDTO;
 use App\Component\DTO\Payload\AttributePayloadDTO;
 use App\Component\DTO\Payload\CategoryPayloadDTO;
@@ -30,6 +31,7 @@ class DTOFactory
         $config = [
             ModelConstants::SONG_PAYLOAD_MODEL => new SongPayloadDTO(),
             ModelConstants::NUMBER_PAYLOAD_MODEL => new NumberPayloadDTO(),
+            ModelConstants::NUMBER_NESTED_IN_FILM_DTO_MODEL => new NumberNestedInFilmDTO(),
             ModelConstants::FILM_PAYLOAD_MODEL => new FilmPayloadDTO(),
             ModelConstants::FILM_NESTED_DTO_MODEL => new FilmNestedDTO(),
             ModelConstants::ATTRIBUTE_PAYLOAD_MODEL => new AttributePayloadDTO(),
