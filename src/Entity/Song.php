@@ -2,12 +2,17 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Heredity\AbstractTarget;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Component\DTO\Payload\SongPayloadDTO;
 
 /**
+ * @ApiResource(
+ *     output=SongPayloadDTO::class
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\SongRepository")
  */
 class Song extends AbstractTarget
