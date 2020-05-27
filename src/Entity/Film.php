@@ -2,12 +2,18 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Heredity\AbstractTarget;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Component\DTO\Payload\FilmPayloadDTO;
 
 /**
+ * @ApiResource(
+ *     output=FilmPayloadDTO::class
+ * )
+ *
  * @ORM\Entity(repositoryClass="App\Repository\FilmRepository")
  */
 class Film extends AbstractTarget

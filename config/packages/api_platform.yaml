@@ -12,7 +12,8 @@ api_platform:
     show_webby: false
 
     mapping:
-        paths: ['%kernel.project_dir%/src/Component/DTO']
+        paths: ['%kernel.project_dir%/src/Entity']
+#        paths: ['%kernel.project_dir%/src/Component/DTO']
     patch_formats:
         json: ['application/merge-patch+json']
     swagger:

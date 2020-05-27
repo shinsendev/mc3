@@ -10,11 +10,8 @@ use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
 use App\Component\DTO\Nested\PersonNestedDTO;
 
 /**
- * Class NarrativeDTO
- * @package App\Component\DTO
- * @ApiResource(
- *     shortName="film"
- * )
+ * Class FilmPayloadDTO
+ *
  */
 class FilmPayloadDTO extends AbstractUniqueDTO
 {

@@ -2,6 +2,7 @@
 
 namespace App\Entity\Heredity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
@@ -25,7 +26,9 @@ abstract class AbstractTarget extends AbstractEntity
     protected $updatedAt;
 
     /**
+     * @ApiProperty(identifier=true)
      * @ORM\Column(type="guid")
+     *
      */
     protected $uuid;
 

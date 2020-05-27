@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -41,10 +42,10 @@ class HomeController
     public function getKeys()
     {
         $httpClient = HttpClient::create();
-        $response = $httpClient->request('GET', 'https://www.googleapis.com/blogger/v3/blogs/6777295837490174575/posts/2394285035132526459?key=AIzaSyDmZ2APEE5ofC_EFgdWUcY2J4QbG1jQY8Y');
-        $content = $response->getContent();
+        $response = $httpClient->request('GET', 'https://www.googleapis.com/blogger/v3/blogs/6777295837490174575/posts/2394285035132526459?key='.$_ENV['GOOGLE_API_KEY']);
+        $content = json_decode($response->getContent());
 
-        return new Response($content, 200, ['Content-Type' => 'application/json']);
+        return new JsonResponse($content->content, 200, ['Content-Type' => 'application/json']);
     }
 
     /**
@@ -53,9 +54,9 @@ class HomeController
     public function getAbout()
     {
         $httpClient = HttpClient::create();
-        $response = $httpClient->request('GET', 'https://www.googleapis.com/blogger/v3/blogs/6777295837490174575/posts/3743876680519936401?key=AIzaSyDmZ2APEE5ofC_EFgdWUcY2J4QbG1jQY8Y');
-        $content = $response->getContent();
+        $response = $httpClient->request('GET', 'https://www.googleapis.com/blogger/v3/blogs/6777295837490174575/posts/3743876680519936401?key='.$_ENV['GOOGLE_API_KEY']);
+        $content = json_decode($response->getContent());
 
-        return new Response($content, 200, ['Content-Type' => 'application/json']);
+        return new JsonResponse($content->content, 200, ['Content-Type' => 'application/json']);
     }
 }
