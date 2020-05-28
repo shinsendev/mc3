@@ -27,16 +27,13 @@ class AttributeItemDataProvider implements ItemDataProviderInterface, Restricted
         $this->em = $em;
     }
 
-    public function getItem(string $resourceClass, $uuid, string $operationName = null, array $context = []) :?AttributePayloadDTO
+    public function getItem(string $resourceClass, $uuid, string $operationName = null, array $context = []) :Attribute
     {
         if (!$attribute = $this->em->getRepository(Attribute::class)->findOneByUuid($uuid)) {
             throw new NotFoundHttpException("No attribute found with uuid " . $uuid);
         }
 
-        $attributeDTO =  DTOFactory::create(ModelConstants::ATTRIBUTE_PAYLOAD_MODEL);
-        $attributeDTO->hydrate(['attribute' => $attribute], $this->em);
-
-        return $attributeDTO;
+        return $attribute;
     }
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
