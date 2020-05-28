@@ -39,48 +39,6 @@ class SongPayloadDTO extends AbstractUniqueDTO
     private $films;
 
     /**
-     * @param array $data
-     * @param EntityManagerInterface $em
-     */
-    public function hydrate(array $data, EntityManagerInterface $em):void
-    {
-        $song = $data['song'];
-        $this->setTitle($song->getTitle());
-
-        if ($song->getYear()){
-            $this->setYear($song->getYear());
-        }
-
-        $this->setExternalId($song->getExternalId());
-        $this->setUuid($song->getUuid());
-
-        // get nested numbers
-        foreach ($song->getNumbers() as $number) {
-            $nestedNumberDTO = new NumberNestedDTO();
-            $nestedNumberDTO->hydrate(['number' => $number], $em);
-            $nestedNumbersListDTO[] = $nestedNumberDTO;
-        }
-
-        if (isset($nestedNumbersListDTO)) {
-            $this->setNumbers($nestedNumbersListDTO);
-        }
-
-        // get nested films (films deduced by numbers linked to song)
-        $query = $em->getRepository(Song::class)->getFilmsQuery($song->getUuid());
-        $films = new Paginator($query, $fetchJoinCollection = true);
-
-        foreach($films as $film) {
-            $filmPayload = DTOFactory::create(ModelConstants::FILM_NESTED_DTO_MODEL);
-            $filmPayload = NestedFilmInSongHydrator::hydrate($filmPayload, ['film' => $film], $em);
-            $nestedFilmsListDTO[] = $filmPayload;
-        }
-
-        if (isset($nestedFilmsListDTO)) {
-            $this->setFilms($nestedFilmsListDTO);
-        }
-    }
-
-    /**
      * @return string
      */
     public function getTitle(): string

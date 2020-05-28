@@ -8,6 +8,7 @@ use App\Component\DTO\Payload\FilmPayloadDTO;
 use App\Component\DTO\Payload\SongPayloadDTO;
 use App\Component\Factory\DTOFactory;
 use App\Component\Hydrator\Strategy\FilmPayloadHydrator;
+use App\Component\Hydrator\Strategy\SongPayloadHydrator;
 use App\Component\Model\ModelConstants;
 use App\Entity\Film;
 use App\Entity\Song;
@@ -31,8 +32,8 @@ final class SongOutputDataTransformer implements DataTransformerInterface
     public function transform($song, string $to, array $context = [])
     {
         /** @var SongPayloadDTO  */
-        $songDTO = new SongPayloadDTO();
-        $songDTO->hydrate(['song' => $song], $this->em);
+        $songDTO = DTOFactory::create(ModelConstants::SONG_PAYLOAD_MODEL);
+        SongPayloadHydrator::hydrate($songDTO,['song' => $song], $this->em);
 
         return $songDTO;
     }
