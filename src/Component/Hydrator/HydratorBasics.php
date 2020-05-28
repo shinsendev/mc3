@@ -87,7 +87,7 @@ class HydratorBasics
                 $getter = 'get'.ucfirst($property->getName());
                 $setter = 'set'.ucfirst($property->getName());
                 $dto->$setter($entity->$getter());
-                array_splice($propertiesList, $index, 1);
+                unset($propertiesList[$index]);
             }
         }
 

@@ -26,7 +26,7 @@ class SongRepository extends ServiceEntityRepository
     public function getFilms($uuid)
     {
         $query = $this->getEntityManager()->createQuery('
-            SELECT DISTINCT f.title, f.uuid FROM App\Entity\Song s 
+            SELECT DISTINCT f.title, f.uuid, f.imdb FROM App\Entity\Song s 
                 INNER JOIN s.numbers n
                 INNER JOIN n.film f
             WHERE s.uuid = :uuid

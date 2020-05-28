@@ -8,6 +8,9 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
 use App\Component\DTO\Nested\FilmNestedDTO;
 use App\Component\DTO\Nested\NumberNestedDTO;
+use App\Component\Factory\DTOFactory;
+use App\Component\Hydrator\Strategy\NestedFilmInSongHydrator;
+use App\Component\Model\ModelConstants;
 use App\Entity\Song;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -23,7 +26,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
     /** @var string */
     private $title;
 
-    /** @var integer */
+    /** @var void|integer */
     private $year;
 
     /** @var string */
@@ -32,17 +35,26 @@ class SongPayloadDTO extends AbstractUniqueDTO
     /** @var NumberNestedDTO[] */
     private $numbers;
 
-    /** @var FilmNestedDTO[] */
+    /** @var FilmPayloadDTO[] */
     private $films;
 
     /**
      * @param array $data
+     * @param EntityManagerInterface $em
      */
     public function hydrate(array $data, EntityManagerInterface $em):void
     {
         $song = $data['song'];
         $this->setTitle($song->getTitle());
-        $this->setYear($song->getYear());
+
+        if ($song->getYear()){
+            $this->setYear($song->getYear());
+        }
+        //todo: for graphql, correct and find a way to let nullable
+        else {
+            $this->setYear(0);
+        }
+
         $this->setExternalId($song->getExternalId());
         $this->setUuid($song->getUuid());
 
@@ -61,9 +73,9 @@ class SongPayloadDTO extends AbstractUniqueDTO
         $films = $em->getRepository(Song::class)->getFilms($song->getUuid());
 
         foreach($films as $film) {
-            $nestedFilmDTO = new FilmNestedDTO();
-            $nestedFilmDTO->hydrate(['film' => $film], $em);
-            $nestedFilmsListDTO[] = $nestedFilmDTO;
+            $filmPayload = DTOFactory::create(ModelConstants::FILM_PAYLOAD_MODEL);
+            $filmPayload = NestedFilmInSongHydrator::hydrate($filmPayload, ['film' => $film], $em);
+            $nestedFilmsListDTO[] = $filmPayload;
         }
 
         if (isset($nestedFilmsListDTO)) {
@@ -136,7 +148,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return FilmNestedDTO[]
+     * @return FilmPayloadDTO[]
      */
     public function getFilms(): ?array
     {
@@ -144,7 +156,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @param FilmNestedDTO[] $films
+     * @param FilmPayloadDTO[] $films
      */
     public function setFilms(array $films): void
     {

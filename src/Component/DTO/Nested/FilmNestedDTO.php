@@ -20,7 +20,6 @@ class FilmNestedDTO extends AbstractUniqueDTO
     /** @var int|void */
     private $released;
 
-
     /**
      * @param array $data
      * @param EntityManagerInterface $em
