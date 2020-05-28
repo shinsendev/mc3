@@ -9,6 +9,7 @@ namespace App\Component\DataTransformer;
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
 use App\Component\DTO\Payload\CategoryPayloadDTO;
 use App\Component\Factory\DTOFactory;
+use App\Component\Hydrator\Strategy\CategoryPayloadHydrator;
 use App\Component\Model\ModelConstants;
 use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,9 +37,8 @@ class CategoryItemDataTransformer implements DataTransformerInterface
     public function transform($category, string $to, array $context = [])
     {
         $categoryDTO =  DTOFactory::create(ModelConstants::CATEGORY_PAYLOAD_MODEL);
-        $categoryDTO->hydrate(['category' => $category], $this->em);
 
-        return $categoryDTO;
+        return CategoryPayloadHydrator::hydrate($categoryDTO, ['category' => $category], $this->em);
     }
 
     /**

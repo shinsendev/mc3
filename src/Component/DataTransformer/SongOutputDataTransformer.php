@@ -29,7 +29,13 @@ final class SongOutputDataTransformer implements DataTransformerInterface
         $this->em = $em;
     }
 
-    public function transform($song, string $to, array $context = [])
+    /**
+     * @param object $song
+     * @param string $to
+     * @param array $context
+     * @return SongPayloadDTO
+     */
+    public function transform($song, string $to, array $context = []): SongPayloadDTO
     {
         /** @var SongPayloadDTO  */
         $songDTO = DTOFactory::create(ModelConstants::SONG_PAYLOAD_MODEL);
@@ -38,6 +44,12 @@ final class SongOutputDataTransformer implements DataTransformerInterface
         return $songDTO;
     }
 
+    /**
+     * @param array|object $data
+     * @param string $to
+     * @param array $context
+     * @return bool
+     */
     public function supportsTransformation($data, string $to, array $context = []): bool
     {
         // in the case of an input, the value given here is an array (the JSON decoded).

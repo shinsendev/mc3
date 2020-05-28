@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Song;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
 
 /**
  * @method Song|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,6 +15,10 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class SongRepository extends ServiceEntityRepository
 {
+    /**
+     * SongRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Song::class);
@@ -25,7 +30,7 @@ class SongRepository extends ServiceEntityRepository
      * @param int $max
      * @return \Doctrine\ORM\Query
      */
-    public function getFilmsQuery($uuid, $first = 0, $max = 100)
+    public function getFilmsQuery($uuid, $first = 0, $max = 100): Query
     {
         return $this->getEntityManager()->createQuery('
             SELECT f FROM App\Entity\Film f

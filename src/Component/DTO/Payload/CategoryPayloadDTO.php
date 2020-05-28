@@ -41,43 +41,6 @@ class CategoryPayloadDTO extends AbstractUniqueDTO
     /** @var int */
     private $attributesCount;
 
-    public function hydrate(array $data, EntityManagerInterface $em):void
-    {
-        /** @var Category $category */
-        $category = $data['category'];
-        $this->setTitle($category->getTitle());
-        $this->setUuid($category->getUuid());
-
-        // catch empty models
-        if ($category->getModel()) {
-            $model = $category->getModel();
-        }
-        else {
-            $model = self::CURRENT_MODEL;
-        }
-        $this->setModel($model);
-
-        // optional params
-        if ($category->getDescription()) {
-            $this->setDescription($category->getDescription());
-        }
-
-        // add nested attributes DTO
-        $attributes = $category->getAttributes();
-        $this->setAttributesCount(count($attributes));
-
-        foreach ($attributes as $attribute)
-        {
-            $attributeDTO = DTOFactory::create(ModelConstants::ATTRIBUTE_NESTED_IN_CATEGORY_MODEL);
-            NestedAttributeInCategory::hydrate($attributeDTO, ['attribute' => $attribute, 'model' => $model], $em);
-            $attributesList[] = $attributeDTO;
-        }
-
-        if (isset($attributesList)) {
-            $this->setAttributes($attributesList);
-        }
-    }
-
     /**
      * @return string
      */

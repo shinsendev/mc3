@@ -6,13 +6,6 @@ namespace App\Component\DTO\Payload;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
-use App\Component\DTO\Nested\NumberNestedDTO;
-use App\Component\Factory\DTOFactory;
-use App\Component\Hydrator\Strategy\NestedFilmInSongHydrator;
-use App\Component\Model\ModelConstants;
-use App\Entity\Song;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * Class NarrativeDTO
