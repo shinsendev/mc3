@@ -40,8 +40,15 @@ class SongPayloadHydrator implements HydratorDTOInterface
             $dto->setYear($song->getYear());
         }
 
+        if ($song->getExternalId()){
+            $dto->setExternalId($song->getExternalId());
+        }
+
         $dto->setExternalId($song->getExternalId());
         $dto->setUuid($song->getUuid());
+
+        // get song type
+
 
         // get nested numbers
         foreach ($song->getNumbers() as $number) {
