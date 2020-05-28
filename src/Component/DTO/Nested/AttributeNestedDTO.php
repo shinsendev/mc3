@@ -12,57 +12,23 @@ use App\Entity\Number;
 use App\Entity\Song;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * Class AttributeNestedDTO
+ * @package App\Component\DTO\Nested
+ */
 class AttributeNestedDTO extends AbstractUniqueDTO
 {
     /** @var string */
     private $title;
 
     /** @var null|string */
-    private $description;
+    private $description = '';
 
     /** @var null|string */
-    private $example;
+    private $example= '';
 
     /** @var null|int */
-    private $elementsCount;
-
-    public function hydrate(array $data, EntityManagerInterface $em):void
-    {
-        /** @var Attribute $attribute */
-        $attribute = $data['attribute'];
-
-        $this->setTitle($attribute->getTitle());
-        $uuid = $attribute->getUuid();
-        $this->setUuid($uuid); //e3c612ea-0575-46e9-a971-4498e85d8ff
-
-        // optional params
-        if ($description = $attribute->getDescription()) {
-            $this->setDescription($description);
-        }
-        if ($example = $attribute->getExample()) {
-            $this->setExample($example);
-        }
-
-        // set elements if it's not "other"
-        if ($data['model'] !== CategoryPayloadDTO::CURRENT_MODEL) {
-            switch ($data['model']) {
-                case CategoryPayloadDTO::MODEL_NUMBER:
-                    // count all numbers with this attribute
-                    $this->setElementsCount($em->getRepository(Number::class)->countAttributes($uuid));
-                    break;
-                case CategoryPayloadDTO::MODEL_FILM:
-                    // count all films with this attribute
-                    $this->setElementsCount($em->getRepository(Film::class)->countAttributes($uuid));
-                    break;
-                case CategoryPayloadDTO::MODEL_SONG:
-                    // count all songs with this attribute
-                    $this->setElementsCount($em->getRepository(Song::class)->countAttributes($uuid));
-                    break;
-                default:
-                    throw new \Error($data['model'].' is not a correct category model');
-            }
-        }
-    }
+    private $elementsCount = 0;
 
     /**
      * @return string

@@ -7,10 +7,16 @@ namespace App\Component\DataTransformer;
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
 use App\Component\DTO\Payload\AttributePayloadDTO;
 use App\Component\Factory\DTOFactory;
+use App\Component\Hydrator\Strategy\AttributePayloadHydrator;
+use App\Component\Hydrator\Strategy\NestedAttributeInCategory;
 use App\Component\Model\ModelConstants;
 use App\Entity\Attribute;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * Class AttributeItemDataTransformer
+ * @package App\Component\DataTransformer
+ */
 class AttributeItemDataTransformer implements DataTransformerInterface
 {
     /** @var EntityManagerInterface */
@@ -34,7 +40,7 @@ class AttributeItemDataTransformer implements DataTransformerInterface
     public function transform($attribute, string $to, array $context = [])
     {
         $attributeDTO =  DTOFactory::create(ModelConstants::ATTRIBUTE_PAYLOAD_MODEL);
-        $attributeDTO->hydrate(['attribute' => $attribute], $this->em);
+        AttributePayloadHydrator::hydrate($attributeDTO, ['attribute' => $attribute], $this->em);
 
         return $attributeDTO;
     }

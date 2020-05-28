@@ -14,19 +14,8 @@ use App\Entity\Song;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
- * Class NarrativeDTO
- * @package App\Component\DTO
- * @ApiResource(
- *     shortName="attribute",
- *     itemOperations={"get"},
- *     collectionOperations={
- *         "get"={
- *             "controller"= NotFoundController::class,
- *             "read"=false,
- *             "output"=false,
- *         }
- *     }
- * )
+ * Class AttributePayloadDTO
+ * @package App\Component\DTO\Payload
  */
 class AttributePayloadDTO extends AbstractUniqueDTO
 {
@@ -47,57 +36,7 @@ class AttributePayloadDTO extends AbstractUniqueDTO
 
     /** @var void|array */
     private $elements;
-
-    public function hydrate(array $data, EntityManagerInterface $em)
-    {
-        /** @var Attribute $attribute */
-        $attribute = $data['attribute'];
-        $attributeUuid = $attribute->getUuid();
-        $this->setTitle($attribute->getTitle());
-        $this->setCategoryTitle($attribute->getCategory()->getTitle());
-        $this->setCategoryUuid($attribute->getCategory()->getUuid());
-        $this->setUuid($attribute->getUuid());
-
-        if ($attribute->getDescription()) {
-            $this->setDescription($attribute->getDescription());
-        }
-
-        if ($attribute->getExample()) {
-            $this->setExample($attribute->getExample());
-        }
-
-        // add elements to attribute
-        $model = $attribute->getCategory()->getModel();
-        if ($model !== null) {
-            switch ($model) {
-                case CategoryPayloadDTO::MODEL_NUMBER:
-                    // select all numbers with this attribute
-                    $elements = $em->getRepository(Number::class)->getAttributes($attributeUuid);
-                    break;
-                case CategoryPayloadDTO::MODEL_FILM:
-                    // select all films with this attribute
-                    $elements = $em->getRepository(Film::class)->getAttributes($attributeUuid);
-                    break;
-                case CategoryPayloadDTO::MODEL_SONG:
-                    // select all songs with this attribute
-                    $elements = $em->getRepository(Song::class)->getAttributes($attributeUuid);
-                    break;
-                default:
-                    throw new \Error($model.' is not a correct category model');
-            }
-        }
-
-        if (isset($elements)) {
-            foreach ($elements as $element) {
-                $elementDTO = new ElementNestedDTO();
-                $elementDTO->hydrate(['element' => $element], $em);
-                $elementsNestedDTOList[] = $elementDTO;
-            }
-            if (isset($elementsNestedDTOList)) {
-                $this->setElements($elementsNestedDTOList);
-            }
-        }
-    }
+    
 
     /**
      * @return string

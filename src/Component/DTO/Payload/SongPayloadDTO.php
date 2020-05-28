@@ -6,13 +6,13 @@ namespace App\Component\DTO\Payload;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
-use App\Component\DTO\Nested\FilmNestedDTO;
 use App\Component\DTO\Nested\NumberNestedDTO;
 use App\Component\Factory\DTOFactory;
 use App\Component\Hydrator\Strategy\NestedFilmInSongHydrator;
 use App\Component\Model\ModelConstants;
 use App\Entity\Song;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * Class NarrativeDTO
@@ -26,8 +26,8 @@ class SongPayloadDTO extends AbstractUniqueDTO
     /** @var string */
     private $title;
 
-    /** @var void|integer */
-    private $year;
+    /** @var integer */
+    private $year = 0;
 
     /** @var string */
     private $externalId;
@@ -35,7 +35,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
     /** @var NumberNestedDTO[] */
     private $numbers;
 
-    /** @var FilmPayloadDTO[] */
+    /** @var array */
     private $films;
 
     /**
@@ -49,10 +49,6 @@ class SongPayloadDTO extends AbstractUniqueDTO
 
         if ($song->getYear()){
             $this->setYear($song->getYear());
-        }
-        //todo: for graphql, correct and find a way to let nullable
-        else {
-            $this->setYear(0);
         }
 
         $this->setExternalId($song->getExternalId());
@@ -70,7 +66,8 @@ class SongPayloadDTO extends AbstractUniqueDTO
         }
 
         // get nested films (films deduced by numbers linked to song)
-        $films = $em->getRepository(Song::class)->getFilms($song->getUuid());
+        $query = $em->getRepository(Song::class)->getFilmsQuery($song->getUuid());
+        $films = new Paginator($query, $fetchJoinCollection = true);
 
         foreach($films as $film) {
             $filmPayload = DTOFactory::create(ModelConstants::FILM_PAYLOAD_MODEL);
@@ -102,7 +99,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
     /**
      * @return int
      */
-    public function getYear(): ?int
+    public function getYear(): int
     {
         return $this->year;
     }
@@ -110,7 +107,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
     /**
      * @param int $year
      */
-    public function setYear(?int $year): void
+    public function setYear(int $year): void
     {
         $this->year = $year;
     }
@@ -148,7 +145,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return FilmPayloadDTO[]
+     * @return array
      */
     public function getFilms(): ?array
     {
@@ -156,11 +153,10 @@ class SongPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @param FilmPayloadDTO[] $films
+     * @param array $films
      */
     public function setFilms(array $films): void
     {
         $this->films = $films;
     }
-
 }

@@ -8,24 +8,16 @@ namespace App\Component\DTO\Payload;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
 use App\Component\DTO\Nested\AttributeNestedDTO;
+use App\Component\Factory\DTOFactory;
+use App\Component\Hydrator\Strategy\NestedAttributeInCategory;
+use App\Component\Model\ModelConstants;
 use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\NotFoundController;
 
 /**
- *
- * @package App\Component\DTO
- * @ApiResource(
- *     shortName="category",
- *     collectionOperations={"get"},
- *     itemOperations={
- *         "get"={
- *             "controller"= NotFoundController::class,
- *             "read"=false,
- *             "output"=false,
- *         }
- *     }
- * )
+ * Class CategoryPayloadDTO
+ * @package App\Component\DTO\Payload
  */
 class CategoryPayloadDTO extends AbstractUniqueDTO
 {
@@ -38,7 +30,7 @@ class CategoryPayloadDTO extends AbstractUniqueDTO
     private $title;
 
     /** @var string */
-    private $description;
+    private $description = '';
 
     /** @var string */
     private $model;
@@ -76,8 +68,8 @@ class CategoryPayloadDTO extends AbstractUniqueDTO
 
         foreach ($attributes as $attribute)
         {
-            $attributeDTO = new AttributeNestedDTO();
-            $attributeDTO->hydrate(['attribute' => $attribute, 'model' => $model], $em);
+            $attributeDTO = DTOFactory::create(ModelConstants::ATTRIBUTE_NESTED_IN_CATEGORY_MODEL);
+            NestedAttributeInCategory::hydrate($attributeDTO, ['attribute' => $attribute, 'model' => $model], $em);
             $attributesList[] = $attributeDTO;
         }
 
@@ -105,7 +97,7 @@ class CategoryPayloadDTO extends AbstractUniqueDTO
     /**
      * @return string
      */
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }

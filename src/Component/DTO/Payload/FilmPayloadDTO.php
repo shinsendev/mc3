@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace App\Component\DTO\Payload;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
 use App\Component\DTO\Nested\PersonNestedDTO;
 
@@ -19,7 +18,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /** @var string */
     private $title;
 
-    /** @var string */
+    /** @var void|string */
     private $imdb;
 
     /** @var void|int */
@@ -97,7 +96,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     private $length;
 
     /** @var void|int */
-    private $globalNumbersLength = 0;
+    private $globalNumbersLength;
 
     /**
      * @return string
@@ -151,7 +150,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /**
      * @return string
      */
-    public function getImdb(): string
+    public function getImdb(): ?string
     {
         return $this->imdb;
     }
@@ -502,5 +501,6 @@ class FilmPayloadDTO extends AbstractUniqueDTO
 
     // timeline dataviz data
     // todo : add dataviz
+
 
 }
