@@ -8,7 +8,6 @@ use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
 use App\Component\DTO\Payload\AttributePayloadDTO;
 use App\Component\Factory\DTOFactory;
 use App\Component\Hydrator\Strategy\AttributePayloadHydrator;
-use App\Component\Hydrator\Strategy\NestedAttributeInCategory;
 use App\Component\Model\ModelConstants;
 use App\Entity\Attribute;
 use Doctrine\ORM\EntityManagerInterface;

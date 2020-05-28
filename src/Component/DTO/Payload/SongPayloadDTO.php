@@ -32,7 +32,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
     /** @var string */
     private $externalId;
 
-    /** @var NumberNestedDTO[] */
+    /** @var array */
     private $numbers;
 
     /** @var array */
@@ -70,7 +70,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
         $films = new Paginator($query, $fetchJoinCollection = true);
 
         foreach($films as $film) {
-            $filmPayload = DTOFactory::create(ModelConstants::FILM_PAYLOAD_MODEL);
+            $filmPayload = DTOFactory::create(ModelConstants::FILM_NESTED_DTO_MODEL);
             $filmPayload = NestedFilmInSongHydrator::hydrate($filmPayload, ['film' => $film], $em);
             $nestedFilmsListDTO[] = $filmPayload;
         }
@@ -129,7 +129,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return NumberNestedDTO[]
+     * @return array
      */
     public function getNumbers(): ?array
     {
@@ -137,7 +137,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @param NumberNestedDTO[] $numbers
+     * @param array $numbers
      */
     public function setNumbers(array $numbers): void
     {

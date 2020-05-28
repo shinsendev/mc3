@@ -31,16 +31,21 @@ class DTOFactory
     {
         $config = [
             ModelConstants::SONG_PAYLOAD_MODEL => new SongPayloadDTO(),
+
             ModelConstants::NUMBER_PAYLOAD_MODEL => new NumberPayloadDTO(),
             ModelConstants::NUMBER_NESTED_IN_FILM_DTO_MODEL => new NumberNestedInFilmDTO(),
+
             ModelConstants::FILM_PAYLOAD_MODEL => new FilmPayloadDTO(),
             ModelConstants::FILM_NESTED_DTO_MODEL => new FilmNestedDTO(),
+
             ModelConstants::ATTRIBUTE_PAYLOAD_MODEL => new AttributePayloadDTO(),
             ModelConstants::ATTRIBUTE_NESTED_IN_CATEGORY_MODEL => new AttributeNestedDTO(),
             ModelConstants::CATEGORY_PAYLOAD_MODEL => new CategoryPayloadDTO(),
+
             ModelConstants::PERSON_PAYLOAD_MODEL => new PersonPayloadDTO(),
-            ModelConstants::HOME_PAYLOAD_MODEL => new HomePayloadDTO(),
             ModelConstants::PERSON_NESTED_DTO_MODEL => new PersonNestedDTO(),
+
+            ModelConstants::HOME_PAYLOAD_MODEL => new HomePayloadDTO(),
         ];
 
         foreach ($config as $configEntityName => $entity) {

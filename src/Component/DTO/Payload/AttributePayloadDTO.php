@@ -36,7 +36,6 @@ class AttributePayloadDTO extends AbstractUniqueDTO
 
     /** @var void|array */
     private $elements;
-    
 
     /**
      * @return string

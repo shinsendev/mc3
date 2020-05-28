@@ -26,6 +26,7 @@ class NestedFilmInSongHydrator implements HydratorInterface
         /** @var FilmNestedDTO $dto */
         $dto->setTitle($film->getTitle());
         $dto->setUuid($film->getUuid());
+        $dto->setImdb($film->getImdb());
         if ($film->getReleasedYear()) {
             $dto->setReleasedYear($film->getReleasedYear());
         }
