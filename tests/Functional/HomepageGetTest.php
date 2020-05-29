@@ -12,6 +12,7 @@ class HomepageGetTest extends AbstractFunctionalTest
         $this->assertResponseIsSuccessful();
 
         $arrayResponse = $response->toArray();
+        $this->assertEquals($arrayResponse['filmsCount'], 2, 'Not the correct films count');
         //todo = add tests for performers, films with numbers and films count
     }
 }
