@@ -29,13 +29,13 @@ class AttributePayloadDTO extends AbstractUniqueDTO
     private $categoryUuid;
 
     /** @var void|string */
-    private $description;
+    private $description = '';
 
     /** @var void|string */
-    private $example;
+    private $example= '';
 
-    /** @var void|array */
-    private $elements;
+    /** @var array */
+    private $elements = [];
 
     /**
      * @return string
@@ -118,9 +118,9 @@ class AttributePayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return array|void
+     * @return array
      */
-    public function getElements()
+    public function getElements():array
     {
         return $this->elements;
     }
