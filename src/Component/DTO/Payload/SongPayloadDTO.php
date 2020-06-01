@@ -34,6 +34,12 @@ class SongPayloadDTO extends AbstractUniqueDTO
     /** @var array */
     private $songTypes = [];
 
+    /** @var array  */
+    private $lyricists = [];
+
+    /** @var array  */
+    private $composers = [];
+
     /**
      * @return string
      */
@@ -128,6 +134,38 @@ class SongPayloadDTO extends AbstractUniqueDTO
     public function setSongTypes(array $songTypes): void
     {
         $this->songTypes = $songTypes;
+    }
+
+    /**
+     * @return array
+     */
+    public function getLyricists(): array
+    {
+        return $this->lyricists;
+    }
+
+    /**
+     * @param array $lyricists
+     */
+    public function setLyricists(array $lyricists): void
+    {
+        $this->lyricists = $lyricists;
+    }
+
+    /**
+     * @return array
+     */
+    public function getComposers(): array
+    {
+        return $this->composers;
+    }
+
+    /**
+     * @param array $composers
+     */
+    public function setComposers(array $composers): void
+    {
+        $this->composers = $composers;
     }
 
 }

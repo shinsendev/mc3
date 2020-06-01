@@ -8,6 +8,7 @@ namespace App\Component\Hydrator\Helper;
 
 use App\Component\DTO\Nested\PersonNestedDTO;
 use App\Component\Factory\DTOFactory;
+use App\Component\Hydrator\Strategy\NestedPersonPayloadHydrator;
 use App\Component\Model\ModelConstants;
 use App\Entity\Definition\EntityInterface;
 use App\Entity\Work;
@@ -29,7 +30,7 @@ class PersonHelper
         foreach ($persons as $person) {
             /** @var PersonNestedDTO $personDTO */
             $personDTO = DTOFactory::create(ModelConstants::PERSON_NESTED_DTO_MODEL);
-            $personDTO->hydrate(['person' => $person], $em);
+            $personDTO = NestedPersonPayloadHydrator::hydrate($personDTO, ['person' => $person], $em );
             $personsDTO[] = $personDTO;
         }
 

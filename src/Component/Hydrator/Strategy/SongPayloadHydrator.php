@@ -8,6 +8,7 @@ use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Nested\AttributeNestedDTOinCategory;
 use App\Component\DTO\Nested\NumberNestedDTO;
 use App\Component\DTO\Nested\NumberNestedInFilmDTO;
+use App\Component\DTO\Nested\PersonNestedDTO;
 use App\Component\DTO\Payload\FilmPayloadDTO;
 use App\Component\DTO\Payload\SongPayloadDTO;
 use App\Component\Factory\DTOFactory;
@@ -82,6 +83,30 @@ class SongPayloadHydrator implements HydratorDTOInterface
 
         if (isset($nestedFilmsListDTO)) {
             $dto->setFilms($nestedFilmsListDTO);
+        }
+
+        // get lyricists
+        $persons = $em->getRepository(Work::class)->findPersonByTargetAndProfession(ModelConstants::SONG_MODEL, $song->getUuid(), 'lyricist');
+        foreach ($persons as $person) {
+            /** @var PersonNestedDTO $personPayload */
+            $nestedPersonDTO = DTOFactory::create(ModelConstants::PERSON_NESTED_DTO_MODEL);
+            $lyricists[] = NestedPersonPayloadHydrator::hydrate($nestedPersonDTO, ['person' => $person], $em);
+        }
+
+        if (isset($lyricists)) {
+            $dto->setLyricists($lyricists);
+        }
+
+        // get composers
+        $persons = $em->getRepository(Work::class)->findPersonByTargetAndProfession(ModelConstants::SONG_MODEL, $song->getUuid(), 'composer');
+        foreach ($persons as $person) {
+            /** @var PersonNestedDTO $personPayload */
+            $nestedPersonDTO = DTOFactory::create(ModelConstants::PERSON_NESTED_DTO_MODEL);
+            $composers[] = NestedPersonPayloadHydrator::hydrate($nestedPersonDTO, ['person' => $person], $em);
+        }
+
+        if (isset($composers)) {
+            $dto->setComposers($composers);
         }
 
         return $dto;

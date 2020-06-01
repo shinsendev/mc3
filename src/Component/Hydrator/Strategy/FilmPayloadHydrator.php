@@ -145,7 +145,7 @@ class FilmPayloadHydrator implements HydratorDTOInterface
             if ($performers) {
                 foreach ($performers as $performer) {
                     $personDTO = DTOFactory::create(ModelConstants::PERSON_NESTED_DTO_MODEL);
-                    $personDTO->hydrate(['person' => $performer], $em);
+                    $personDTO = NestedPersonPayloadHydrator::hydrate($personDTO, ['person' => $performer], $em );
                     $peformersList[] = $personDTO;
                 }
 

@@ -15,88 +15,24 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class PersonNestedDTO extends AbstractUniqueDTO
 {
-    /** @var void|string */
-    private $firstname;
-
-    /** @var void|string */
-    private $lastname;
-
-    /** @var void|string */
-    private $groupname;
-
-    /**
-     * @param array $data
-     * @param EntityManagerInterface $em
-     */
-    public function hydrate(array $data, EntityManagerInterface $em)
-    {
-        /** @var Person $person */
-        $person = $data['person'];
-
-        // if it's a group, no need to get first and last names
-        if ($person->getGroupname()) {
-            $this->setGroupname($this->getGroupname());
-        }
-
-        else {
-            if ($person->getFirstname()) {
-                $this->setFirstname($person->getFirstname());
-            }
-
-            if ($person->getLastname()) {
-                $this->setLastname($person->getLastname());
-            }
-        }
-
-        $this->setUuid($person->getUuid());
-    }
+    /** @var string */
+    private $fullname = '';
 
     /**
      * @return string
      */
-    public function getFirstname(): ?string
+    public function getFullname(): string
     {
-        return $this->firstname;
+        return $this->fullname;
     }
 
     /**
-     * @param string $firstname
+     * @param string $fullname
      */
-    public function setFirstname(string $firstname): void
+    public function setFullname(string $fullname): void
     {
-        $this->firstname = $firstname;
+        $this->fullname = $fullname;
     }
 
-    /**
-     * @return string
-     */
-    public function getLastname(): ?string
-    {
-        return $this->lastname;
-    }
-
-    /**
-     * @param string $lastname
-     */
-    public function setLastname(string $lastname): void
-    {
-        $this->lastname = $lastname;
-    }
-
-    /**
-     * @return string
-     */
-    public function getGroupname(): ?string
-    {
-        return $this->groupname;
-    }
-
-    /**
-     * @param string $groupname
-     */
-    public function setGroupname(string $groupname): void
-    {
-        $this->groupname = $groupname;
-    }
 
 }
