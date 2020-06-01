@@ -7,8 +7,7 @@ namespace App\Component\Factory;
 
 
 use App\Component\DTO\Definition\DTOInterface;
-use App\Component\DTO\Hierarchy\AbstractDTO;
-use App\Component\DTO\Nested\AttributeNestedDTO;
+use App\Component\DTO\Nested\AttributeNestedDTOinCategory;
 use App\Component\DTO\Nested\FilmNestedDTO;
 use App\Component\DTO\Nested\NumberNestedInFilmDTO;
 use App\Component\DTO\Nested\PersonNestedDTO;
@@ -39,8 +38,9 @@ class DTOFactory
             ModelConstants::FILM_NESTED_DTO_MODEL => new FilmNestedDTO(),
 
             ModelConstants::ATTRIBUTE_PAYLOAD_MODEL => new AttributePayloadDTO(),
-            ModelConstants::ATTRIBUTE_NESTED_IN_CATEGORY_MODEL => new AttributeNestedDTO(),
+            ModelConstants::ATTRIBUTE_NESTED_IN_CATEGORY_MODEL => new AttributeNestedDTOinCategory(),
             ModelConstants::CATEGORY_PAYLOAD_MODEL => new CategoryPayloadDTO(),
+            ModelConstants::ATTRIBUTE_NESTED_PAYLOAD => new AttributeNestedDTOinCategory(),
 
             ModelConstants::PERSON_PAYLOAD_MODEL => new PersonPayloadDTO(),
             ModelConstants::PERSON_NESTED_DTO_MODEL => new PersonNestedDTO(),

@@ -10,7 +10,7 @@ use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
  * Class AttributeNestedDTOinCategory
  * @package App\Component\DTO\Nested
  */
-class AttributeNestedDTO extends AbstractUniqueDTO
+class AttributeNestedDTOinCategory extends AbstractUniqueDTO
 {
     /** @var string */
     private $title;

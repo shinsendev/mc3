@@ -5,15 +5,7 @@ declare(strict_types=1);
 
 namespace App\Component\DTO\Payload;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
-use App\Component\DTO\Nested\AttributeNestedDTO;
-use App\Component\Factory\DTOFactory;
-use App\Component\Hydrator\Strategy\NestedAttributeInCategory;
-use App\Component\Model\ModelConstants;
-use App\Entity\Category;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Controller\NotFoundController;
 
 /**
  * Class CategoryPayloadDTO

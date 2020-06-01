@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Component\Hydrator\Strategy;
 
 use App\Component\DTO\Definition\DTOInterface;
+use App\Component\DTO\Nested\AttributeNestedDTOinCategory;
 use App\Component\DTO\Nested\NumberNestedDTO;
 use App\Component\DTO\Nested\NumberNestedInFilmDTO;
 use App\Component\DTO\Payload\FilmPayloadDTO;
@@ -47,9 +48,17 @@ class SongPayloadHydrator implements HydratorDTOInterface
         $dto->setExternalId($song->getExternalId());
         $dto->setUuid($song->getUuid());
 
-        // get song type
+        // get song type,all song attributes are song types
+        foreach ($data['song']->getAttributes() as $attribute) {
+            $nestedAttributeDTO = DTOFactory::create(ModelConstants::ATTRIBUTE_NESTED_PAYLOAD);
+            NestedAttribute::hydrate($nestedAttributeDTO, ['attribute' => $attribute], $em);
+            $attributesDTO[] = $nestedAttributeDTO;
+        }
 
-
+        if (isset($attributesDTO) && count($attributesDTO) > 0) {
+            $dto->setSongType($attributesDTO);
+        }
+        
         // get nested numbers
         foreach ($song->getNumbers() as $number) {
             $nestedNumberDTO = new NumberNestedDTO();

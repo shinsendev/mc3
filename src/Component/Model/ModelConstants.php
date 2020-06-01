@@ -11,6 +11,7 @@ class ModelConstants
     const ATTRIBUTE_MODEL = 'attribute';
     const ATTRIBUTE_PAYLOAD_MODEL = 'attributePayload';
     const ATTRIBUTE_NESTED_IN_CATEGORY_MODEL = 'attributeNestedInCategoryPayload';
+    const ATTRIBUTE_NESTED_PAYLOAD = 'attributeNestedPayload';
 
     const CATEGORY_MODEL = 'category';
     const CATEGORY_PAYLOAD_MODEL = 'categoryPayload';

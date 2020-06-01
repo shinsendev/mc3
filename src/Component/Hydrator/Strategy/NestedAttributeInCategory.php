@@ -7,7 +7,7 @@ namespace App\Component\Hydrator\Strategy;
 
 
 use App\Component\DTO\Definition\DTOInterface;
-use App\Component\DTO\Nested\AttributeNestedDTO;
+use App\Component\DTO\Nested\AttributeNestedDTOinCategory;
 use App\Component\DTO\Payload\CategoryPayloadDTO;
 use App\Component\Hydrator\Description\HydratorInterface;
 use App\Entity\Attribute;
@@ -18,12 +18,12 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class NestedAttributeInCategory implements HydratorInterface
 {
-    public static function hydrate(DTOInterface $dto, array $data, EntityManagerInterface $em):AttributeNestedDTO
+    public static function hydrate(DTOInterface $dto, array $data, EntityManagerInterface $em):AttributeNestedDTOinCategory
     {
         /** @var Attribute $attribute */
         $attribute = $data['attribute'];
 
-        /** @var AttributeNestedDTO $dto */
+        /** @var AttributeNestedDTOinCategory $dto */
         $dto->setTitle($attribute->getTitle());
         $uuid = $attribute->getUuid();
         $dto->setUuid($uuid); //e3c612ea-0575-46e9-a971-4498e85d8ff
