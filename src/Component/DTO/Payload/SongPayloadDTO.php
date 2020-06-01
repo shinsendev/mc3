@@ -32,7 +32,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
     private $films = [];
 
     /** @var array */
-    private $songType = [];
+    private $songTypes = [];
 
     /**
      * @return string
@@ -117,17 +117,17 @@ class SongPayloadDTO extends AbstractUniqueDTO
     /**
      * @return array
      */
-    public function getSongType(): array
+    public function getSongTypes(): array
     {
-        return $this->songType;
+        return $this->songTypes;
     }
 
     /**
-     * @param array $songType
+     * @param array $songTypes
      */
-    public function setSongType(array $songType): void
+    public function setSongTypes(array $songTypes): void
     {
-        $this->songType = $songType;
+        $this->songTypes = $songTypes;
     }
 
 }

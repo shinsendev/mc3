@@ -48,7 +48,7 @@ class SongPayloadHydrator implements HydratorDTOInterface
         $dto->setExternalId($song->getExternalId());
         $dto->setUuid($song->getUuid());
 
-        // get song type,all song attributes are song types
+        // get song type, song have only one attribute (songtype), that's why we don't need to filter
         foreach ($data['song']->getAttributes() as $attribute) {
             $nestedAttributeDTO = DTOFactory::create(ModelConstants::ATTRIBUTE_NESTED_PAYLOAD);
             NestedAttribute::hydrate($nestedAttributeDTO, ['attribute' => $attribute], $em);
@@ -56,9 +56,9 @@ class SongPayloadHydrator implements HydratorDTOInterface
         }
 
         if (isset($attributesDTO) && count($attributesDTO) > 0) {
-            $dto->setSongType($attributesDTO);
+            $dto->setSongTypes($attributesDTO);
         }
-        
+
         // get nested numbers
         foreach ($song->getNumbers() as $number) {
             $nestedNumberDTO = new NumberNestedDTO();
