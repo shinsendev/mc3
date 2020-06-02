@@ -15,6 +15,18 @@ class SongResourceGetTest extends AbstractFunctionalTest
         $arrayResponse = $response->toArray();
         $this->assertEquals($arrayResponse['title'], "It's a Grand Night for Singing");
         $this->assertEquals($arrayResponse['year'], 1919);
-        // todo : add a test for songtype
+
+        // test attribues connected to song (songtype)
+        $this->assertEquals(2, count($arrayResponse['songTypes']));
+        $this->assertEquals("Ragtime", $arrayResponse['songTypes'][0]['title']);
+
+        // test composers
+        //todo: when person is added
+
+        // test lyricists
+        //todo: when person is added
+
+        // test numbers
+        //todo: add numbers
     }
 }

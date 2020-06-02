@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\Entity\Attribute;
+use App\Entity\Category;
 use App\Entity\Song;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
 
-class SongFixtures extends Fixture
+class SongFixtures extends Fixture implements DependentFixtureInterface
 {
     /** @var Generator */
     protected $faker;
@@ -20,7 +23,7 @@ class SongFixtures extends Fixture
         $this->faker = Factory::create();
 
         for ($i = 0;  $i <7; $i++) {
-            $song = $this->generateSong();
+            $song = $this->generateSong($manager);
             $manager->persist($song);
         }
 
@@ -28,9 +31,10 @@ class SongFixtures extends Fixture
     }
 
     /**
+     * @param ObjectManager $manager
      * @return Song
      */
-    public function generateSong() :Song
+    public function generateSong(ObjectManager $manager) :Song
     {
         // add 7 songs
         $songTitlesList = ["It's a Grand Night for Singing", "A Pretty Girl Is Like a Melody", "I'm Hummin', I'm Whistlin', I'm Singin'", "Sing a Song of Sixpence", "Since They Turned Loch Lomond into Swing", "Sing, Sing, Sing", "Honestly Sincere"];
@@ -47,12 +51,33 @@ class SongFixtures extends Fixture
         $song->setUuid($uuidList[$index]);
 
         // add composers
+        // todo
 
         // add lyricists
+        // todo
+
+        // add numbers
+        // todo
 
         // add song type
+        $attributeRepository = $manager->getRepository(Attribute::class);
+        $songTypeAttributes = $attributeRepository->findAttributesByCategory('songtype');
+
+        foreach ($songTypeAttributes as $attribute) {
+            $song->addAttribute($attribute);
+        }
 
         return $song;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDependencies():array
+    {
+        return array(
+            AttributeFixtures::class,
+        );
     }
 
 }

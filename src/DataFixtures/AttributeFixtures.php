@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
-use App\Component\Error\Mc3Error;
 use App\Entity\Attribute;
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
@@ -28,14 +27,24 @@ class AttributeFixtures extends Fixture implements DependentFixtureInterface
 
         // generic attributes
         for ($i = 0; $i < 5; $i++) {
-            $attribute = $this->generateAttribute($i, $manager);
+            $attribute = $this->generateGenericAttribute($i, $manager);
             $manager->persist($attribute);
         }
 
-        // song attributes
-        $ragtime = $this->normalize("Ragtime", "\"coon song\"", "", "629981fd-7a22-433d-8c6c-8d9aac40d815")
+        // add songtype category
+        $categoryRepository = $manager->getRepository(Category::class);
+        $songType = $categoryRepository->findOneByUuid("55a40d04-420e-4ff8-8243-e874cf49db29");
 
-        $this->generateSongsAttributes($ragtime);
+        // song attributes
+        $ragtime = $this->normalize("Ragtime", "629981fd-7a22-433d-8c6c-8d9aac40d815","\"coon song\"", "");
+        $ragtime = $this->generateAttribute($ragtime);
+        $ragtime->setCategory($songType);
+        $manager->persist($ragtime);
+
+        $dance = $this->normalize("Dance", "fef46840-194a-4987-ae29-aea2faae9ee8","Lyric is about dancing or dance instruction", "");
+        $dance = $this->generateAttribute($dance);
+        $dance->setCategory($songType);
+        $manager->persist($dance);
 
         $manager->flush();
     }
@@ -45,7 +54,7 @@ class AttributeFixtures extends Fixture implements DependentFixtureInterface
      * @param ObjectManager $manager
      * @return Attribute
      */
-    public function generateAttribute(int $i, ObjectManager $manager): Attribute
+    public function generateGenericAttribute(int $i, ObjectManager $manager): Attribute
     {
         $titles = ["dialogue", "lyrics-unsignificant", "narrative-minor problem", "asian", "savage"];
         $descriptions = ["", "", "", "Generally asian but no specific country or area is identifiable", "Any type of number involving savage and wild dances but without a specific location (could be African, Haitian...)"];
@@ -61,6 +70,7 @@ class AttributeFixtures extends Fixture implements DependentFixtureInterface
         /** @var CategoryRepository $categoryRepository */
         $categoryRepository = $manager->getRepository(Category::class);
         // censorship category
+
         if ($i < 3) {
             /** @var Category $category */
             $category = $categoryRepository->findOneByUuid("0b16d192-976b-477b-9bcd-24df71564b0b");
@@ -76,29 +86,49 @@ class AttributeFixtures extends Fixture implements DependentFixtureInterface
         return $attribute;
     }
 
-    public function generateSongsAttributes($data)
+    /**
+     * @param array $data
+     * @return Attribute
+     */
+    public function generateAttribute(array $data):Attribute
     {
-        
+        $attribute = new Attribute();
+        $attribute->setTitle($data['title']);
+
+        if ($data['description']) {
+            $attribute->setDescription($data['description']);
+        }
+
+        if ($data['example']) {
+            $attribute->setExample($data['example']);
+        }
+
+        $attribute->setUuid($data['uuid']);
+
+        return $attribute;
     }
 
     /**
      * @param string $title
      * @param string $uuid
      * @param string $description
-     * @param string $examples
+     * @param string $example
      * @return array
      */
-    public function normalize(string $title, string $uuid, string $description = '', string $examples = ''):array
+    public function normalize(string $title, string $uuid, string $description = '', string $example = ''):array
     {
         return [
             "title" => $title,
             "description" => $description,
-            "examples" => $examples,
+            "example" => $example,
             "uuid" =>  $uuid
         ];
     }
 
-    public function getDependencies()
+    /**
+     * @return string[]
+     */
+    public function getDependencies():array
     {
         return array(
             CategoryFixtures::class,

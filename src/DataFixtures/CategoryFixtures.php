@@ -20,18 +20,48 @@ class CategoryFixtures extends Fixture
         $this->faker = Factory::create();
 
         for ($i = 0; $i < 3; $i++) {
-            $category = $this->generateCategory($i);
+            $category = $this->generateGenericCategory($i);
             $manager->persist($category);
         }
 
+        // add song type category for songs
+        $songType = $this->generateCategory($this->normalize('Song Type', '55a40d04-420e-4ff8-8243-e874cf49db29', '', 'songtype', 'song'));
+        $manager->persist($songType);
+
         $manager->flush();
+    }
+
+    /**
+     * @param array $data
+     * @return Category
+     */
+    public function generateCategory(array $data):Category
+    {
+        $category = new Category();
+        $category->setTitle($data['title']);
+
+        if ($data['description']) {
+            $category->setDescription($data['description']);
+        }
+
+        if ($data['code']) {
+            $category->setCode($data['code']);
+        }
+
+        if ($data['model']) {
+            $category->setModel($data['model']);
+        }
+
+        $category->setUuid($data['uuid']);
+
+        return $category;
     }
 
     /**
      * @param int $i
      * @return Category
      */
-    public function generateCategory(int $i): Category
+    public function generateGenericCategory(int $i): Category
     {
 
         $titles = ["Ethnic stereotypes", "Exoticism", "censorship"];
@@ -48,5 +78,30 @@ class CategoryFixtures extends Fixture
         $category->setUuid($uuids[$i]);
 
         return $category;
+    }
+
+    /**
+     * @param string $title
+     * @param string $uuid
+     * @param string $description
+     * @param string $code
+     * @param string $model
+     * @return array|string[]
+     */
+    public function normalize(
+        string $title,
+        string $uuid,
+        string $description = '',
+        string $code = '',
+        string $model = ''
+    ):array
+    {
+        return [
+            "title" => $title,
+            "description" => $description,
+            "code" => $code,
+            "model" => $model,
+            "uuid" =>  $uuid
+        ];
     }
 }
