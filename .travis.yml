@@ -32,7 +32,7 @@ matrix:
         - php: 7.4
 
 before_install:
-    -  cp $HOME/.env.dist $HOME/.env
+    -  cp .env.dist .env
     - '[[ "$TRAVIS_PHP_VERSION" == "7.4snapshot" ]] || phpenv config-rm xdebug.ini'
     - composer self-update
     # Set memory to max (memory fail)
