@@ -7,7 +7,6 @@ addons:
     postgresql: "12.1"
 
 before_script:
-#    - php bin/console doctrine:database:create --env=test
     - php bin/console doctrine:schema:update --force --env=test
 
 cache:
