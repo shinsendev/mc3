@@ -6,7 +6,7 @@ namespace App\Tests\Functional;
 
 class HomepageGetTest extends AbstractFunctionalTest
 {
-    public function testGetSong()
+    public function testGetHomepage()
     {
         $response = $this->client->request('GET', '/');
         $this->assertResponseIsSuccessful();

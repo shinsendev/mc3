@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\Component\Error\Mc3Error;
 use App\Entity\Attribute;
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
@@ -18,14 +19,23 @@ class AttributeFixtures extends Fixture implements DependentFixtureInterface
     /** @var Generator */
     protected $faker;
 
+    /**
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         $this->faker = Factory::create();
 
+        // generic attributes
         for ($i = 0; $i < 5; $i++) {
-            $song = $this->generateAttribute($i, $manager);
-            $manager->persist($song);
+            $attribute = $this->generateAttribute($i, $manager);
+            $manager->persist($attribute);
         }
+
+        // song attributes
+        $ragtime = $this->normalize("Ragtime", "\"coon song\"", "", "629981fd-7a22-433d-8c6c-8d9aac40d815")
+
+        $this->generateSongsAttributes($ragtime);
 
         $manager->flush();
     }
@@ -64,6 +74,28 @@ class AttributeFixtures extends Fixture implements DependentFixtureInterface
         $attribute->setCategory($category);
 
         return $attribute;
+    }
+
+    public function generateSongsAttributes($data)
+    {
+        
+    }
+
+    /**
+     * @param string $title
+     * @param string $uuid
+     * @param string $description
+     * @param string $examples
+     * @return array
+     */
+    public function normalize(string $title, string $uuid, string $description = '', string $examples = ''):array
+    {
+        return [
+            "title" => $title,
+            "description" => $description,
+            "examples" => $examples,
+            "uuid" =>  $uuid
+        ];
     }
 
     public function getDependencies()
