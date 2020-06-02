@@ -7,8 +7,8 @@ addons:
     postgresql: "12.1"
 
 before_script:
-#    - psql -c 'create database travis_ci_test;' -U postgres
-    - php bin/console doctrine:database:create --env=test
+    - psql -c 'create database mc3;' -U postgres
+#    - php bin/console doctrine:database:create --env=test
     - php bin/console doctrine:schema:update --force --env=test
 
 cache:
