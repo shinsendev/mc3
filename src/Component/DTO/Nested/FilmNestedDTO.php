@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\Component\DTO\Nested;
 
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
@@ -18,22 +17,10 @@ class FilmNestedDTO extends AbstractUniqueDTO
     private $title;
 
     /** @var int|void */
-    private $released;
+    private $releasedYear;
 
-
-    /**
-     * @param array $data
-     * @param EntityManagerInterface $em
-     */
-    public function hydrate(array $data, EntityManagerInterface $em):void
-    {
-        $film = $data['film'];
-        $this->setTitle($film['title']);
-        $this->setUuid($film['uuid']);
-        if (isset($data['released'])) {
-            $this->setReleased($data['released']);
-        }
-    }
+    /** @var int|void */
+    private $imdb;
 
     /**
      * @return mixed
@@ -54,17 +41,33 @@ class FilmNestedDTO extends AbstractUniqueDTO
     /**
      * @return int|void
      */
-    public function getReleased()
+    public function getReleasedYear()
     {
-        return $this->released;
+        return $this->releasedYear;
     }
 
     /**
-     * @param int|void $released
+     * @param int|void $releasedYear
      */
-    public function setReleased($released): void
+    public function setReleasedYear($releasedYear): void
     {
-        $this->released = $released;
+        $this->releasedYear = $releasedYear;
+    }
+
+    /**
+     * @return int|void
+     */
+    public function getImdb()
+    {
+        return $this->imdb;
+    }
+
+    /**
+     * @param int|void $imdb
+     */
+    public function setImdb($imdb): void
+    {
+        $this->imdb = $imdb;
     }
 
 }

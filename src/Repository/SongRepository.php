@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Song;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
 
 /**
  * @method Song|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,6 +15,10 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class SongRepository extends ServiceEntityRepository
 {
+    /**
+     * SongRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Song::class);
@@ -21,20 +26,24 @@ class SongRepository extends ServiceEntityRepository
 
     /**
      * @param $uuid
-     * @return int|mixed|string
+     * @param int $first
+     * @param int $max
+     * @return \Doctrine\ORM\Query
      */
-    public function getFilms($uuid)
+    public function getFilmsQuery($uuid, $first = 0, $max = 100): Query
     {
-        $query = $this->getEntityManager()->createQuery('
-            SELECT DISTINCT f.title, f.uuid FROM App\Entity\Song s 
-                INNER JOIN s.numbers n
-                INNER JOIN n.film f
+        return $this->getEntityManager()->createQuery('
+            SELECT f FROM App\Entity\Film f
+                INNER JOIN f.numbers n
+                INNER JOIN n.songs s
             WHERE s.uuid = :uuid
-        ');
-        $query->setParameters([
+            GROUP BY f.id
+        ')
+            ->setParameters([
             'uuid' => $uuid
-        ]);
-        return $query->getResult();
+        ])
+            ->setFirstResult($first)
+            ->setMaxResults($max);
     }
 
     /**

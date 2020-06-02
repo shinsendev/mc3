@@ -3,7 +3,7 @@ api_platform:
     title: 'MC3 API'
 
     # The description of the API.
-    description: 'MC3 API : MC3 is reseach project studying the hollywood musicals'
+    description: 'Research project studying hollywood musicals'
 
     # The version of the API.
     version: '0.0.1'
@@ -12,7 +12,8 @@ api_platform:
     show_webby: false
 
     mapping:
-        paths: ['%kernel.project_dir%/src/Component/DTO']
+        paths: ['%kernel.project_dir%/src/Entity']
+#        paths: ['%kernel.project_dir%/src/Component/DTO']
     patch_formats:
         json: ['application/merge-patch+json']
     swagger:

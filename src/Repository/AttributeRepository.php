@@ -19,4 +19,16 @@ class AttributeRepository extends ServiceEntityRepository
         parent::__construct($registry, Attribute::class);
     }
 
+    /**
+     * @param string $code
+     * @return int|mixed|string
+     */
+    public function findAttributesByCategory(string $code)
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT a FROM App\Entity\Attribute a JOIN a.category c WHERE c.code = :code 
+        ')->setParameters(['code' => $code]);
+        return $query->getResult();
+    }
+
 }

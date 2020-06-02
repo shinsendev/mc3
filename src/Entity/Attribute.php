@@ -2,10 +2,15 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Heredity\AbstractTarget;
 use Doctrine\ORM\Mapping as ORM;
+use App\Component\DTO\Payload\AttributePayloadDTO;
 
 /**
+ * @ApiResource(
+ *     output=AttributePayloadDTO::class
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\AttributeRepository")
  */
 class Attribute extends AbstractTarget

@@ -36,19 +36,15 @@ class SongItemDataProvider implements ItemDataProviderInterface, RestrictedDataP
      * @param array|int|string $uuid
      * @param string|null $operationName
      * @param array $context
-     * @return SongPayloadDTO|null
+     * @return Song
      */
-    public function getItem(string $resourceClass, $uuid, string $operationName = null, array $context = []) :?SongPayloadDTO
+    public function getItem(string $resourceClass, $uuid, string $operationName = null, array $context = []) :Song
     {
         if (!$song = $this->em->getRepository(Song::class)->findOneByUuid($uuid)) {
             throw new NotFoundHttpException("No song found with uuid " . $uuid);
         }
 
-        /** @var SongPayloadDTO  */
-        $songDTO = new SongPayloadDTO();
-        $songDTO->hydrate(['song' => $song], $this->em);
-
-        return $songDTO;
+        return $song;
     }
 
     /**
@@ -59,7 +55,7 @@ class SongItemDataProvider implements ItemDataProviderInterface, RestrictedDataP
      */
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
     {
-        return SongPayloadDTO::class === $resourceClass;
+        return Song::class === $resourceClass;
     }
 
 }

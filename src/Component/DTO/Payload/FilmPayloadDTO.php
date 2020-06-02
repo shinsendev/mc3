@@ -5,16 +5,12 @@ declare(strict_types=1);
 
 namespace App\Component\DTO\Payload;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
 use App\Component\DTO\Nested\PersonNestedDTO;
 
 /**
- * Class NarrativeDTO
- * @package App\Component\DTO
- * @ApiResource(
- *     shortName="film"
- * )
+ * Class FilmPayloadDTO
+ *
  */
 class FilmPayloadDTO extends AbstractUniqueDTO
 {
@@ -22,14 +18,14 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /** @var string */
     private $title;
 
+    /** @var void|string */
+    private $imdb;
+
     /** @var void|int */
     private $productionYear;
 
     /** @var void|int */
     private $releasedYear;
-
-    /** @var string */
-    private $imdb;
 
     /** @var void|string */
     private $viaf;
@@ -72,35 +68,35 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     private $board;
 
     // numbers linked to the film
-    /** @var array */
+    /** @var void|array */
     private  $numbers;
 
     // persons
-    /** @var PersonNestedDTO[] */
+    /** @var void|PersonNestedDTO[] */
     private $directors;
 
     // studios
-    /** @var array */
+    /** @var void|array */
     private $studios;
 
     // stats
-    /** @var int */
-    private $numberRatio = 0;
+    /** @var void|int */
+    private $numberRatio;
 
-    /** @var int */
-    private $averageNumberLength = 0;
+    /** @var void|int */
+    private $averageNumberLength;
 
-    /** @var int */
-    private $globalAverageNumberLength = 0;
+    /** @var void|int */
+    private $globalAverageNumberLength;
 
-    /** @var int */
-    private $numbersLength = 0;
+    /** @var void|int */
+    private $numbersLength;
 
-    /** @var int */
-    private $length = 0;
+    /** @var void|int */
+    private $length;
 
-    /** @var int */
-    private $globalNumbersLength = 0;
+    /** @var void|int */
+    private $globalNumbersLength;
 
     /**
      * @return string
@@ -121,7 +117,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /**
      * @return int|void
      */
-    public function getProductionYear()
+    public function getProductionYear(): ?int
     {
         return $this->productionYear;
     }
@@ -133,6 +129,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     {
         $this->productionYear = $productionYear;
     }
+
 
     /**
      * @return int|void
@@ -153,7 +150,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /**
      * @return string
      */
-    public function getImdb(): string
+    public function getImdb(): ?string
     {
         return $this->imdb;
     }
@@ -297,7 +294,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /**
      * @return PersonNestedDTO[]
      */
-    public function getDirectors(): array
+    public function getDirectors(): ?array
     {
         return $this->directors;
     }
@@ -329,7 +326,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /**
      * @return int
      */
-    public function getNumberRatio(): int
+    public function getNumberRatio(): ?int
     {
         return $this->numberRatio;
     }
@@ -345,7 +342,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /**
      * @return int
      */
-    public function getAverageNumberLength(): int
+    public function getAverageNumberLength(): ?int
     {
         return $this->averageNumberLength;
     }
@@ -361,7 +358,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /**
      * @return int
      */
-    public function getGlobalAverageNumberLength(): int
+    public function getGlobalAverageNumberLength(): ?int
     {
         return $this->globalAverageNumberLength;
     }
@@ -377,7 +374,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /**
      * @return int
      */
-    public function getNumbersLength(): int
+    public function getNumbersLength(): ?int
     {
         return $this->numbersLength;
     }
@@ -393,7 +390,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /**
      * @return int
      */
-    public function getLength(): int
+    public function getLength(): ?int
     {
         return $this->length;
     }
@@ -409,7 +406,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /**
      * @return int
      */
-    public function getGlobalNumbersLength(): int
+    public function getGlobalNumbersLength(): ?int
     {
         return $this->globalNumbersLength;
     }
@@ -504,5 +501,6 @@ class FilmPayloadDTO extends AbstractUniqueDTO
 
     // timeline dataviz data
     // todo : add dataviz
+
 
 }

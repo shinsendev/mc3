@@ -2,24 +2,23 @@
 
 declare(strict_types=1);
 
+
 namespace App\Component\DataProvider;
+
 
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use App\Component\DTO\Payload\AttributePayloadDTO;
-use App\Component\Factory\DTOFactory;
-use App\Component\Model\ModelConstants;
 use App\Entity\Attribute;
 use Doctrine\ORM\EntityManagerInterface;
+use Entity\Category;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class AttributeItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
+class CategoryItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
 {
     /** @var EntityManagerInterface  */
     private $em;
 
     /**
-     * SongItemDataProvider constructor.
      * @param EntityManagerInterface $em
      */
     public function __construct(EntityManagerInterface $em)
@@ -29,15 +28,15 @@ class AttributeItemDataProvider implements ItemDataProviderInterface, Restricted
 
     public function getItem(string $resourceClass, $uuid, string $operationName = null, array $context = []) :Attribute
     {
-        if (!$attribute = $this->em->getRepository(Attribute::class)->findOneByUuid($uuid)) {
-            throw new NotFoundHttpException("No attribute found with uuid " . $uuid);
+        if (!$category = $this->em->getRepository(Category::class)->findOneByUuid($uuid)) {
+            throw new NotFoundHttpException("No category found with uuid " . $uuid);
         }
 
-        return $attribute;
+        return $category;
     }
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
     {
-        return Attribute::class === $resourceClass;
+        return Category::class === $resourceClass;
     }
 }

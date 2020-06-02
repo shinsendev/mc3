@@ -6,10 +6,6 @@ namespace App\Component\DTO\Payload;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
-use App\Component\DTO\Nested\FilmNestedDTO;
-use App\Component\DTO\Nested\NumberNestedDTO;
-use App\Entity\Song;
-use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class NarrativeDTO
@@ -24,52 +20,25 @@ class SongPayloadDTO extends AbstractUniqueDTO
     private $title;
 
     /** @var integer */
-    private $year;
+    private $year = 0;
 
     /** @var string */
     private $externalId;
 
-    /** @var NumberNestedDTO[] */
-    private $numbers;
+    /** @var array */
+    private $numbers = [];
 
-    /** @var FilmNestedDTO[] */
-    private $films;
+    /** @var array */
+    private $films = [];
 
-    /**
-     * @param array $data
-     */
-    public function hydrate(array $data, EntityManagerInterface $em):void
-    {
-        $song = $data['song'];
-        $this->setTitle($song->getTitle());
-        $this->setYear($song->getYear());
-        $this->setExternalId($song->getExternalId());
-        $this->setUuid($song->getUuid());
+    /** @var array */
+    private $songTypes = [];
 
-        // get nested numbers
-        foreach ($song->getNumbers() as $number) {
-            $nestedNumberDTO = new NumberNestedDTO();
-            $nestedNumberDTO->hydrate(['number' => $number], $em);
-            $nestedNumbersListDTO[] = $nestedNumberDTO;
-        }
+    /** @var array  */
+    private $lyricists = [];
 
-        if (isset($nestedNumbersListDTO)) {
-            $this->setNumbers($nestedNumbersListDTO);
-        }
-
-        // get nested films (films deduced by numbers linked to song)
-        $films = $em->getRepository(Song::class)->getFilms($song->getUuid());
-
-        foreach($films as $film) {
-            $nestedFilmDTO = new FilmNestedDTO();
-            $nestedFilmDTO->hydrate(['film' => $film], $em);
-            $nestedFilmsListDTO[] = $nestedFilmDTO;
-        }
-
-        if (isset($nestedFilmsListDTO)) {
-            $this->setFilms($nestedFilmsListDTO);
-        }
-    }
+    /** @var array  */
+    private $composers = [];
 
     /**
      * @return string
@@ -90,7 +59,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
     /**
      * @return int
      */
-    public function getYear(): ?int
+    public function getYear(): int
     {
         return $this->year;
     }
@@ -98,7 +67,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
     /**
      * @param int $year
      */
-    public function setYear(?int $year): void
+    public function setYear(int $year): void
     {
         $this->year = $year;
     }
@@ -120,7 +89,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return NumberNestedDTO[]
+     * @return array
      */
     public function getNumbers(): ?array
     {
@@ -128,7 +97,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @param NumberNestedDTO[] $numbers
+     * @param array $numbers
      */
     public function setNumbers(array $numbers): void
     {
@@ -136,7 +105,7 @@ class SongPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return FilmNestedDTO[]
+     * @return array
      */
     public function getFilms(): ?array
     {
@@ -144,11 +113,59 @@ class SongPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @param FilmNestedDTO[] $films
+     * @param array $films
      */
     public function setFilms(array $films): void
     {
         $this->films = $films;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSongTypes(): array
+    {
+        return $this->songTypes;
+    }
+
+    /**
+     * @param array $songTypes
+     */
+    public function setSongTypes(array $songTypes): void
+    {
+        $this->songTypes = $songTypes;
+    }
+
+    /**
+     * @return array
+     */
+    public function getLyricists(): array
+    {
+        return $this->lyricists;
+    }
+
+    /**
+     * @param array $lyricists
+     */
+    public function setLyricists(array $lyricists): void
+    {
+        $this->lyricists = $lyricists;
+    }
+
+    /**
+     * @return array
+     */
+    public function getComposers(): array
+    {
+        return $this->composers;
+    }
+
+    /**
+     * @param array $composers
+     */
+    public function setComposers(array $composers): void
+    {
+        $this->composers = $composers;
     }
 
 }

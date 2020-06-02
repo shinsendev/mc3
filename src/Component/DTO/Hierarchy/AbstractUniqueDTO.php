@@ -13,7 +13,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 abstract class AbstractUniqueDTO extends AbstractDTO
 {
     /**
-     * @ApiProperty(identifier=true)
+     * @var string
      */
     protected $uuid;
 

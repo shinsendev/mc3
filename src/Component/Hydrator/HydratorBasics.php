@@ -8,9 +8,19 @@ use App\Component\DTO\Definition\DTOInterface;
 use App\Component\Error\Mc3Error;
 use App\Entity\Definition\EntityInterface;
 
+/**
+ * Class HydratorBasics
+ * @package App\Component\Hydrator
+ */
 class HydratorBasics
 {
-    public static function hydrateDTOBase(DTOInterface $dto, array $data, array $params = [])
+    /**
+     * @param DTOInterface $dto
+     * @param array $data
+     * @param array $params
+     * @return DTOInterface
+     */
+    public static function hydrateDTOBase(DTOInterface $dto, array $data, array $params = []):DTOInterface
     {
         if (isset($params['excludes'])) {
             $excludes = $params['excludes'];
@@ -87,7 +97,7 @@ class HydratorBasics
                 $getter = 'get'.ucfirst($property->getName());
                 $setter = 'set'.ucfirst($property->getName());
                 $dto->$setter($entity->$getter());
-                array_splice($propertiesList, $index, 1);
+                unset($propertiesList[$index]);
             }
         }
 

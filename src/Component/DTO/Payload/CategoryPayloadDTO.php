@@ -5,27 +5,11 @@ declare(strict_types=1);
 
 namespace App\Component\DTO\Payload;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
-use App\Component\DTO\Nested\AttributeNestedDTO;
-use App\Entity\Category;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Controller\NotFoundController;
 
 /**
- *
- * @package App\Component\DTO
- * @ApiResource(
- *     shortName="category",
- *     collectionOperations={"get"},
- *     itemOperations={
- *         "get"={
- *             "controller"= NotFoundController::class,
- *             "read"=false,
- *             "output"=false,
- *         }
- *     }
- * )
+ * Class CategoryPayloadDTO
+ * @package App\Component\DTO\Payload
  */
 class CategoryPayloadDTO extends AbstractUniqueDTO
 {
@@ -38,7 +22,7 @@ class CategoryPayloadDTO extends AbstractUniqueDTO
     private $title;
 
     /** @var string */
-    private $description;
+    private $description = '';
 
     /** @var string */
     private $model;
@@ -48,43 +32,6 @@ class CategoryPayloadDTO extends AbstractUniqueDTO
 
     /** @var int */
     private $attributesCount;
-
-    public function hydrate(array $data, EntityManagerInterface $em):void
-    {
-        /** @var Category $category */
-        $category = $data['category'];
-        $this->setTitle($category->getTitle());
-        $this->setUuid($category->getUuid());
-
-        // catch empty models
-        if ($category->getModel()) {
-            $model = $category->getModel();
-        }
-        else {
-            $model = self::CURRENT_MODEL;
-        }
-        $this->setModel($model);
-
-        // optional params
-        if ($category->getDescription()) {
-            $this->setDescription($category->getDescription());
-        }
-
-        // add nested attributes DTO
-        $attributes = $category->getAttributes();
-        $this->setAttributesCount(count($attributes));
-
-        foreach ($attributes as $attribute)
-        {
-            $attributeDTO = new AttributeNestedDTO();
-            $attributeDTO->hydrate(['attribute' => $attribute, 'model' => $model], $em);
-            $attributesList[] = $attributeDTO;
-        }
-
-        if (isset($attributesList)) {
-            $this->setAttributes($attributesList);
-        }
-    }
 
     /**
      * @return string
@@ -105,7 +52,7 @@ class CategoryPayloadDTO extends AbstractUniqueDTO
     /**
      * @return string
      */
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
