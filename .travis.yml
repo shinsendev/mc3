@@ -27,12 +27,10 @@ matrix:
     fast_finish: true
     include:
         - php: 7.3
-#          env: SYMFONY="5.0.*"
-#              ACTION="update"
         - php: 7.4
 
 before_install:
-    -  cp .env.dist .env
+    -  cp .env.travis .env
     - '[[ "$TRAVIS_PHP_VERSION" == "7.4snapshot" ]] || phpenv config-rm xdebug.ini'
     - composer self-update
     # Set memory to max (memory fail)
