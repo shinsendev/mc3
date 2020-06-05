@@ -17,15 +17,11 @@ class ElementNestedDTO extends AbstractUniqueDTO
     /** @var string */
     private $title;
 
-    /** @var string */
-    private $model;
-
     public function hydrate(array $data, EntityManagerInterface $em)
     {
         $element = $data['element'];
         $this->setTitle($element['title']);
         $this->setUuid($element['uuid']);
-        $this->setModel($element['model']);
     }
 
     /**
@@ -42,22 +38,6 @@ class ElementNestedDTO extends AbstractUniqueDTO
     public function setTitle(string $title): void
     {
         $this->title = $title;
-    }
-
-    /**
-     * @return string
-     */
-    public function getModel(): string
-    {
-        return $this->model;
-    }
-
-    /**
-     * @param string $model
-     */
-    public function setModel(string $model): void
-    {
-        $this->model = $model;
     }
 
 }

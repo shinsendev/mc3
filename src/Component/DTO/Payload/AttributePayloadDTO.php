@@ -37,6 +37,9 @@ class AttributePayloadDTO extends AbstractUniqueDTO
     /** @var array */
     private $elements = [];
 
+    /** @var string */
+    private $model = ''; // model type of the element linked to this attribute : number, song, film
+
     /**
      * @return string
      */
@@ -131,6 +134,22 @@ class AttributePayloadDTO extends AbstractUniqueDTO
     public function setElements($elements): void
     {
         $this->elements = $elements;
+    }
+
+    /**
+     * @return string
+     */
+    public function getModel(): string
+    {
+        return $this->model;
+    }
+
+    /**
+     * @param string $model
+     */
+    public function setModel(string $model): void
+    {
+        $this->model = $model;
     }
 
 }
