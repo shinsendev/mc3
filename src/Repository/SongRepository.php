@@ -69,7 +69,7 @@ class SongRepository extends ServiceEntityRepository
     public function getAttributes(int $attributeUuid):?array
     {
         $query = $this->getEntityManager()->createQuery('
-            SELECT DISTINCT s.title, s.uuid FROM App\Entity\Song s
+            SELECT DISTINCT s.title, s.uuid, \'song\' as model FROM App\Entity\Song s
                 INNER JOIN s.attributes a
             WHERE a.uuid = :uuid
         ');

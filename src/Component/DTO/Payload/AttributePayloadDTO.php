@@ -28,14 +28,17 @@ class AttributePayloadDTO extends AbstractUniqueDTO
     /** @var string */
     private $categoryUuid;
 
-    /** @var void|string */
+    /** @var string */
     private $description = '';
 
-    /** @var void|string */
+    /** @var string */
     private $example= '';
 
     /** @var array */
     private $elements = [];
+
+    /** @var string */
+    private $model = ''; // model type of the element linked to this attribute : number, song, film
 
     /**
      * @return string
@@ -86,7 +89,7 @@ class AttributePayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return string|void
+     * @return string
      */
     public function getDescription()
     {
@@ -94,7 +97,7 @@ class AttributePayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @param string|void $description
+     * @param string $description
      */
     public function setDescription($description): void
     {
@@ -102,7 +105,7 @@ class AttributePayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return string|void
+     * @return string
      */
     public function getExample()
     {
@@ -110,7 +113,7 @@ class AttributePayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @param string|void $example
+     * @param string $example
      */
     public function setExample($example): void
     {
@@ -131,6 +134,22 @@ class AttributePayloadDTO extends AbstractUniqueDTO
     public function setElements($elements): void
     {
         $this->elements = $elements;
+    }
+
+    /**
+     * @return string
+     */
+    public function getModel(): string
+    {
+        return $this->model;
+    }
+
+    /**
+     * @param string $model
+     */
+    public function setModel(string $model): void
+    {
+        $this->model = $model;
     }
 
 }

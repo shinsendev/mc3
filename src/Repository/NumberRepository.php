@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Component\Model\ModelConstants;
 use App\Entity\Number;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -40,18 +41,19 @@ class NumberRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $attributeUuid
+     * @param string $attributeUuid
      * @return array|null
      */
-    public function getAttributes(int $attributeUuid):?array
+    public function getAttributes(string $attributeUuid):?array
     {
         $query = $this->getEntityManager()->createQuery('
-            SELECT DISTINCT n.title, n.uuid FROM App\Entity\Number n
-                INNER JOIN f.attributes a
+            SELECT n.title, n.uuid, \'number\' as model FROM App\Entity\Number n
+                INNER JOIN n.attributes a
             WHERE a.uuid = :uuid
+            GROUP BY n.title, n.uuid
         ');
         $query->setParameters([
-            'uuid' => $attributeUuid
+            'uuid' => $attributeUuid,
         ]);
 
         return $query->getResult();

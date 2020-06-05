@@ -7,7 +7,9 @@ namespace App\Component\Hydrator\Strategy;
 use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Nested\ElementNestedDTO;
 use App\Component\DTO\Payload\CategoryPayloadDTO;
+use App\Component\Factory\DTOFactory;
 use App\Component\Hydrator\Description\HydratorDTOInterface;
+use App\Component\Model\ModelConstants;
 use App\Entity\Attribute;
 use App\Entity\Film;
 use App\Entity\Number;
@@ -42,14 +44,17 @@ class AttributePayloadHydrator implements HydratorDTOInterface
                 case CategoryPayloadDTO::MODEL_NUMBER:
                     // select all numbers with this attribute
                     $elements = $em->getRepository(Number::class)->getAttributes($attributeUuid);
+                    $dto->setModel(CategoryPayloadDTO::MODEL_NUMBER);
                     break;
                 case CategoryPayloadDTO::MODEL_FILM:
                     // select all films with this attribute
                     $elements = $em->getRepository(Film::class)->getAttributes($attributeUuid);
+                    $dto->setModel(CategoryPayloadDTO::MODEL_FILM);
                     break;
                 case CategoryPayloadDTO::MODEL_SONG:
                     // select all songs with this attribute
                     $elements = $em->getRepository(Song::class)->getAttributes($attributeUuid);
+                    $dto->setModel(CategoryPayloadDTO::MODEL_SONG);
                     break;
                 default:
                     throw new \Error($model.' is not a correct category model');
@@ -58,7 +63,7 @@ class AttributePayloadHydrator implements HydratorDTOInterface
 
         if (isset($elements)) {
             foreach ($elements as $element) {
-                $elementDTO = new ElementNestedDTO();
+                $elementDTO = DTOFactory::create(ModelConstants::ELEMENT_NESTED_DTO_MODEL);
                 $elementDTO->hydrate(['element' => $element], $em);
                 $elementsNestedDTOList[] = $elementDTO;
             }

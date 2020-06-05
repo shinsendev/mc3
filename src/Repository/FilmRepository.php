@@ -64,12 +64,12 @@ class FilmRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $attributeUuid
+     * @param string $attributeUuid
      * @return int|null
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function countAttributes($attributeUuid):?int
+    public function countAttributes(string $attributeUuid):?int
     {
         $query = $this->getEntityManager()->createQuery('
             SELECT COUNT(DISTINCT f.uuid) FROM App\Entity\Film f
@@ -84,13 +84,13 @@ class FilmRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $attributeUuid
+     * @param string $attributeUuid
      * @return array|null
      */
-    public function getAttributes($attributeUuid):?array
+    public function getAttributes(string $attributeUuid):?array
     {
         $query = $this->getEntityManager()->createQuery('
-            SELECT DISTINCT f.title, f.uuid, f.releasedYear as released FROM App\Entity\Film f
+            SELECT DISTINCT f.title, f.uuid, \'film\' as model FROM App\Entity\Film f
                 INNER JOIN f.attributes a
             WHERE a.uuid = :uuid
         ');

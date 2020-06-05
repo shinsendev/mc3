@@ -29,5 +29,7 @@ class ModelConstants
     const PERSON_PAYLOAD_MODEL = 'personPayload';
     const PERSON_NESTED_DTO_MODEL = 'personNestedDTOModel';
 
+    const ELEMENT_NESTED_DTO_MODEL = 'elementNestedDTOModel';
+
     const HOME_PAYLOAD_MODEL='home';
 }
