@@ -40,14 +40,14 @@ class NumberRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $attributeUuid
+     * @param string $attributeUuid
      * @return array|null
      */
-    public function getAttributes(int $attributeUuid):?array
+    public function getAttributes(string $attributeUuid):?array
     {
         $query = $this->getEntityManager()->createQuery('
             SELECT DISTINCT n.title, n.uuid FROM App\Entity\Number n
-                INNER JOIN f.attributes a
+                INNER JOIN n.attributes a
             WHERE a.uuid = :uuid
         ');
         $query->setParameters([

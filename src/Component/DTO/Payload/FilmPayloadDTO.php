@@ -67,9 +67,8 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /** @var void|string */
     private $board;
 
-    // numbers linked to the film
-    /** @var void|array */
-    private  $numbers;
+    /** @var array */
+    private  $numbers = [];
 
     // persons
     /** @var void|PersonNestedDTO[] */
@@ -276,22 +275,6 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return array
-     */
-    public function getNumbers(): ?array
-    {
-        return $this->numbers;
-    }
-
-    /**
-     * @param array $numbers
-     */
-    public function setNumbers(array $numbers): void
-    {
-        $this->numbers = $numbers;
-    }
-
-    /**
      * @return PersonNestedDTO[]
      */
     public function getDirectors(): ?array
@@ -321,22 +304,6 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     public function setStudios(array $studios): void
     {
         $this->studios = $studios;
-    }
-
-    /**
-     * @return int
-     */
-    public function getNumberRatio(): ?int
-    {
-        return $this->numberRatio;
-    }
-
-    /**
-     * @param int $numberRatio
-     */
-    public function setNumberRatio(int $numberRatio): void
-    {
-        $this->numberRatio = $numberRatio;
     }
 
     /**
@@ -499,8 +466,23 @@ class FilmPayloadDTO extends AbstractUniqueDTO
         $this->board = $board;
     }
 
+    /**
+     * @return array
+     */
+    public function getNumbers(): array
+    {
+        return $this->numbers;
+    }
+
+    /**
+     * @param array $numbers
+     */
+    public function setNumbers(array $numbers): void
+    {
+        $this->numbers = $numbers;
+    }
+
     // timeline dataviz data
     // todo : add dataviz
-
 
 }
