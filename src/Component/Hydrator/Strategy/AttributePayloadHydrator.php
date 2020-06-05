@@ -7,7 +7,9 @@ namespace App\Component\Hydrator\Strategy;
 use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Nested\ElementNestedDTO;
 use App\Component\DTO\Payload\CategoryPayloadDTO;
+use App\Component\Factory\DTOFactory;
 use App\Component\Hydrator\Description\HydratorDTOInterface;
+use App\Component\Model\ModelConstants;
 use App\Entity\Attribute;
 use App\Entity\Film;
 use App\Entity\Number;
@@ -58,7 +60,7 @@ class AttributePayloadHydrator implements HydratorDTOInterface
 
         if (isset($elements)) {
             foreach ($elements as $element) {
-                $elementDTO = new ElementNestedDTO();
+                $elementDTO = DTOFactory::create(ModelConstants::ELEMENT_NESTED_DTO_MODEL);
                 $elementDTO->hydrate(['element' => $element], $em);
                 $elementsNestedDTOList[] = $elementDTO;
             }

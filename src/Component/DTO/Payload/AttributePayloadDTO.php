@@ -28,10 +28,10 @@ class AttributePayloadDTO extends AbstractUniqueDTO
     /** @var string */
     private $categoryUuid;
 
-    /** @var void|string */
+    /** @var string */
     private $description = '';
 
-    /** @var void|string */
+    /** @var string */
     private $example= '';
 
     /** @var array */
@@ -86,7 +86,7 @@ class AttributePayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return string|void
+     * @return string
      */
     public function getDescription()
     {
@@ -94,7 +94,7 @@ class AttributePayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @param string|void $description
+     * @param string $description
      */
     public function setDescription($description): void
     {
@@ -102,7 +102,7 @@ class AttributePayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return string|void
+     * @return string
      */
     public function getExample()
     {
@@ -110,7 +110,7 @@ class AttributePayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @param string|void $example
+     * @param string $example
      */
     public function setExample($example): void
     {

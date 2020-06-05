@@ -90,7 +90,7 @@ class FilmRepository extends ServiceEntityRepository
     public function getAttributes(string $attributeUuid):?array
     {
         $query = $this->getEntityManager()->createQuery('
-            SELECT DISTINCT f.title, f.uuid, f.releasedYear as released FROM App\Entity\Film f
+            SELECT DISTINCT f.title, f.uuid, \'film\' as model FROM App\Entity\Film f
                 INNER JOIN f.attributes a
             WHERE a.uuid = :uuid
         ');
