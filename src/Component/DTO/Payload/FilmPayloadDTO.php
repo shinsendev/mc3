@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace App\Component\DTO\Payload;
 
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
-use App\Component\DTO\Nested\PersonNestedDTO;
 
 /**
  * Class FilmPayloadDTO
@@ -18,84 +17,82 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /** @var string */
     private $title;
 
-    /** @var void|string */
-    private $imdb;
+    /** @var string */
+    private $sample = 'NA';
 
-    /** @var void|int */
-    private $productionYear;
+    /** @var string */
+    private $imdb = 'NA';
 
-    /** @var void|int */
-    private $releasedYear;
+    /** @var array */
+    private $directors = [];
 
-    /** @var void|string */
-    private $viaf;
+    /** @var array */
+    private $studios = [];
 
-    /** @var void|bool */
-    private $sample;
+    /** @var int */
+    private $productionYear = 0; // todo: add on page
+
+    /** @var int */
+    private $releasedYear = 0;
+
+    /** @var string */
+    private $viaf = 'NA'; //todo :add on page
+
 
     // recycling
+    /** @var string */
+    private $remake = '';
 
-    /** @var void|bool */
-    private $remake;
+    /** @var string */
+    private $stageshows = '';
 
-    /** @var void|array */
-    private $censorships;
+    /** @var  string */
+    private $adaptation = '';
 
-    /** @var void|string */
-    private $stageshows;
-
-    // todo : add adaptation from thesaurus, is it a many to many?
-    /** @var  void|string */
-    private $adaptation;
 
     // censorship
-    /** @var void|string */
-    private $pca;
+    /** @var array */
+    private $censorships = [];
 
-    /** @var void|array */
-    private $states;
+    /** @var string */
+    private $pca = '';
 
-    /** @var void|string */
-    private $legion;
+    /** @var array */
+    private $states = [];
 
-    /** @var void|string */
-    private $protestant;
+    /** @var string */
+    private $legion = '';
 
-    /** @var void|string */
-    private $harrison;
+    /** @var string */
+    private $protestant = '';
 
-    /** @var void|string */
-    private $board;
+    /** @var string */
+    private $harrison = '';
+
+    /** @var string */
+    private $board = '';
 
     /** @var array */
     private  $numbers = [];
 
-    // persons
-    /** @var void|PersonNestedDTO[] */
-    private $directors;
-
-    // studios
-    /** @var void|array */
-    private $studios;
-
     // stats
-    /** @var void|int */
-    private $numberRatio;
+    /** @var int */
+    private $numberRatio = 0;
 
-    /** @var void|int */
-    private $averageNumberLength;
+    /** @var int */
+    private $averageNumberLength = 0;
 
-    /** @var void|int */
-    private $globalAverageNumberLength;
+    /** @var int */
+    private $globalAverageNumberLength = 0;
 
-    /** @var void|int */
-    private $numbersLength;
+    /** @var int */
+    private $numbersLength = 0;
 
-    /** @var void|int */
-    private $length;
+    /** @var int */
+    private $length = 0;
 
-    /** @var void|int */
-    private $globalNumbersLength;
+    /** @var int */
+    private $globalNumbersLength = 0;
 
     /**
      * @return string
@@ -114,15 +111,15 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return int|void
+     * @return int
      */
-    public function getProductionYear(): ?int
+    public function getProductionYear(): int
     {
         return $this->productionYear;
     }
 
     /**
-     * @param int|void $productionYear
+     * @param int $productionYear
      */
     public function setProductionYear($productionYear): void
     {
@@ -131,15 +128,15 @@ class FilmPayloadDTO extends AbstractUniqueDTO
 
 
     /**
-     * @return int|void
+     * @return int
      */
-    public function getReleasedYear()
+    public function getReleasedYear():int
     {
         return $this->releasedYear;
     }
 
     /**
-     * @param int|void $releasedYear
+     * @param int $releasedYear
      */
     public function setReleasedYear($releasedYear): void
     {
@@ -149,7 +146,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /**
      * @return string
      */
-    public function getImdb(): ?string
+    public function getImdb(): string
     {
         return $this->imdb;
     }
@@ -179,55 +176,23 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return bool|void
+     * @return string
      */
-    public function getSample()
-    {
-        return $this->sample;
-    }
-
-    /**
-     * @param bool|void $sample
-     */
-    public function setSample($sample): void
-    {
-        $this->sample = $sample;
-    }
-
-    /**
-     * @return bool|void
-     */
-    public function getRemake()
+    public function getRemake(): string
     {
         return $this->remake;
     }
 
     /**
-     * @param bool|void $remake
+     * @param string $remake
      */
-    public function setRemake($remake): void
+    public function setRemake(string $remake): void
     {
         $this->remake = $remake;
     }
 
     /**
-     * @return array
-     */
-    public function getCensorships(): ?array
-    {
-        return $this->censorships;
-    }
-
-    /**
-     * @param array $censorships
-     */
-    public function setCensorships(array $censorships): void
-    {
-        $this->censorships = $censorships;
-    }
-
-    /**
-     * @return string|void
+     * @return string
      */
     public function getStageshows()
     {
@@ -235,7 +200,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @param string|void $stageshows
+     * @param string $stageshows
      */
     public function setStageshows($stageshows): void
     {
@@ -243,7 +208,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return string|void
+     * @return string
      */
     public function getAdaptation()
     {
@@ -251,7 +216,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @param string|void $adaptation
+     * @param string $adaptation
      */
     public function setAdaptation($adaptation): void
     {
@@ -275,15 +240,15 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return PersonNestedDTO[]
+     * @return array
      */
-    public function getDirectors(): ?array
+    public function getDirectors(): array
     {
         return $this->directors;
     }
 
     /**
-     * @param PersonNestedDTO[] $directors
+     * @param array $directors
      */
     public function setDirectors(array $directors): void
     {
@@ -293,7 +258,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /**
      * @return array
      */
-    public function getStudios(): ?array
+    public function getStudios(): array
     {
         return $this->studios;
     }
@@ -309,7 +274,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /**
      * @return int
      */
-    public function getAverageNumberLength(): ?int
+    public function getAverageNumberLength(): int
     {
         return $this->averageNumberLength;
     }
@@ -325,7 +290,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /**
      * @return int
      */
-    public function getGlobalAverageNumberLength(): ?int
+    public function getGlobalAverageNumberLength(): int
     {
         return $this->globalAverageNumberLength;
     }
@@ -341,7 +306,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /**
      * @return int
      */
-    public function getNumbersLength(): ?int
+    public function getNumbersLength(): int
     {
         return $this->numbersLength;
     }
@@ -357,7 +322,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /**
      * @return int
      */
-    public function getLength(): ?int
+    public function getLength(): int
     {
         return $this->length;
     }
@@ -387,7 +352,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return array|void
+     * @return array
      */
     public function getStates()
     {
@@ -395,7 +360,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @param array|void $states
+     * @param array $states
      */
     public function setStates($states): void
     {
@@ -403,7 +368,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return string|void
+     * @return string
      */
     public function getLegion()
     {
@@ -411,7 +376,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @param string|void $legion
+     * @param string $legion
      */
     public function setLegion($legion): void
     {
@@ -419,7 +384,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return string|void
+     * @return string
      */
     public function getProtestant()
     {
@@ -427,7 +392,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @param string|void $protestant
+     * @param string $protestant
      */
     public function setProtestant($protestant): void
     {
@@ -435,7 +400,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return string|void
+     * @return string
      */
     public function getHarrison()
     {
@@ -443,7 +408,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @param string|void $harrison
+     * @param string $harrison
      */
     public function setHarrison($harrison): void
     {
@@ -451,7 +416,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return string|void
+     * @return string
      */
     public function getBoard()
     {
@@ -459,7 +424,7 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @param string|void $board
+     * @param string $board
      */
     public function setBoard($board): void
     {
@@ -480,6 +445,54 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     public function setNumbers(array $numbers): void
     {
         $this->numbers = $numbers;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSample(): string
+    {
+        return $this->sample;
+    }
+
+    /**
+     * @param string $sample
+     */
+    public function setSample(string $sample): void
+    {
+        $this->sample = $sample;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCensorships(): array
+    {
+        return $this->censorships;
+    }
+
+    /**
+     * @param array $censorships
+     */
+    public function setCensorships(array $censorships): void
+    {
+        $this->censorships = $censorships;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberRatio(): int
+    {
+        return $this->numberRatio;
+    }
+
+    /**
+     * @param int $numberRatio
+     */
+    public function setNumberRatio(int $numberRatio): void
+    {
+        $this->numberRatio = $numberRatio;
     }
 
     // timeline dataviz data
