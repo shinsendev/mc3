@@ -29,7 +29,7 @@ class NumberNestedInFilmDTO extends AbstractUniqueDTO
     private $length;
 
     /** @var array */
-    private $performers;
+    private $performers = [];
 
     /**
      * @return int
@@ -114,7 +114,7 @@ class NumberNestedInFilmDTO extends AbstractUniqueDTO
     /**
      * @return array
      */
-    public function getPerformers(): ?array
+    public function getPerformers(): array
     {
         return $this->performers;
     }

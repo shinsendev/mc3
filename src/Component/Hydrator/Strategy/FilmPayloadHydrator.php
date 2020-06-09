@@ -27,11 +27,12 @@ class FilmPayloadHydrator implements HydratorDTOInterface
     public static function hydrate(DTOInterface $dto, array $data, EntityManagerInterface $em):FilmPayloadDTO
     {
         $params = [];
-        // set excludes paramaters to treate manually
+        // set excludes paramaters to treate manually some properties
         $params['excludes'] = ['numbers', 'studios'];
+        // fields we are forced to complete, if not we throw an error
         $params['mandatory'] = ['uuid', 'title', 'imdb'];
 
-        $data['model'] = 'film';
+        $data['model'] = ModelConstants::FILM_MODEL;
         /** @var Film $film */
         $film = $data['film'];
 
@@ -48,18 +49,12 @@ class FilmPayloadHydrator implements HydratorDTOInterface
             }
         }
 
-        $manyToMany = ['censorship', 'state'];
+        // configuration for film payload
+        $manyToMany = ['state', 'censorship'];
 
         // get attributes
         foreach ($film->getAttributes() as $attribute) {
-
             $code = $attribute->getCategory()->getCode();
-
-            // error
-            if ($code === 'structure') {
-                //todo : remove structure in import and add it to number
-                continue;
-            }
 
             // handle exception
             if ($code === 'verdict') { // is this pca verdict?
@@ -78,10 +73,11 @@ class FilmPayloadHydrator implements HydratorDTOInterface
             $dto->$setter($attribute->getTitle());
         }
 
+
         // still for attributes : set many to many
         foreach ($manyToMany as $category) {
             if(isset($manyToManyAttributes[$category])) {
-                $setter = 'set'.ucfirst($category.'s'); // be carefull ad change if a word already finish with a s
+                $setter = 'set'.ucfirst($category.'s'); // be carefull, to be changed if a category already finish with a s
                 $dto->$setter($manyToManyAttributes[$category]);
             }
         }
