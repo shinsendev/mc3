@@ -13,15 +13,17 @@ use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
  */
 class FilmPayloadDTO extends AbstractUniqueDTO
 {
+    CONST NO_VALUE = 'NA';
+
     // general infos
     /** @var string */
     private $title;
 
     /** @var string */
-    private $sample = 'NA';
+    private $sample = self::NO_VALUE;
 
     /** @var string */
-    private $imdb = 'NA';
+    private $imdb = self::NO_VALUE;
 
     /** @var array */
     private $directors = [];
@@ -30,24 +32,24 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     private $studios = [];
 
     /** @var int */
-    private $productionYear = 0; // todo: add on page
+    private $productionYear = 0;
 
     /** @var int */
     private $releasedYear = 0;
 
     /** @var string */
-    private $viaf = 'NA'; //todo :add on page
+    private $viaf = self::NO_VALUE;
 
 
     // recycling
     /** @var string */
-    private $remake = '';
+    private $remake = self::NO_VALUE;
 
     /** @var string */
-    private $stageshows = '';
+    private $stageshows = self::NO_VALUE;
 
     /** @var  string */
-    private $adaptation = '';
+    private $adaptation = self::NO_VALUE;
 
 
     // censorship
@@ -55,22 +57,22 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     private $censorships = [];
 
     /** @var string */
-    private $pca = '';
+    private $pca = self::NO_VALUE;
 
     /** @var array */
     private $states = [];
 
     /** @var string */
-    private $legion = '';
+    private $legion = self::NO_VALUE;
 
     /** @var string */
-    private $protestant = '';
+    private $protestant = self::NO_VALUE;
 
     /** @var string */
-    private $harrison = '';
+    private $harrison = self::NO_VALUE;
 
     /** @var string */
-    private $board = '';
+    private $board = self::NO_VALUE;
 
     /** @var array */
     private  $numbers = [];
@@ -80,19 +82,16 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     private $numberRatio = 0;
 
     /** @var int */
+    private $numbersLength = 0;
+
+    /** @var int */
     private $averageNumberLength = 0;
 
     /** @var int */
     private $globalAverageNumberLength = 0;
 
     /** @var int */
-    private $numbersLength = 0;
-
-    /** @var int */
     private $length = 0;
-
-    /** @var int */
-    private $globalNumbersLength = 0;
 
     /**
      * @return string
@@ -333,22 +332,6 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     public function setLength(int $length): void
     {
         $this->length = $length;
-    }
-
-    /**
-     * @return int
-     */
-    public function getGlobalNumbersLength(): ?int
-    {
-        return $this->globalNumbersLength;
-    }
-
-    /**
-     * @param int $globalNumbersLength
-     */
-    public function setGlobalNumbersLength(int $globalNumbersLength): void
-    {
-        $this->globalNumbersLength = $globalNumbersLength;
     }
 
     /**

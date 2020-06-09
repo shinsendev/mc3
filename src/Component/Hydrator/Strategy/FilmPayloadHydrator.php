@@ -27,8 +27,9 @@ class FilmPayloadHydrator implements HydratorDTOInterface
     public static function hydrate(DTOInterface $dto, array $data, EntityManagerInterface $em):FilmPayloadDTO
     {
         $params = [];
-        // set excludes paramaters to treate manually
+        // set excludes paramaters to treate manually some properties
         $params['excludes'] = ['numbers', 'studios'];
+        // fields we are forced to complete, if not we throw an error
         $params['mandatory'] = ['uuid', 'title', 'imdb'];
 
         $data['model'] = ModelConstants::FILM_MODEL;
@@ -37,6 +38,7 @@ class FilmPayloadHydrator implements HydratorDTOInterface
 
         /** @var FilmPayloadDTO $dto */
         $dto = HydratorBasics::hydrateDTOBase($dto, $data, $params);
+
         // manage numbers of a film
         if ($film->getNumbers()) {
             // get ordered Numbers (the order is in model film->numbers thanks to doctrine)
