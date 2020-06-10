@@ -7,6 +7,7 @@ addons:
     postgresql: "12.1"
 
 before_script:
+    - psql -c 'create database api_platform_test;' -U postgres
     - php bin/console doctrine:schema:update --force --env=test
 
 cache:
@@ -26,10 +27,6 @@ matrix:
     include:
         - php: 7.3
         - php: 7.4
-        services:
-            - postgresql
-        before_script:
-            - psql -c 'create database api_platform_test;' -U postgres
 
 before_install:
     -  cp .env.travis .env
