@@ -6,6 +6,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Attribute;
 use App\Entity\Film;
+use App\Entity\Studio;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -31,6 +32,7 @@ class FilmFixtures extends Fixture implements DependentFixtureInterface
 
     /**
      * @param int $index
+     * @param ObjectManager $manager
      * @return Film
      */
     public function generateFilm(int $index, ObjectManager $manager) :Film
@@ -43,6 +45,7 @@ class FilmFixtures extends Fixture implements DependentFixtureInterface
         $imdbIds = ['tt0055614', 'tt0018037'];
         $remakes = [false, true];
         $samples = [false, true];
+
 
         $film = new Film();
         $film->setTitle($titles[$index]);
@@ -80,6 +83,14 @@ class FilmFixtures extends Fixture implements DependentFixtureInterface
             $film->addAttribute($attribute);
         }
 
+        // add studio
+        $mgm = new Studio();
+        $mgm->setName('MGM');
+        $mgm->setUuid('3b35a14e-4dbb-4ec5-b51b-d26553befc34');
+        $manager->persist($mgm);
+        $manager->flush(); // save studio
+
+        $film->addStudio($mgm);
 
         return $film;
     }
