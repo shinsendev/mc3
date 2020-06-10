@@ -79,10 +79,10 @@ class FilmPayloadDTO extends AbstractUniqueDTO
 
     // stats
     /** @var int */
-    private $numberRatio = 0;
+    private $numbersRatio = 0; // Ratio number/total length
 
     /** @var int */
-    private $numbersLength = 0;
+    private $numbersLength = 0; // Running time for all numbers
 
     /** @var int */
     private $averageNumberLength = 0;
@@ -465,17 +465,17 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /**
      * @return int
      */
-    public function getNumberRatio(): int
+    public function getNumbersRatio(): int
     {
-        return $this->numberRatio;
+        return $this->numbersRatio;
     }
 
     /**
-     * @param int $numberRatio
+     * @param int $numbersRatio
      */
-    public function setNumberRatio(int $numberRatio): void
+    public function setNumbersRatio(int $numbersRatio): void
     {
-        $this->numberRatio = $numberRatio;
+        $this->numbersRatio = $numbersRatio;
     }
 
     // timeline dataviz data

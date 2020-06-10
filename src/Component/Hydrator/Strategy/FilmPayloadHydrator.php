@@ -13,6 +13,7 @@ use App\Component\Hydrator\Helper\PersonHelper;
 use App\Component\Hydrator\HydratorBasics;
 use App\Component\Model\ModelConstants;
 use App\Entity\Film;
+use App\Entity\Number;
 use App\Entity\Work;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -74,7 +75,7 @@ class FilmPayloadHydrator implements HydratorDTOInterface
         }
 
 
-        // still for attributes : set many to many
+        // for attributes again: set many to many
         foreach ($manyToMany as $category) {
             if(isset($manyToManyAttributes[$category])) {
                 $setter = 'set'.ucfirst($category.'s'); // be carefull, to be changed if a category already finish with a s
@@ -98,7 +99,41 @@ class FilmPayloadHydrator implements HydratorDTOInterface
         $dto->setDirectors($directors);
 
         // get stats
-        // todo: add stats from a stats table
+        $dto = self::computeStats($dto, $em);
+
+        return $dto;
+    }
+
+    /**
+     * @param FilmPayloadDTO $dto
+     * @param EntityManagerInterface $em
+     * @return FilmPayloadDTO
+     */
+    public static function computeStats(FilmPayloadDTO $dto, EntityManagerInterface $em): FilmPayloadDTO
+    {
+        $numbers = $dto->getNumbers();
+        // Sum of all numbers
+        $numbersLength = 0;
+        foreach ($numbers as $number) {
+            if ($number->getLength()) {
+                $numbersLength+=$number->getLength();
+            }
+        }
+        $dto->setNumbersLength($numbersLength);
+
+        // Ratio number/total length
+        $numbersRatio = intval(round(100 / $dto->getLength() * $numbersLength, 2)*100); // php bug? result is slightly change : 3948.0 become 3947
+        $dto->setNumbersRatio($numbersRatio);
+
+        $averageNumberLength = intval(round($numbersLength/count($numbers)));
+        $dto->setAverageNumberLength($averageNumberLength);
+
+        // Compute global average runtime = total numbers length divided by numbers count
+        $numberRepository = $em->getRepository(Number::class);
+        $numbersCount = $numberRepository->countNumbers();
+        $totalNumbersLength = $numberRepository->getTotalNumbersLength();
+        $globalAverageNumberLength = intval(round($totalNumbersLength/$numbersCount));
+        $dto->setGlobalAverageNumberLength($globalAverageNumberLength);
 
         return $dto;
     }
@@ -130,7 +165,7 @@ class FilmPayloadHydrator implements HydratorDTOInterface
             $numberDTO->setUuid($numberUuid);
 
             // compute number length
-            if ($numberBeginTc && $numberEndTc && $numberEndTc >= $numberBeginTc) {
+            if ( $numberBeginTc >= 0 && $numberEndTc && $numberEndTc >= $numberBeginTc) {
                 $numberDTO->setLength($numberEndTc - $numberBeginTc);
             }
 
