@@ -122,18 +122,24 @@ class FilmPayloadHydrator implements HydratorDTOInterface
         $dto->setNumbersLength($numbersLength);
 
         // Ratio number/total length
-        $numbersRatio = intval(round(100 / $dto->getLength() * $numbersLength, 2)*100); // php bug? result is slightly change : 3948.0 become 3947
-        $dto->setNumbersRatio($numbersRatio);
+        if ($dto->getLength()) { // to avoid division by zero error
+            $numbersRatio = intval(round(100 / $dto->getLength() * $numbersLength, 2)*100); // php bug? result is slightly change : 3948.0 become 3947
+            $dto->setNumbersRatio($numbersRatio);
+        }
 
-        $averageNumberLength = intval(round($numbersLength/count($numbers)));
-        $dto->setAverageNumberLength($averageNumberLength);
+        if ($numbers && $numbersLength) {
+            $averageNumberLength = intval(round($numbersLength/count($numbers)));
+            $dto->setAverageNumberLength($averageNumberLength);
+        }
 
         // Compute global average runtime = total numbers length divided by numbers count
         $numberRepository = $em->getRepository(Number::class);
         $numbersCount = $numberRepository->countNumbers();
         $totalNumbersLength = $numberRepository->getTotalNumbersLength();
-        $globalAverageNumberLength = intval(round($totalNumbersLength/$numbersCount));
-        $dto->setGlobalAverageNumberLength($globalAverageNumberLength);
+        if ($numbersCount && $totalNumbersLength) {
+            $globalAverageNumberLength = intval(round($totalNumbersLength/$numbersCount));
+            $dto->setGlobalAverageNumberLength($globalAverageNumberLength);
+        }
 
         return $dto;
     }
