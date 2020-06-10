@@ -13,11 +13,14 @@ class FilmResourceGetTest extends AbstractFunctionalTest
         $this->assertResponseIsSuccessful();
 
         $arrayResponse = $response->toArray();
-        $this->assertEquals($arrayResponse['title'], "West Side Story");
-        $this->assertEquals($arrayResponse['productionYear'], 1962);
-        $this->assertEquals($arrayResponse['releasedYear'], 1961);
-        $this->assertEquals($arrayResponse['imdb'], 'tt0055614');
-        $this->assertEquals(count($arrayResponse['censorships']), 3);
-        $this->assertEquals($arrayResponse['length'], 6000);
+        $this->assertEquals("West Side Story", $arrayResponse['title']);
+        $this->assertEquals(1962, $arrayResponse['productionYear']);
+        $this->assertEquals(1961, $arrayResponse['releasedYear'] );
+        $this->assertEquals('tt0055614', $arrayResponse['imdb']);
+        $this->assertEquals(3, count($arrayResponse['censorships']));
+        $this->assertEquals(6000, $arrayResponse['length']);
+        $this->assertEquals(1, count($arrayResponse['studios']));
+        $this->assertEquals('MGM',$arrayResponse['studios'][0]['name']);
     }
+
 }
