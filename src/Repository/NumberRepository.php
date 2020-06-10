@@ -58,4 +58,25 @@ class NumberRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+
+    /**
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function countNumbers()
+    {
+        $query = $this->getEntityManager()->createQuery('SELECT COUNT(n.id) FROM App\Entity\Number n');
+        return $query->getSingleScalarResult();
+    }
+
+    /**
+     * @return int|mixed|string
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getTotalNumbersLength()
+    {
+        $query = $this->getEntityManager()->createQuery('SELECT SUM(n.endTc-n.beginTc) FROM App\Entity\Number n');
+        return $query->getSingleScalarResult();
+    }
 }
