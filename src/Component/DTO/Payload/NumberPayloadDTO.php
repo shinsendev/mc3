@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace App\Component\DTO\Payload;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Component\DTO\Composition\Number\NumberDescriptionTrait;
 use App\Component\DTO\Composition\UniqueDTOTrait;
 
 /**
@@ -17,59 +18,13 @@ use App\Component\DTO\Composition\UniqueDTOTrait;
  */
 class NumberPayloadDTO
 {
-    use UniqueDTOTrait;
+    use UniqueDTOTrait, NumberDescriptionTrait;
 
     CONST NO_VALUE = 'NA';
 
-    // description
-    /** @var string */
-    private $title;
-
-    /** @var string */
-    private $film;
-
-    /** @var string */
-    private $startingTc = 0;
-
-    /** @var string */
-    private $endingTc = 0;
-
-    /** @var string */
-    private $beginning = self::NO_VALUE;
-
-    /** @var string */
-    private $ending = self::NO_VALUE;
-
-    /** @var array */
-    private $completeness = []; // AttributeNestedDTO
-
-    /** @var string */
-    private $completenessOptions = self::NO_VALUE; // AttributeNestedDTO
-
-    /** @var string */
-    private $structure = self::NO_VALUE; // AttributeNestedDTO
-
-    /** @var int */
-    private $shots = 0;
-
-    /** @var int */
-    private $averageShotLength;
-
-    /** @var string */
-    private $performance = self::NO_VALUE; // one choice
-
-    /** @var array */
-    private $performers = []; // PersonNestedDTO
-
-    /** @var string */
-    private $cast = self::NO_VALUE; // AttributeNestedDTO
-
-    /** @var string */
-    private $noParticipationStars; // ??? what is the data source ?
-
+    // todo : refacto all parts in trait if first trait works
 
     // backstage
-
     /** @var string */
     private $spectators = self::NO_VALUE; // AttributeNestedDTO
 
@@ -81,7 +36,6 @@ class NumberPayloadDTO
 
 
     // themes
-
     /** @var array */
     private $topic = []; // AttributeNestedDTO
 
@@ -99,40 +53,43 @@ class NumberPayloadDTO
 
 
     // Music & dance
-
     /** @var array */
     private $song = []; // SongDTO or NestedSongDTO
 
     private $musicalEnsemble = []; //
 
     /** @var string */
-    private $dubbing = 'NA';
+    private $dubbing = 'NA'; // from number, not an attribute
 
-    private $tempo;
+    /** @var array */
+    private $tempo = []; // SongDTO or NestedSongDTO
 
-    private $musicalStyles;
+    /** @var array */
+    private $musicalStyles = []; // SongDTO or NestedSongDTO
 
-    private $arrangers;
+    /** @var array */
+    private $arrangers = []; // PersonNestedDTO
 
-    private $danceDirector;
+    /** @var array */
+    private $danceDirector = []; // PersonNestedDTO
 
-    private $danceEnsemble;
+    /** @var array */
+    private $danceEnsemble = []; // AttributeNestedDTO
 
-    private $dancingType;
+    /** @var array */
+    private $dancingType = []; // AttributeNestedDTO
 
-    private $danceSubgenre;
+    /** @var array */
+    private $danceSubgenre = []; // AttributeNestedDTO
 
-    private $content;
+    /** @var array */
+    private $danceContent = []; // AttributeNestedDTO
 
     // Intertextuality
+    /** @var array */
+    private $source = self::NO_VALUE; // AttributeNestedDTO
 
-    private $source;
-
-    private $sourceDetails;
-
-    private $quotation;
-
-    private $references;
-
+    /** @var array */
+    private $quotation = []; // AttributeNestedDTO
 
 }
