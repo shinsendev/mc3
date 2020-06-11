@@ -8,6 +8,7 @@ namespace App\Component\DTO\Payload;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Component\DTO\Composition\Number\NumberDescriptionTrait;
 use App\Component\DTO\Composition\UniqueDTOTrait;
+use App\Component\DTO\Definition\DTOInterface;
 
 /**
  * Class NarrativeDTO
@@ -16,7 +17,7 @@ use App\Component\DTO\Composition\UniqueDTOTrait;
  *     shortName="number"
  * )
  */
-class NumberPayloadDTO
+class NumberPayloadDTO implements DTOInterface
 {
     use UniqueDTOTrait, NumberDescriptionTrait;
 
