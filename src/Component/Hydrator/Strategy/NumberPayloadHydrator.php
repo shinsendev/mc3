@@ -10,7 +10,6 @@ use App\Component\DTO\Payload\NumberPayloadDTO;
 use App\Component\Hydrator\Description\HydratorDTOInterface;
 use App\Component\Hydrator\HydratorBasics;
 use App\Component\Model\ModelConstants;
-use App\Entity\Film;
 use Doctrine\ORM\EntityManagerInterface;
 
 class NumberPayloadHydrator implements HydratorDTOInterface
@@ -24,7 +23,7 @@ class NumberPayloadHydrator implements HydratorDTOInterface
     public static function hydrate(DTOInterface $dto, array $data, EntityManagerInterface $em):FilmPayloadDTO
     {
         $params = [];
-        // set excludes paramaters to treate manually some properties
+        // set excludes parameters to treate manually some properties
         $params['excludes'] = ['dubbing', 'film'];
         // fields we are forced to complete, if not we throw an error
         $params['mandatory'] = ['title'];
@@ -35,6 +34,8 @@ class NumberPayloadHydrator implements HydratorDTOInterface
 
         /** @var NumberPayloadDTO $dto */
         $dto = HydratorBasics::hydrateDTOBase($dto, $data, $params);
+
+        
 
         dd($dto);
 //
