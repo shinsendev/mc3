@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace App\Component\DTO\Composition\Number;
 
+use App\Component\DTO\Nested\FilmNestedDTO;
 use App\Component\DTO\Payload\NumberPayloadDTO;
 
 trait NumberDescriptionTrait
@@ -12,13 +13,13 @@ trait NumberDescriptionTrait
     /** @var string */
     protected $title;
 
-    /** @var string */
+    /** @var FilmNestedDTO */
     protected $film;
 
-    /** @var string */
+    /** @var integer */
     protected $startingTc = 0;
 
-    /** @var string */
+    /** @var integer */
     protected $endingTc = 0;
 
     /** @var string */
@@ -71,49 +72,49 @@ trait NumberDescriptionTrait
     }
 
     /**
-     * @return string
+     * @return FilmNestedDTO
      */
-    public function getFilm(): string
+    public function getFilm(): FilmNestedDTO
     {
         return $this->film;
     }
 
     /**
-     * @param string $film
+     * @param FilmNestedDTO $film
      */
-    public function setFilm(string $film): void
+    public function setFilm(FilmNestedDTO $film): void
     {
         $this->film = $film;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getStartingTc(): string
+    public function getStartingTc(): int
     {
         return $this->startingTc;
     }
 
     /**
-     * @param string $startingTc
+     * @param int $startingTc
      */
-    public function setStartingTc(string $startingTc): void
+    public function setStartingTc(int $startingTc): void
     {
         $this->startingTc = $startingTc;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getEndingTc(): string
+    public function getEndingTc(): int
     {
         return $this->endingTc;
     }
 
     /**
-     * @param string $endingTc
+     * @param int $endingTc
      */
-    public function setEndingTc(string $endingTc): void
+    public function setEndingTc(int $endingTc): void
     {
         $this->endingTc = $endingTc;
     }

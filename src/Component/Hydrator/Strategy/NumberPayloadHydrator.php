@@ -7,6 +7,7 @@ namespace App\Component\Hydrator\Strategy;
 use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Payload\FilmPayloadDTO;
 use App\Component\DTO\Payload\NumberPayloadDTO;
+use App\Component\Factory\DTOFactory;
 use App\Component\Hydrator\Description\HydratorDTOInterface;
 use App\Component\Hydrator\HydratorBasics;
 use App\Component\Model\ModelConstants;
@@ -20,7 +21,7 @@ class NumberPayloadHydrator implements HydratorDTOInterface
      * @param EntityManagerInterface $em
      * @return NumberPayloadDTO
      */
-    public static function hydrate(DTOInterface $dto, array $data, EntityManagerInterface $em):FilmPayloadDTO
+    public static function hydrate(DTOInterface $dto, array $data, EntityManagerInterface $em):NumberPayloadDTO
     {
         $params = [];
         // set excludes parameters to treate manually some properties
@@ -30,17 +31,19 @@ class NumberPayloadHydrator implements HydratorDTOInterface
 
         $data['model'] = ModelConstants::NUMBER_MODEL;
         /** @var Number $number */
-        $number = $data['model'];
+        $number = $data['number'];
 
         /** @var NumberPayloadDTO $dto */
         $dto = HydratorBasics::hydrateDTOBase($dto, $data, $params);
 
-        
+        $nestedFilm = DTOFactory::create(ModelConstants::FILM_NESTED_DTO_MODEL);
+        $nestedFilm = NestedFilmHydrator::hydrate($nestedFilm, ['film' => $number->getFilm()], $em);
 
-        dd($dto);
-//
-//        // manage numbers of a film
-//        if ($film->getNumbers()) {
+        $dto->setFilm($nestedFilm);
+
+        return $dto;
+        // manage numbers of a film
+//        if ($number->getNumbers()) {
 //            // get ordered Numbers (the order is in model film->numbers thanks to doctrine)
 //            $numbersDTOList = self::getNumbers($film, $em);
 //            if(count($numbersDTOList) > 0) {

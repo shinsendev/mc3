@@ -7,7 +7,7 @@ namespace App\Component\DTO\Payload;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
 use App\Component\DTO\Nested\FilmNestedDTO;
 use App\Component\Factory\DTOFactory;
-use App\Component\Hydrator\Strategy\NestedFilmInSongHydrator;
+use App\Component\Hydrator\Strategy\NestedFilmHydrator;
 use App\Component\Model\ModelConstants;
 use App\Entity\Film;
 use App\Entity\Person;
@@ -80,7 +80,7 @@ class HomePayloadDTO extends AbstractUniqueDTO
                 'title' => $film->getTitle(),
                 'uuid' => $film->getUuid(),
             ];
-            $filmDTO = NestedFilmInSongHydrator::hydrate($filmDTO, ['film' => $film], $em);
+            $filmDTO = NestedFilmHydrator::hydrate($filmDTO, ['film' => $film], $em);
             $filmsDTOList[] = $filmDTO;
         }
         if(isset($filmsDTOList)) {

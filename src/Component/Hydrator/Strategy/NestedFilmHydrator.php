@@ -10,7 +10,7 @@ use App\Component\Hydrator\Description\HydratorInterface;
 use App\Entity\Film;
 use Doctrine\ORM\EntityManagerInterface;
 
-class NestedFilmInSongHydrator implements HydratorInterface
+class NestedFilmHydrator implements HydratorInterface
 {
     /**
      * @param DTOInterface $dto
