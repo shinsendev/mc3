@@ -32,7 +32,7 @@ trait NumberDescriptionTrait
     protected $completeness = []; // AttributeNestedDTO
 
     /** @var string */
-    protected $completenessOptions = NumberPayloadDTO::NO_VALUE; // AttributeNestedDTO
+    protected $completenessOption = NumberPayloadDTO::NO_VALUE; // AttributeNestedDTO
 
     /** @var string */
     protected $structure = NumberPayloadDTO::NO_VALUE; // AttributeNestedDTO
@@ -170,17 +170,17 @@ trait NumberDescriptionTrait
     /**
      * @return string
      */
-    public function getCompletenessOptions(): string
+    public function getCompletenessOption(): string
     {
-        return $this->completenessOptions;
+        return $this->completenessOption;
     }
 
     /**
-     * @param string $completenessOptions
+     * @param string $completenessOption
      */
-    public function setCompletenessOptions(string $completenessOptions): void
+    public function setCompletenessOption(string $completenessOption): void
     {
-        $this->completenessOptions = $completenessOptions;
+        $this->completenessOption = $completenessOption;
     }
 
     /**

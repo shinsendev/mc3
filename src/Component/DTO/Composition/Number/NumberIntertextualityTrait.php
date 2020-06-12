@@ -8,27 +8,28 @@ use App\Component\DTO\Payload\NumberPayloadDTO;
 
 trait NumberIntertextualityTrait
 {
-    /** @var array */
+    /** @var string */
     private $source = NumberPayloadDTO::NO_VALUE; // AttributeNestedDTO
 
     /** @var array */
-    private $quotation = []; // AttributeNestedDTO
+    private $quotation = [];
 
     /**
-     * @return array
+     * @return string
      */
-    public function getSource(): array
+    public function getSource(): string
     {
         return $this->source;
     }
 
     /**
-     * @param array $source
+     * @param string $source
      */
-    public function setSource(array $source): void
+    public function setSource(string $source): void
     {
         $this->source = $source;
-    }
+    } // AttributeNestedDTO
+
 
     /**
      * @return array
