@@ -9,6 +9,7 @@ use App\Component\DTO\Payload\NumberPayloadDTO;
 use App\Component\Hydrator\Attribute\AttributeManyToManyHydrator;
 use App\Component\Hydrator\Attribute\AttributeManyToOneHydrator;
 use App\Component\Hydrator\Description\HydratorDTOInterface;
+use App\Component\Hydrator\Helper\PersonHelper;
 use App\Component\Hydrator\HydratorBasics;
 use App\Component\Model\ModelConstants;
 use Doctrine\ORM\EntityManagerInterface;
@@ -55,6 +56,15 @@ class NumberPayloadHydrator implements HydratorDTOInterface
 
         $manyToMany = ['completeness_thesaurus', 'dancemble', 'dance_subgenre', 'musensemble', 'source_thesaurus', 'imaginary', 'diegetic_place_thesaurus', 'exoticism_thesaurus', 'musical_thesaurus', 'tempo_thesaurus', 'quotation_thesaurus', 'dancing_type', 'stereotype', 'genre'];
         $dto = self::setAttributes($number->getAttributes(), $dto, $manyToMany);
+
+        // add persons
+        $performers = PersonHelper::getPersonsByProfession('performer', ModelConstants::NUMBER_MODEL, $number, $em);
+        $dto->setPerformers($performers);
+
+        $arrangers = PersonHelper::getPersonsByProfession('arranger', ModelConstants::NUMBER_MODEL, $number, $em);
+        $dto->setArrangers($arrangers);
+
+        // add songs
 
         return $dto;
     }
