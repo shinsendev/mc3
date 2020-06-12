@@ -49,37 +49,12 @@ class NumberPayloadHydrator implements HydratorDTOInterface
 //        $nestedFilm = DTOFactory::create(ModelConstants::FILM_NESTED_DTO_MODEL);
 //        $nestedFilm = NestedFilmHydrator::hydrate($nestedFilm, ['film' => $number->getFilm()], $em);
 
-//        $attributeConfiguration = [
-//            [
-//                'initialProperty' => 'performance_thesaurus',
-//                'convertedProperty' => 'performance'
-//            ],
-//            [
-//                'initialProperty' => 'musician_thesaurus',
-//                'convertedProperty' => 'visibleMusicians'
-//            ],
-//            [
-//                'initialProperty' =>'begin_thesaurus',
-//                'convertedProperty' => 'beginning'
-//            ],
-//            [
-//                'initialProperty' => 'ending_thesaurus',
-//                'convertedProperty' => 'ending'
-//            ],
-//            [
-//                'initialProperty' => 'completeness_thesaurus',
-//                'convertedProperty' => 'completeness',
-//            ]
-//        ];
-
         // set film in a string
         $nestedFilm = $number->getFilm()->getTitle(). ' ('.$number->getFilm()->getReleasedYear().')';
         $dto->setFilm($nestedFilm);
 
         $manyToMany = ['completeness_thesaurus', 'dancemble', 'dance_subgenre', 'musensemble', 'source_thesaurus', 'imaginary', 'diegetic_place_thesaurus', 'exoticism_thesaurus', 'musical_thesaurus', 'tempo_thesaurus', 'quotation_thesaurus', 'dancing_type', 'stereotype', 'genre'];
         $dto = self::setAttributes($number->getAttributes(), $dto, $manyToMany);
-
-//        $dto = AttributeHelper::setAttributes($number->getAttributes(), $attributeConfiguration, $dto);
 
         return $dto;
     }
