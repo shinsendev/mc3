@@ -104,7 +104,7 @@ class NumberPayloadHydrator implements HydratorDTOInterface
                 ],
                 [
                     'legacy' => 'musician_thesaurus',
-                    'current' => 'visibleMusician'
+                    'current' => 'visibleMusicians'
                 ],
                 [
                     'legacy' => 'begin_thesaurus',

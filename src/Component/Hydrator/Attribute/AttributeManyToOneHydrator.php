@@ -20,34 +20,12 @@ class AttributeManyToOneHydrator
      */
     public static function setManyToOneThesaurus(string $code, Attribute $attribute, DTOInterface $dto, array $manyToOneExceptions)
     {
-        if ($code === 'performance_thesaurus') {
-            $dto->setPerformance($attribute->getTitle());
-            return $dto;
-        }
-
-        if ($code === 'musician_thesaurus') {
-            $dto->setVisibleMusicians($attribute->getTitle());
-            return $dto;
-        }
-
-        if ($code === 'begin_thesaurus') {
-            $dto->setBeginning($attribute->getTitle());
-            return $dto;
-        }
-
-        if ($code === 'ending_thesaurus') {
-            $dto->setEnding($attribute->getTitle());
-            return $dto;
-        }
-
-        if ($code === 'spectators_thesaurus') {
-            $dto->setSpectators($attribute->getTitle());
-            return $dto;
-        }
-
-        if ($code === 'complet_options') {
-            $dto->setCompletenessOption($attribute->getTitle());
-            return $dto;
+        foreach ($manyToOneExceptions as $exception) {
+            if ($exception['legacy'] === $code) {
+                $setter = 'set'.ucfirst($exception['current']);
+                $dto->$setter($attribute->getTitle());
+                return $dto;
+            }
         }
     }
 }
