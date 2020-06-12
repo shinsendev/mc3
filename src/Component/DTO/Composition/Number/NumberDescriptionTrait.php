@@ -13,7 +13,7 @@ trait NumberDescriptionTrait
     /** @var string */
     protected $title;
 
-    /** @var FilmNestedDTO */
+    /** @var string */
     protected $film;
 
     /** @var integer */
@@ -41,7 +41,7 @@ trait NumberDescriptionTrait
     protected $shots = 0;
 
     /** @var int */
-    protected $averageShotLength;
+    protected $averageShotLength = 0;
 
     /** @var string */
     protected $performance = NumberPayloadDTO::NO_VALUE; // one choice
@@ -72,17 +72,17 @@ trait NumberDescriptionTrait
     }
 
     /**
-     * @return FilmNestedDTO
+     * @return string
      */
-    public function getFilm(): FilmNestedDTO
+    public function getFilm(): string
     {
         return $this->film;
     }
 
     /**
-     * @param FilmNestedDTO $film
+     * @param string $film
      */
-    public function setFilm(FilmNestedDTO $film): void
+    public function setFilm(string $film): void
     {
         $this->film = $film;
     }
