@@ -15,7 +15,7 @@ use App\Entity\Attribute;
  */
 class AttributeManyToManyHydrator
 {
-    public static function prepareManyToMany(string $code, Attribute $attribute):?array
+    public static function prepareManyToMany(string $code, Attribute $attribute)
     {
         if ($code === 'completeness_thesaurus') {
             $manyToManyAttributes['completeness'][] = $attribute->getTitle();
@@ -79,6 +79,16 @@ class AttributeManyToManyHydrator
 
         if ($code === 'stereotype') {
             $manyToManyAttributes['ethnicStereotypes'][] = $attribute->getTitle();
+            return $manyToManyAttributes;
+        }
+
+        if ($code === 'dancing_type') {
+            $manyToManyAttributes['dancingType'][] = $attribute->getTitle();
+            return $manyToManyAttributes;
+        }
+
+        if ($code === 'dance_content') {
+            $manyToManyAttributes['danceContent'][] = $attribute->getTitle();
             return $manyToManyAttributes;
         }
     }

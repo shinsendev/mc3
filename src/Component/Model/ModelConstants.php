@@ -23,8 +23,11 @@ class ModelConstants
     const FILM_MODEL = 'film';
     const FILM_NESTED_DTO_MODEL = 'filmNestedDTOModel';
     const FILM_PAYLOAD_MODEL = 'filmPayload';
+
     const SONG_MODEL = 'song';
     const SONG_PAYLOAD_MODEL = 'songPayload';
+    const SONG_NESTED_MODEL = 'songNestedPayload';
+
     const PERSON_MODEL = 'person';
     const PERSON_PAYLOAD_MODEL = 'personPayload';
     const PERSON_NESTED_DTO_MODEL = 'personNestedDTOModel';

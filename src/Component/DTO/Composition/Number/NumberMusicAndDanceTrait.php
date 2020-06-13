@@ -9,7 +9,7 @@ namespace App\Component\DTO\Composition\Number;
 trait NumberMusicAndDanceTrait
 {
     /** @var array */
-    protected $song = []; // SongDTO or NestedSongDTO
+    protected $songs = []; // NestedSongDTO[]
 
     protected $musicalEnsemble = []; //
 
@@ -43,18 +43,19 @@ trait NumberMusicAndDanceTrait
     /**
      * @return array
      */
-    public function getSong(): array
+    public function getSongs(): array
     {
-        return $this->song;
+        return $this->songs;
     }
 
     /**
-     * @param array $song
+     * @param array $songs
      */
-    public function setSong(array $song): void
+    public function setSongs(array $songs): void
     {
-        $this->song = $song;
+        $this->songs = $songs;
     }
+
 
     /**
      * @return array

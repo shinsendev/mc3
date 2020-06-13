@@ -6,6 +6,7 @@ namespace App\Component\Hydrator\Strategy;
 
 use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Payload\NumberPayloadDTO;
+use App\Component\Factory\DTOFactory;
 use App\Component\Hydrator\Attribute\AttributeManyToManyHydrator;
 use App\Component\Hydrator\Attribute\AttributeManyToOneHydrator;
 use App\Component\Hydrator\Description\HydratorDTOInterface;
@@ -27,7 +28,7 @@ class NumberPayloadHydrator implements HydratorDTOInterface
     {
         $params = [];
         // set excludes parameters to treate manually some properties
-        $params['excludes'] = ['dubbing', 'film'];
+        $params['excludes'] = ['dubbing', 'film', 'songs'];
         // fields we are forced to complete, if not we throw an error
         $params['mandatory'] = ['title'];
 
@@ -54,7 +55,7 @@ class NumberPayloadHydrator implements HydratorDTOInterface
         $nestedFilm = $number->getFilm()->getTitle(). ' ('.$number->getFilm()->getReleasedYear().')';
         $dto->setFilm($nestedFilm);
 
-        $manyToMany = ['completeness_thesaurus', 'dancemble', 'dance_subgenre', 'musensemble', 'source_thesaurus', 'imaginary', 'diegetic_place_thesaurus', 'exoticism_thesaurus', 'musical_thesaurus', 'tempo_thesaurus', 'quotation_thesaurus', 'dancing_type', 'stereotype', 'genre'];
+        $manyToMany = ['completeness_thesaurus', 'dancemble', 'dance_subgenre', 'musensemble', 'source_thesaurus', 'imaginary', 'diegetic_place_thesaurus', 'exoticism_thesaurus', 'musical_thesaurus', 'tempo_thesaurus', 'quotation_thesaurus', 'dancing_type', 'stereotype', 'genre', 'dance_content'];
         $dto = self::setAttributes($number->getAttributes(), $dto, $manyToMany);
 
         // add persons
@@ -65,6 +66,19 @@ class NumberPayloadHydrator implements HydratorDTOInterface
         $dto->setArrangers($arrangers);
 
         // add songs
+        $dto = self::setSongs($number->getSongs(), $dto, $em);
+
+        return $dto;
+    }
+
+    public static function setSongs(PersistentCollection $songs, NumberPayloadDTO $dto, EntityManagerInterface $em):NumberPayloadDTO
+    {
+        $songsDTO = [];
+        foreach($songs as $song) {
+            $songDTO = DTOFactory::create(ModelConstants::SONG_NESTED_MODEL);
+            $songsDTO[] = NestedSongHydrator::hydrate($songDTO, ['song' => $song], $em);
+        }
+        $dto->setSongs($songsDTO);
 
         return $dto;
     }
@@ -130,6 +144,7 @@ class NumberPayloadHydrator implements HydratorDTOInterface
             $dto->$setter($attribute->getTitle());
         }
 
+
         $manyToManyConfiguration = [
             [
                 'legacy' => 'completeness_thesaurus',
@@ -169,7 +184,7 @@ class NumberPayloadHydrator implements HydratorDTOInterface
             ],
             [
                 'legacy' => 'dancing_type',
-                'current' => 'dancing_type'
+                'current' => 'dancingType'
             ],
             [
                 'legacy' => 'stereotype',
@@ -183,7 +198,12 @@ class NumberPayloadHydrator implements HydratorDTOInterface
                 'legacy' => 'genre',
                 'current' => 'topic'
             ],
+            [
+                'legacy' => 'dance_content',
+                'current' => 'danceContent'
+            ],
         ];
+
 
         if (isset($manyToManyAttributes)) {
             $dto = AttributeManyToManyHydrator::setAllManyToManyAttributes($manyToManyAttributes, $manyToMany, $dto, $manyToManyConfiguration);

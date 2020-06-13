@@ -18,7 +18,7 @@ class NestedFilmHydrator implements HydratorInterface
      * @param EntityManagerInterface $em
      * @return DTOInterface|FilmNestedDTO
      */
-    public static function hydrate(DTOInterface $dto, array $data, EntityManagerInterface $em)
+    public static function hydrate(DTOInterface $dto, array $data, EntityManagerInterface $em):DTOInterface
     {
         /** @var Film $film */
         $film = $data['film'];
