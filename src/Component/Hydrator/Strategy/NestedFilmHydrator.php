@@ -10,7 +10,7 @@ use App\Component\Hydrator\Description\HydratorInterface;
 use App\Entity\Film;
 use Doctrine\ORM\EntityManagerInterface;
 
-class NestedFilmInSongHydrator implements HydratorInterface
+class NestedFilmHydrator implements HydratorInterface
 {
     /**
      * @param DTOInterface $dto
@@ -18,7 +18,7 @@ class NestedFilmInSongHydrator implements HydratorInterface
      * @param EntityManagerInterface $em
      * @return DTOInterface|FilmNestedDTO
      */
-    public static function hydrate(DTOInterface $dto, array $data, EntityManagerInterface $em)
+    public static function hydrate(DTOInterface $dto, array $data, EntityManagerInterface $em):DTOInterface
     {
         /** @var Film $film */
         $film = $data['film'];

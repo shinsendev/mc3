@@ -77,7 +77,7 @@ class SongPayloadHydrator implements HydratorDTOInterface
 
         foreach($films as $film) {
             $filmPayload = DTOFactory::create(ModelConstants::FILM_NESTED_DTO_MODEL);
-            $filmPayload = NestedFilmInSongHydrator::hydrate($filmPayload, ['film' => $film], $em);
+            $filmPayload = NestedFilmHydrator::hydrate($filmPayload, ['film' => $film], $em);
             $nestedFilmsListDTO[] = $filmPayload;
         }
 

@@ -1,0 +1,16 @@
+type: number
+    attributes:
+        manyToOne:
+        manyToMany:
+            - completeness
+            - danceEnsemble
+            - musicalEnsemble
+            - imaginaryPlace
+            - diegeticPlace
+            - exoticism
+            - musicalStyles
+            - tempo
+            - dancing_type
+            - ethnicStereotypes
+            - danceSubgenre
+            - topic

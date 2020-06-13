@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace App\Component\DataTransformer;
 
-use App\Component\DTO\Payload\FilmPayloadDTO;
 use App\Component\DTO\Payload\SongPayloadDTO;
 use App\Component\Factory\DTOFactory;
-use App\Component\Hydrator\Strategy\FilmPayloadHydrator;
 use App\Component\Hydrator\Strategy\SongPayloadHydrator;
 use App\Component\Model\ModelConstants;
-use App\Entity\Film;
 use App\Entity\Song;
 use Doctrine\ORM\EntityManagerInterface;
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
