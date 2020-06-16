@@ -25,13 +25,13 @@ class CategoryPayloadDTO extends AbstractUniqueDTO
     private $description = '';
 
     /** @var string */
-    private $model;
+    private $model = 'other';
 
     /** @var array */
-    private $attributes;
+    private $attributes = [];
 
     /** @var int */
-    private $attributesCount;
+    private $attributesCount = 0;
 
     /**
      * @return string

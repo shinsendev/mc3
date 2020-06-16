@@ -26,7 +26,7 @@ class CategoryResourceGetCollectionTest extends AbstractFunctionalTest
         $arrayResponse = $response->toArray();
         $this->assertEquals(4, count($arrayResponse['hydra:member']), 'Uncorrect numbers of catgeories');
         $this->assertEquals('censorship', $arrayResponse['hydra:member'][2]['title']);
-        $this->assertEquals('other', $arrayResponse['hydra:member'][1]['model']);
+        $this->assertEquals('number', $arrayResponse['hydra:member'][1]['model']);
         $this->assertEquals('6d9ade45-877a-4b99-bb1b-408d9e3087f4', $arrayResponse['hydra:member'][0]['uuid']);
         $this->assertEquals('Ethnic stereotypes', $arrayResponse['hydra:member'][0]['title']);
     }

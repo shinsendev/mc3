@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200521163833 extends AbstractMigration
+final class Version20200616133446 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -20,17 +20,13 @@ final class Version20200521163833 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
-
-        $this->addSql('ALTER TABLE number ADD dubbing TEXT DEFAULT NULL');
+        $this->addSql('ALTER TABLE number RENAME COLUMN "references" TO reference');
     }
 
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
-
         $this->addSql('CREATE SCHEMA public');
-        $this->addSql('ALTER TABLE number DROP dubbing');
+        $this->addSql('ALTER TABLE number RENAME COLUMN reference TO "references"');
     }
 }

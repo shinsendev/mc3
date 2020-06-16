@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Tests\Functional;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
+use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\Client;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 
 abstract class AbstractFunctionalTest extends ApiTestCase
 {
     use FixturesTrait;
 
-    /** @var \ApiPlatform\Core\Bridge\Symfony\Bundle\Test\Client  */
+    /** @var Client */
     protected $client;
 
     public function setUp()
