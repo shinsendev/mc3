@@ -47,7 +47,7 @@ class Number extends AbstractTarget
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $references;
+    private $reference;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Attribute")
@@ -142,16 +142,20 @@ class Number extends AbstractTarget
         return $this;
     }
 
-    public function getReferences(): ?string
+    /**
+     * @return mixed
+     */
+    public function getReference()
     {
-        return $this->references;
+        return $this->reference;
     }
 
-    public function setReferences(?string $references): self
+    /**
+     * @param mixed $reference
+     */
+    public function setReference($reference): void
     {
-        $this->references = $references;
-
-        return $this;
+        $this->reference = $reference;
     }
 
     /**
