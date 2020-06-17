@@ -8,6 +8,7 @@ use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
 use App\Component\DTO\Nested\FilmNestedDTO;
 use App\Component\Factory\DTOFactory;
 use App\Component\Hydrator\Strategy\NestedFilmHydrator;
+use App\Component\Hydrator\Strategy\PersonPayloadHydrator;
 use App\Component\Model\ModelConstants;
 use App\Entity\Film;
 use App\Entity\Person;
@@ -54,7 +55,7 @@ class HomePayloadDTO extends AbstractUniqueDTO
         $personsData = $em->getRepository(Person::class)->findPopularPersonsByJob(30, 'performer');
         foreach ($personsData as $personData) {
             $personDTO = DTOFactory::create(ModelConstants::PERSON_NESTED_DTO_MODEL);
-            $personDTO->hydrate($personData, $em);
+            $personDTO = PersonPayloadHydrator::hydrate($personDTO, $personData, $em);
             $performers[] = $personDTO;
         }
 
