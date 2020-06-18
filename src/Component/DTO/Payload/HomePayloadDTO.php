@@ -85,10 +85,6 @@ class HomePayloadDTO extends AbstractDTO
 
         foreach ($films as $film) {
             $filmDTO = DTOFactory::create(ModelConstants::FILM_NESTED_DTO_MODEL);
-            $filmArray = [
-                'title' => $film->getTitle(),
-                'uuid' => $film->getUuid(),
-            ];
             $filmDTO = NestedFilmHydrator::hydrate($filmDTO, ['film' => $film], $em);
             $filmsDTOList[] = $filmDTO;
         }
