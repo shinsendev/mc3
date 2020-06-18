@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Component\DTO\Payload;
 
+use App\Component\DTO\Hierarchy\AbstractDTO;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
 use App\Component\DTO\Nested\FilmNestedDTO;
 use App\Component\Factory\DTOFactory;
@@ -11,6 +12,7 @@ use App\Component\Hydrator\Strategy\NestedFilmHydrator;
 use App\Component\Hydrator\Strategy\PersonPayloadHydrator;
 use App\Component\Model\ModelConstants;
 use App\Entity\Film;
+use App\Entity\Number;
 use App\Entity\Person;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -18,7 +20,7 @@ use Doctrine\ORM\EntityManagerInterface;
  * Class HomePayloadDTO
  * @package App\Component\DTO\Payload
  */
-class HomePayloadDTO extends AbstractUniqueDTO
+class HomePayloadDTO extends AbstractDTO
 {
     /** @var int */
     private $filmsCount = 0;
@@ -26,15 +28,18 @@ class HomePayloadDTO extends AbstractUniqueDTO
     /** @var  int */
     private $filmsWithNumberCount = 0;
 
+    /** @var int */
+    private $numbersCount = 0;
+
     //todo: add blogs articles DTO
     /** @var void|array */
     private $blogArticles;
 
-    /** @var void|array */
-    private $performers;
+    /** @var array */
+    private $performers = [];
 
-    /** @var void|FilmNestedDTO[] */
-    private $films;
+    /** @var FilmNestedDTO[] */
+    private $films = [];
 
     public function hydrate(array $data, EntityManagerInterface $em)
     {
@@ -47,6 +52,9 @@ class HomePayloadDTO extends AbstractUniqueDTO
         // count film with numbers
         $totalFilms = $filmRepository->countFilmsWithNumbers();
         $this->setFilmsWithNumberCount($totalFilms);
+
+        $totalNumbers = $em->getRepository(Number::class)->countNumbers();
+        $this->setNumbersCount($totalNumbers);
 
         // get last blog articles
         //todo : add articles with pagination
@@ -122,6 +130,22 @@ class HomePayloadDTO extends AbstractUniqueDTO
     }
 
     /**
+     * @return int
+     */
+    public function getNumbersCount(): int
+    {
+        return $this->numbersCount;
+    }
+
+    /**
+     * @param int $numbersCount
+     */
+    public function setNumbersCount(int $numbersCount): void
+    {
+        $this->numbersCount = $numbersCount;
+    }
+
+    /**
      * @return array|void
      */
     public function getBlogArticles()
@@ -138,15 +162,15 @@ class HomePayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return array|void
+     * @return array
      */
-    public function getPerformers()
+    public function getPerformers():array
     {
         return $this->performers;
     }
 
     /**
-     * @param array|void $performers
+     * @param array $performers
      */
     public function setPerformers($performers): void
     {
@@ -154,15 +178,15 @@ class HomePayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return FilmNestedDTO[]|void
+     * @return FilmNestedDTO[]
      */
-    public function getFilms()
+    public function getFilms():array
     {
         return $this->films;
     }
 
     /**
-     * @param FilmNestedDTO[]|void $films
+     * @param FilmNestedDTO[] $films
      */
     public function setFilms($films): void
     {
