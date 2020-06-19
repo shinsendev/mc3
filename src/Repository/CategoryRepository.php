@@ -19,4 +19,15 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
+    /**
+     * @return int|mixed|string
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function countCategories()
+    {
+        $query = $this->getEntityManager()->createQuery('SELECT COUNT(n.id) FROM App\Entity\Category n');
+        return $query->getSingleScalarResult();
+    }
+
 }

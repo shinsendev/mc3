@@ -13,6 +13,7 @@ use App\Component\DTO\Composition\Number\NumberMusicAndDanceTrait;
 use App\Component\DTO\Composition\Number\NumberThemeTrait;
 use App\Component\DTO\Composition\UniqueDTOTrait;
 use App\Component\DTO\Definition\DTOInterface;
+use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
 
 /**
  * Class NarrativeDTO
@@ -21,10 +22,9 @@ use App\Component\DTO\Definition\DTOInterface;
  *     shortName="number"
  * )
  */
-class NumberPayloadDTO implements DTOInterface
+class NumberPayloadDTO extends AbstractUniqueDTO implements DTOInterface
 {
-    use UniqueDTOTrait,
-        NumberDescriptionTrait,
+    use NumberDescriptionTrait,
         NumberBackstageTrait,
         NumberThemeTrait,
         NumberMusicAndDanceTrait,

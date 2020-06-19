@@ -53,12 +53,12 @@ class FilmRepository extends ServiceEntityRepository
      * @param int $offset
      * @return array
      */
-    public function findPaginatedFilmsWithNumbers(int $limit, int $offset):Paginator
+    public function findPaginatedFilmsWithNumbers(int $limit = 30, int $offset = 0):Paginator
     {
-        $dql = "SELECT f FROM App\Entity\Film f JOIN f.numbers n";
+        $dql = "SELECT f FROM App\Entity\Film f JOIN f.numbers n ORDER BY f.title ASC";
         $query = $this->getEntityManager()->createQuery($dql)
-            ->setFirstResult(0)
-            ->setMaxResults(10);
+            ->setFirstResult($offset)
+            ->setMaxResults($limit);
 
         return new Paginator($query, $fetchJoinCollection = true);
     }

@@ -44,4 +44,16 @@ class PersonRepository extends ServiceEntityRepository
 
         return new Paginator($query, $fetchJoinCollection = true);
     }
+
+    /**
+     * @return int|mixed|string
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function countPersons()
+    {
+        $query = $this->getEntityManager()->createQuery('SELECT COUNT(p.id) FROM App\Entity\Person p');
+        return $query->getSingleScalarResult();
+    }
+
 }

@@ -83,4 +83,15 @@ class SongRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+
+    /**
+     * @return int|mixed|string
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function countSongs()
+    {
+        $query = $this->getEntityManager()->createQuery('SELECT COUNT(n.id) FROM App\Entity\Song n');
+        return $query->getSingleScalarResult();
+    }
 }
