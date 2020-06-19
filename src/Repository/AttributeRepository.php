@@ -31,4 +31,15 @@ class AttributeRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    /**
+     * @return int|mixed|string
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function countAttributes()
+    {
+        $query = $this->getEntityManager()->createQuery('SELECT COUNT(n.id) FROM App\Entity\Attribute n');
+        return $query->getSingleScalarResult();
+    }
+
 }

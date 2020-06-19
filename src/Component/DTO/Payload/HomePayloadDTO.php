@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace App\Component\DTO\Payload;
 
 use App\Component\DTO\Hierarchy\AbstractDTO;
-use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
 use App\Component\DTO\Nested\FilmNestedDTO;
 use App\Component\Factory\DTOFactory;
 use App\Component\Hydrator\Strategy\NestedFilmHydrator;
 use App\Component\Hydrator\Strategy\PersonPayloadHydrator;
 use App\Component\Model\ModelConstants;
+use App\Entity\Attribute;
+use App\Entity\Category;
 use App\Entity\Film;
 use App\Entity\Number;
 use App\Entity\Person;
+use App\Entity\Song;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -30,6 +32,18 @@ class HomePayloadDTO extends AbstractDTO
 
     /** @var int */
     private $numbersCount = 0;
+
+    /** @var int */
+    private $songsCount = 0;
+
+    /** @var int */
+    private $personsCount = 0;
+
+    /** @var int */
+    private $attributesCount = 0;
+
+    /** @var int */
+    private $categoriesCount = 0;
 
     //todo: add blogs articles DTO
     /** @var void|array */
@@ -53,8 +67,25 @@ class HomePayloadDTO extends AbstractDTO
         $totalFilms = $filmRepository->countFilmsWithNumbers();
         $this->setFilmsWithNumberCount($totalFilms);
 
+        // count numbers
         $totalNumbers = $em->getRepository(Number::class)->countNumbers();
         $this->setNumbersCount($totalNumbers);
+
+        // count attributes
+        $totalAttributes = $em->getRepository(Attribute::class)->countAttributes();
+        $this->setAttributesCount($totalAttributes);
+
+        // count songs
+        $totalSongs = $em->getRepository(Song::class)->countSongs();
+        $this->setSongsCount($totalSongs);
+
+        // count categories
+        $totalCategories = $em->getRepository(Category::class)->countCategories();
+        $this->setCategoriesCount($totalCategories);
+
+        // count persons
+        $totalPersons = $em->getRepository(Person::class)->countPersons();
+        $this->setPersonsCount($totalPersons);
 
         // get last blog articles
         //todo : add articles with pagination
@@ -139,6 +170,70 @@ class HomePayloadDTO extends AbstractDTO
     public function setNumbersCount(int $numbersCount): void
     {
         $this->numbersCount = $numbersCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSongsCount(): int
+    {
+        return $this->songsCount;
+    }
+
+    /**
+     * @param int $songsCount
+     */
+    public function setSongsCount(int $songsCount): void
+    {
+        $this->songsCount = $songsCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPersonsCount(): int
+    {
+        return $this->personsCount;
+    }
+
+    /**
+     * @param int $personsCount
+     */
+    public function setPersonsCount(int $personsCount): void
+    {
+        $this->personsCount = $personsCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAttributesCount(): int
+    {
+        return $this->attributesCount;
+    }
+
+    /**
+     * @param int $attributesCount
+     */
+    public function setAttributesCount(int $attributesCount): void
+    {
+        $this->attributesCount = $attributesCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCategoriesCount(): int
+    {
+        return $this->categoriesCount;
+    }
+
+    /**
+     * @param int $categoriesCount
+     */
+    public function setCategoriesCount(int $categoriesCount): void
+    {
+        $this->categoriesCount = $categoriesCount;
     }
 
     /**
