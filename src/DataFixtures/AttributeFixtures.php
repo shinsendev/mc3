@@ -31,11 +31,13 @@ class AttributeFixtures extends Fixture implements DependentFixtureInterface
             $manager->persist($attribute);
         }
 
+        // song attributes
+
         // add songtype category
         $categoryRepository = $manager->getRepository(Category::class);
         $songType = $categoryRepository->findOneByUuid("55a40d04-420e-4ff8-8243-e874cf49db29");
 
-        // song attributes
+        // add two songtypes attributes "ragtime" and "dance"
         $ragtime = $this->normalize("Ragtime", "629981fd-7a22-433d-8c6c-8d9aac40d815","\"coon song\"", "");
         $ragtime = $this->generateAttribute($ragtime);
         $ragtime->setCategory($songType);
@@ -45,6 +47,18 @@ class AttributeFixtures extends Fixture implements DependentFixtureInterface
         $dance = $this->generateAttribute($dance);
         $dance->setCategory($songType);
         $manager->persist($dance);
+
+        // number attributes
+
+        // add spectators category (many to one)
+        $categoryRepository = $manager->getRepository(Category::class);
+        $spectators = $categoryRepository->findOneByUuid('d6459475-de14-4165-affd-a67134cfc4a6');
+
+        // create spectators attribute "virtual audience imagined by the performers"
+        $spectatorsAttribute = $this->normalize("virtual audience imagined by the performers", "475a4966-bc8b-46e0-b0de-8faad3f8dc62","", "");
+        $spectatorsAttribute = $this->generateAttribute($spectatorsAttribute);
+        $spectatorsAttribute->setCategory($spectators);
+        $manager->persist($spectatorsAttribute);
 
         $manager->flush();
     }
@@ -69,7 +83,6 @@ class AttributeFixtures extends Fixture implements DependentFixtureInterface
 
         /** @var CategoryRepository $categoryRepository */
         $categoryRepository = $manager->getRepository(Category::class);
-        // censorship category
 
         if ($i < 3) {
             /** @var Category $category */

@@ -89,7 +89,7 @@ class NumberPayloadHydrator implements HydratorDTOInterface
      * @param array $manyToMany
      * @return NumberPayloadDTO
      */
-    public function setAttributes(PersistentCollection $attributes, DTOInterface $dto, array $manyToMany = []):NumberPayloadDTO
+    public static function setAttributes(PersistentCollection $attributes, DTOInterface $dto, array $manyToMany = []):NumberPayloadDTO
     {
         $manyToManyAttributes = [];
 
