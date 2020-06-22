@@ -28,4 +28,12 @@ class NumberResourceGetTest extends AbstractFunctionalTest
         $this->assertEquals('Prologue', $arrayResponse['title']);
         $this->assertEquals('virtual audience imagined by the performers', $arrayResponse['spectators']);
     }
+
+    public function testGetNotFoundNumber()
+    {
+        $uuid = '42187cb9-f1f3-4a22-807d-a8c59b6b5f5b'; // false uuid corresponding to any number
+        $response = $this->client->request('GET', 'api/numbers/'.$uuid);
+        $this->assertResponseStatusCodeSame(404);
+
+    }
 }
