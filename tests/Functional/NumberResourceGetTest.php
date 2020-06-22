@@ -6,21 +6,26 @@ namespace App\Tests\Functional;
 
 class NumberResourceGetTest extends AbstractFunctionalTest
 {
-    public function testGetNumber()
+    public function testGetNumberOpening()
     {
         $uuid = '5d5bee4b-3fab-4c65-b045-9b116b218d4c';
         $response = $this->client->request('GET', 'api/numbers/'.$uuid);
         $this->assertResponseIsSuccessful();
 
         $arrayResponse = $response->toArray();
-//        dd($arrayResponse);
-//        $this->assertEquals("West Side Story", $arrayResponse['title']);
-//        $this->assertEquals(1962, $arrayResponse['productionYear']);
-//        $this->assertEquals(1961, $arrayResponse['releasedYear'] );
-//        $this->assertEquals('tt0055614', $arrayResponse['imdb']);
-//        $this->assertEquals(3, count($arrayResponse['censorships']));
-//        $this->assertEquals(6000, $arrayResponse['length']);
-//        $this->assertEquals(1, count($arrayResponse['studios']));
-//        $this->assertEquals('MGM',$arrayResponse['studios'][0]['name']);
+        $this->assertEquals('Overture', $arrayResponse['title']);
+        $this->assertEquals(22, $arrayResponse['startingTc']);
+        $this->assertEquals(301, $arrayResponse['endingTc']);
+    }
+
+    public function testGetNumberPrologue()
+    {
+        $uuid = 'ec1b17fd-1578-4c69-a52a-094bf4c7b078';
+        $response = $this->client->request('GET', 'api/numbers/'.$uuid);
+        $this->assertResponseIsSuccessful();
+
+        $arrayResponse = $response->toArray();
+        $this->assertEquals('Prologue', $arrayResponse['title']);
+        $this->assertEquals('virtual audience imagined by the performers', $arrayResponse['spectators']);
     }
 }

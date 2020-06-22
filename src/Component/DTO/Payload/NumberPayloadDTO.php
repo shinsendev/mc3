@@ -30,6 +30,6 @@ class NumberPayloadDTO extends AbstractUniqueDTO implements DTOInterface
         NumberMusicAndDanceTrait,
         NumberIntertextualityTrait;
 
-    CONST NO_VALUE = 'NA';
+    CONST NO_VALUE = 'blank';
 
 }

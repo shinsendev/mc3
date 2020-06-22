@@ -28,6 +28,10 @@ class CategoryFixtures extends Fixture
         $songType = $this->generateCategory($this->normalize('Song Type', '55a40d04-420e-4ff8-8243-e874cf49db29', '', 'songtype', 'song'));
         $manager->persist($songType);
 
+        // add diegetic spectators category for songs
+        $spectators = $this->generateCategory($this->normalize('Diegetic spectators', 'd6459475-de14-4165-affd-a67134cfc4a6', 'One choice. Is the number diegetic? If so, what is its narratiev context?', 'spectators', 'number'));
+        $manager->persist($spectators);
+
         $manager->flush();
     }
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
-
+use App\Entity\Attribute;
 use App\Entity\Film;
 use App\Entity\Number;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -24,7 +24,7 @@ class NumberFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             ['title'=> 'Overture', 'uuid' => '5d5bee4b-3fab-4c65-b045-9b116b218d4c', 'beginTc' => 22, 'endTc' => 301],
-            ['title'=> 'Prologue', 'uuid' => 'ec1b17fd-1578-4c69-a52a-094bf4c7b078', 'reference' => 'References example'],
+            ['title'=> 'Prologue', 'uuid' => 'ec1b17fd-1578-4c69-a52a-094bf4c7b078', 'spectators' => 'no', 'attributes' => ['475a4966-bc8b-46e0-b0de-8faad3f8dc62']],
             ['title'=> 'Jet Song'],
             ['title'=> 'Something\'s Coming'],
             ['title'=> 'Dance at the Gym: Blues'],
@@ -64,8 +64,15 @@ class NumberFixtures extends Fixture implements DependentFixtureInterface
         isset($data['endTc']) ? $endTc = $data['endTc'] : $endTc = 10;
         $number->setEndTc($endTc);
 
-        isset($data['reference']) ? $reference = $data['reference'] : $reference = 0;
-        $number->setReference($reference);
+        // add attribute
+        if (isset($data['attributes'])) {
+            $attributeRepository = $manager->getRepository(Attribute::class);
+
+            foreach ($data['attributes'] as $attributeUuid) {
+                $attribute = $attributeRepository->findOneByUuid($attributeUuid);
+                $number->addAttribute($attribute);
+            }
+        }
 
         $number->setShots(0);
         $number->setContributors(null);
