@@ -11,6 +11,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class PersonPayloadHydrator implements HydratorDTOInterface
 {
+    const GROUP_TYPE = 'group';
+    const PERSON_TYPE = 'person';
+
     public static function hydrate(DTOInterface $dto, array $data, EntityManagerInterface $em):DTOInterface
     {
         /** @var Person $person */
@@ -19,11 +22,13 @@ class PersonPayloadHydrator implements HydratorDTOInterface
         // if it's a group, no need to get first and last names
         if ($person->getGroupname()) {
             $dto->setFullname($person->getGroupname());
+            $dto->setType(self::GROUP_TYPE);
         }
 
         else {
             if ($person->getFirstname() || $person->getLastname()) {
                 $dto->setFullname($person->getFirstname().' '.$person->getLastname());
+                $dto->setType(self::PERSON_TYPE);
             }
         }
 

@@ -2,12 +2,18 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Heredity\AbstractTarget;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use App\Component\DTO\Payload\PersonPayloadDTO;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ApiResource(
+ *     output=PersonPayloadDTO::class
+ * )
+ *
  * @ORM\Entity(repositoryClass="App\Repository\PersonRepository")
  */
 class Person extends AbstractTarget
