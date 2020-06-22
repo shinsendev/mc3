@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Component\Model\ModelConstants;
 use App\Entity\Person;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -56,4 +57,14 @@ class PersonRepository extends ServiceEntityRepository
         return $query->getSingleScalarResult();
     }
 
+    public function getRelatedFilms(string $personUuid)
+    {
+        $query = $this->getEntityManager()->createQuery('SELECT f.uuid FROM App\Entity\Film f INNER JOIN App\Entity\Work w WITH w.targetUuid = f.uuid AND w.targetType = :model JOIN w.person p WHERE w.targetType = :model AND p.uuid = :personUuid');
+        $query->setParameters([
+            'model' => ModelConstants::FILM_MODEL,
+            'personUuid' => $personUuid
+        ]);
+        dd($query->getResult());
+        return $query->getResult();
+    }
 }

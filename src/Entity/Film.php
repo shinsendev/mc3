@@ -95,7 +95,7 @@ class Film extends AbstractTarget
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Distributor", inversedBy="films")
      */
-    private $Distributor;
+    private $distributor;
 
     /**
      * @ORM\Column(type="json", nullable=true)
@@ -113,7 +113,7 @@ class Film extends AbstractTarget
         $this->attributes = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->studios = new ArrayCollection();
-        $this->Distributor = new ArrayCollection();
+        $this->distributor = new ArrayCollection();
     }
 
     public function getTitle(): ?string
@@ -386,13 +386,13 @@ class Film extends AbstractTarget
      */
     public function getDistributor(): Collection
     {
-        return $this->Distributor;
+        return $this->distributor;
     }
 
     public function addDistributor(Distributor $distributor): self
     {
-        if (!$this->Distributor->contains($distributor)) {
-            $this->Distributor[] = $distributor;
+        if (!$this->distributor->contains($distributor)) {
+            $this->distributor[] = $distributor;
         }
 
         return $this;
@@ -400,8 +400,8 @@ class Film extends AbstractTarget
 
     public function removeDistributor(Distributor $distributor): self
     {
-        if ($this->Distributor->contains($distributor)) {
-            $this->Distributor->removeElement($distributor);
+        if ($this->distributor->contains($distributor)) {
+            $this->distributor->removeElement($distributor);
         }
 
         return $this;

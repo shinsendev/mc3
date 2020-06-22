@@ -22,7 +22,8 @@ class Work
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="guid", nullable=false)
+     *
      */
     private $targetUuid;
 
