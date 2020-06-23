@@ -80,6 +80,12 @@ class PersonRepository extends ServiceEntityRepository
         return new Paginator($query, $fetchJoinCollection = true);
     }
 
+    /**
+     * @param string $personUuid
+     * @param int $limit
+     * @param int $first
+     * @return Paginator
+     */
     public function findPaginatedRelatedFilmsByNumbers(string $personUuid, int $limit = 100, $first = 0):Paginator
     {
         $query = $this->getEntityManager()->createQuery('
@@ -99,6 +105,12 @@ class PersonRepository extends ServiceEntityRepository
         return new Paginator($query, $fetchJoinCollection = true);
     }
 
+    /***
+     * @param string $personUuid
+     * @param int $limit
+     * @param int $first
+     * @return Paginator
+     */
     public function findPaginatedRelatedNumbers(string $personUuid, int $limit = 100, $first = 0):Paginator
     {
         $query = $this->getEntityManager()->createQuery('
@@ -110,6 +122,24 @@ class PersonRepository extends ServiceEntityRepository
         $query->setParameters([
             'numberModel' => ModelConstants::NUMBER_MODEL,
             'personUuid' => $personUuid
+        ])
+            ->setFirstResult($first)
+            ->setMaxResults($limit);
+
+        return new Paginator($query, $fetchJoinCollection = true);
+    }
+
+    public function findPaginatedRelatedPersons(string $personUuid, array $targetsList, int $limit = 100, $first = 0):Paginator
+    {
+        $query = $this->getEntityManager()->createQuery('
+           SELECT p as person, w.profession as profession  FROM App\Entity\Person p
+                INNER JOIN App\Entity\Work w WITH w.person = p.id
+            WHERE w.targetUuid IN (:targetsList)
+            AND p.uuid != :personUuid
+        ');
+        $query->setParameters([
+            'personUuid' => $personUuid,
+            'targetsList' => $targetsList
         ])
             ->setFirstResult($first)
             ->setMaxResults($limit);

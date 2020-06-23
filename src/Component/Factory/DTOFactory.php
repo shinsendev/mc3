@@ -15,6 +15,7 @@ use App\Component\DTO\Nested\FilmNestedInPersonDTO;
 use App\Component\DTO\Nested\NumberNestedInFilmDTO;
 use App\Component\DTO\Nested\NumberNestedInPersonDTO;
 use App\Component\DTO\Nested\PersonNestedDTO;
+use App\Component\DTO\Nested\PersonNestedInPersonDTO;
 use App\Component\DTO\Nested\SongNestedDTO;
 use App\Component\DTO\Payload\AttributePayloadDTO;
 use App\Component\DTO\Payload\CategoryPayloadDTO;
@@ -53,6 +54,7 @@ class DTOFactory
 
             ModelConstants::PERSON_PAYLOAD_MODEL => new PersonPayloadDTO(),
             ModelConstants::PERSON_NESTED_DTO_MODEL => new PersonNestedDTO(),
+            ModelConstants::PERSON_NESTED_IN_PERSON_DTO_MODEL => new PersonNestedInPersonDTO(),
 
             ModelConstants::HOME_PAYLOAD_MODEL => new HomePayloadDTO(),
         ];

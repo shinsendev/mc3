@@ -32,6 +32,7 @@ class ModelConstants
     const PERSON_MODEL = 'person';
     const PERSON_PAYLOAD_MODEL = 'personPayload';
     const PERSON_NESTED_DTO_MODEL = 'personNestedDTOModel';
+    const PERSON_NESTED_IN_PERSON_DTO_MODEL = 'personNestedInPersonDTO';
 
     const ELEMENT_NESTED_DTO_MODEL = 'elementNestedDTOModel';
 

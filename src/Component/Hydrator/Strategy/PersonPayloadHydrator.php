@@ -53,6 +53,7 @@ class PersonPayloadHydrator implements HydratorDTOInterface
         $dto = self::setNumbers($dto, $em);
 
         // get persons connected
+        $dto = self::setPersons($dto, $em);
 
         // get stats
         //todo: to complete
@@ -109,7 +110,7 @@ class PersonPayloadHydrator implements HydratorDTOInterface
     {
         // get all number linked to this person (with pagination see above)
         $numbers = $em->getRepository(Person::class)->findPaginatedRelatedNumbers($dto->getUuid(), 1000, 0);
-        
+
         // get films with direct relation between person and films (ex:director)
         $numbersRelated = [];
         foreach ($numbers as $response) {
@@ -124,9 +125,38 @@ class PersonPayloadHydrator implements HydratorDTOInterface
         return $dto;
     }
 
-    public static function getPersons()
+    /**
+     * @param PersonPayloadDTO $dto
+     * @param EntityManagerInterface $em
+     * @return PersonPayloadDTO
+     */
+    public static function setPersons(PersonPayloadDTO $dto, EntityManagerInterface $em)
     {
+        // define all numbers and films uuid connected to this persons
+        $targetsList = [];
+        // add films uuid
+        foreach ($dto->getRelatedFilms() as $target) {
+            $targetsList[] = $target->getUuid();
+        }
 
+        // add numbers uuid
+        foreach ($dto->getRelatedNumbersByProfession() as $target) {
+            $targetsList[] = $target->getUuid();
+        }
+
+        // find all others persons who have worked on this films and numbers
+        $persons = $em->getRepository(Person::class)->findPaginatedRelatedPersons($dto->getUuid(), $targetsList, 500, 0);
+
+        foreach ($persons as $response) {
+            $personDTO = DTOFactory::create(ModelConstants::PERSON_NESTED_IN_PERSON_DTO_MODEL);
+            $personsRelated[] = NestedPersonInPersonHydator::hydrate($personDTO, $response, $em);
+        }
+        
+        if ($personsRelated) {
+            $dto->setRelatedPersonsByProfession($personsRelated);
+        }
+
+        return $dto;
     }
 
 }

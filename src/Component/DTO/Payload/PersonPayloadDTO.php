@@ -10,8 +10,10 @@ use App\Component\DTO\Composition\UniqueDTOTrait;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
 use App\Component\DTO\Nested\FilmNestedDTO;
 use App\Component\DTO\Nested\NumberNestedInPersonDTO;
+use App\Component\DTO\Nested\PersonNestedInPersonDTO;
 use App\Component\Hydrator\Strategy\NestedFilmHydrator;
 use App\Component\Hydrator\Strategy\NestedFilmInPersonHydrator;
+use App\Entity\Person;
 
 /**
  * Class NarrativeDTO
@@ -22,6 +24,8 @@ use App\Component\Hydrator\Strategy\NestedFilmInPersonHydrator;
  */
 class PersonPayloadDTO extends AbstractUniqueDTO
 {
+    CONST GROUP = 'group';
+    CONST PERSON = 'person';
     CONST NO_VALUE = 'blank';
 
     /** @var string */
@@ -42,7 +46,8 @@ class PersonPayloadDTO extends AbstractUniqueDTO
     /** @var NumberNestedInPersonDTO[] */
     private $relatedNumbersByProfession = [];
 
-    private $relatedPersonsByProfession;
+    /** @var PersonNestedInPersonDTO[] */
+    private $relatedPersonsByProfession = [];
 
     private $works;
 
@@ -157,6 +162,22 @@ class PersonPayloadDTO extends AbstractUniqueDTO
     public function setRelatedFilms(array $relatedFilms): void
     {
         $this->relatedFilms = $relatedFilms;
+    }
+
+    /**
+     * @return PersonNestedInPersonDTO[]
+     */
+    public function getRelatedPersonsByProfession(): array
+    {
+        return $this->relatedPersonsByProfession;
+    }
+
+    /**
+     * @param PersonNestedInPersonDTO[] $relatedPersonsByProfession
+     */
+    public function setRelatedPersonsByProfession(array $relatedPersonsByProfession): void
+    {
+        $this->relatedPersonsByProfession = $relatedPersonsByProfession;
     }
 
 }
