@@ -91,7 +91,7 @@ class HomePayloadDTO extends AbstractDTO
         //todo : add articles with pagination
 
         // get 30 performers with the most numbers associated
-        $personsData = $em->getRepository(Person::class)->findPopularPersonsByJob(30, 'performer');
+        $personsData = $em->getRepository(Person::class)->findPaginatedPopularPersonsByJob(30, 'performer');
         foreach ($personsData as $personData) {
             $personDTO = DTOFactory::create(ModelConstants::PERSON_NESTED_DTO_MODEL);
             $personDTO = PersonPayloadHydrator::hydrate($personDTO, $personData, $em);

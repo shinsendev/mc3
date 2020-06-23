@@ -26,7 +26,7 @@ class PersonRepository extends ServiceEntityRepository
      * @param string $profession
      * @return Paginator
      */
-    public function findPopularPersonsByJob(int $limit, string $profession):Paginator
+    public function findPaginatedPopularPersonsByJob(int $limit, string $profession):Paginator
     {
         // get $limit persons with the most numbers associated
         $dql = '
@@ -57,14 +57,22 @@ class PersonRepository extends ServiceEntityRepository
         return $query->getSingleScalarResult();
     }
 
-    public function getRelatedFilms(string $personUuid)
+    /**
+     * @param string $personUuid
+     * @param int $limit
+     * @param int $first
+     * @return Paginator
+     */
+    public function findPaginatedRelatedFilms(string $personUuid, int $limit = 100, $first = 0):Paginator
     {
-        $query = $this->getEntityManager()->createQuery('SELECT f.uuid FROM App\Entity\Film f INNER JOIN App\Entity\Work w WITH w.targetUuid = f.uuid AND w.targetType = :model JOIN w.person p WHERE w.targetType = :model AND p.uuid = :personUuid');
+        $query = $this->getEntityManager()->createQuery('SELECT f FROM App\Entity\Film f INNER JOIN App\Entity\Work w WITH w.targetUuid = f.uuid AND w.targetType = :model JOIN w.person p WHERE w.targetType = :model AND p.uuid = :personUuid');
         $query->setParameters([
             'model' => ModelConstants::FILM_MODEL,
             'personUuid' => $personUuid
-        ]);
-        dd($query->getResult());
-        return $query->getResult();
+        ])
+            ->setFirstResult($first)
+            ->setMaxResults($limit);
+
+        return new Paginator($query, $fetchJoinCollection = true);
     }
 }

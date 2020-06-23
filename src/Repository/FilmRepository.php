@@ -100,4 +100,14 @@ class FilmRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+
+    public function computeNumbersLength(string $filmUuid)
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT SUM(n.length) FROM number n.film f JOIN WHERE f.uuid = :filmUuid
+        ');
+        $query->setParameters(['filmUuid' => $filmUuid]);
+
+        return $query->getResult();
+    }
 }

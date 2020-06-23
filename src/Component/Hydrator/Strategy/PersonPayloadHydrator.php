@@ -6,7 +6,9 @@ namespace App\Component\Hydrator\Strategy;
 
 use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Payload\PersonPayloadDTO;
+use App\Component\Factory\DTOFactory;
 use App\Component\Hydrator\Description\HydratorDTOInterface;
+use App\Component\Model\ModelConstants;
 use App\Entity\Person;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -38,6 +40,7 @@ class PersonPayloadHydrator implements HydratorDTOInterface
         $dto->setUuid($person->getUuid());
 
         // get films
+        //  title, released data, total
         $filmsConnected = self::setFilms($dto, $em);
 
         // get numbers
@@ -46,6 +49,7 @@ class PersonPayloadHydrator implements HydratorDTOInterface
 
         // get stats
         //todo: to complete
+        // add  length of the numbers in the film,  total length of the numbers with person in the film, ratio is computed on client side
 
         return $dto;
     }
@@ -57,7 +61,17 @@ class PersonPayloadHydrator implements HydratorDTOInterface
      */
     public static function setFilms(PersonPayloadDTO $dto, EntityManagerInterface $em):PersonPayloadDTO
     {
-        $em->getRepository(Person::class)->getRelatedFilms($dto->getUuid());
+        $films = $em->getRepository(Person::class)->findPaginatedRelatedFilms($dto->getUuid(), 500, 0);
+
+        // we don't really use pagination, it's more a security to limit to 500 items but it never supposed to happen that a person is connected to so many movies
+        foreach ($films as $film) {
+            // we hydrate
+            $filmDTO = DTOFactory::create(ModelConstants::FILM_NESTED_IN_PERSON_DTO_MODEL);
+            NestedFilmInPersonHydrator::hydrate($filmDTO, ['film' => $film], $em);
+
+            dump($films->count());
+            dd($film);
+        }
 
         return $dto;
     }
