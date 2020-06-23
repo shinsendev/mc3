@@ -13,23 +13,12 @@ use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
  */
 class NumberNestedInFilmDTO extends AbstractUniqueDTO
 {
-    /** @var int */
-    private $order;
-
-    /** @var string */
-    private $title;
-
-    /** @var int */
-    private $beginTc;
-
-    /** @var int */
-    private $endTc;
-
-    /** @var int */
-    private $length;
-
-    /** @var array */
-    private $performers = [];
+    private int $order;
+    private string $title;
+    private int $beginTc;
+    private int $endTc;
+    private int $length;
+    private array $performers = [];
 
     /**
      * @return int
