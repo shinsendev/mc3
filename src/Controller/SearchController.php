@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Component\Elastic\ElasticConnection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,9 +14,15 @@ class SearchController extends AbstractController
      */
     public function getResults(string $type = null)
     {
-        // secure route with a key
+        $params = [
+            'index' => 'mc2',
+            'id'    => 'e51d1683-0252-474e-9647-8dba4598fff8'
+        ];
+        
 
-        // if we have the key, we query the database
-        return new JsonResponse('My result');
+        $client = ElasticConnection::connect();
+        $response = $client->get($params);
+
+        return new JsonResponse($response);
     }
 }
