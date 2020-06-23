@@ -8,6 +8,10 @@ namespace App\Component\DTO\Payload;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Component\DTO\Composition\UniqueDTOTrait;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
+use App\Component\DTO\Nested\FilmNestedDTO;
+use App\Component\DTO\Nested\NumberNestedInPersonDTO;
+use App\Component\Hydrator\Strategy\NestedFilmHydrator;
+use App\Component\Hydrator\Strategy\NestedFilmInPersonHydrator;
 
 /**
  * Class NarrativeDTO
@@ -32,13 +36,15 @@ class PersonPayloadDTO extends AbstractUniqueDTO
     /** @var string */
     private $viaf = self::NO_VALUE;
 
-    private $works;
+    /** @var FilmNestedDTO[] */
+    private $relatedFilms = [];
 
-    private $relatedFilms; // title, released data, total length of the numbers in the film,  total length of the numbers with person in the film, ratio is computed on client side
-
-    private $relatedNumbersByProfession;
+    /** @var NumberNestedInPersonDTO[] */
+    private $relatedNumbersByProfession = [];
 
     private $relatedPersonsByProfession;
+
+    private $works;
 
     // some stats // possible to preload, only if a data is changed the data is changed // person Stats
     private $averageShotLength;
@@ -119,6 +125,38 @@ class PersonPayloadDTO extends AbstractUniqueDTO
     public function setViaf(string $viaf): void
     {
         $this->viaf = $viaf;
+    }
+
+    /**
+     * @return NumberNestedInPersonDTO[]
+     */
+    public function getRelatedNumbersByProfession(): array
+    {
+        return $this->relatedNumbersByProfession;
+    }
+
+    /**
+     * @param NumberNestedInPersonDTO[] $relatedNumbersByProfession
+     */
+    public function setRelatedNumbersByProfession(array $relatedNumbersByProfession): void
+    {
+        $this->relatedNumbersByProfession = $relatedNumbersByProfession;
+    }
+
+    /**
+     * @return FilmNestedDTO[]
+     */
+    public function getRelatedFilms(): array
+    {
+        return $this->relatedFilms;
+    }
+
+    /**
+     * @param FilmNestedDTO[] $relatedFilms
+     */
+    public function setRelatedFilms(array $relatedFilms): void
+    {
+        $this->relatedFilms = $relatedFilms;
     }
 
 }

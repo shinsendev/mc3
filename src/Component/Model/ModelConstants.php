@@ -19,10 +19,10 @@ class ModelConstants
     const NUMBER_MODEL = 'number';
     const NUMBER_PAYLOAD_MODEL = 'numberPayload';
     const NUMBER_NESTED_IN_FILM_DTO_MODEL = 'numberNestedInFilmDTO';
+    const NUMBER_NESTED_IN_PERSON_DTO_MODEL = 'numberNestedInPersonDTO';
 
     const FILM_MODEL = 'film';
     const FILM_NESTED_DTO_MODEL = 'filmNestedDTOModel';
-    const FILM_NESTED_IN_PERSON_DTO_MODEL = 'filmNestedInPersonDTOModel';
     const FILM_PAYLOAD_MODEL = 'filmPayload';
 
     const SONG_MODEL = 'song';
