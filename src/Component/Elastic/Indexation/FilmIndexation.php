@@ -12,6 +12,7 @@ use App\Component\Model\ModelConstants;
 use App\Entity\Film;
 use Doctrine\ORM\EntityManagerInterface;
 use Elasticsearch\Client;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Serializer\Serializer;
 
@@ -37,9 +38,7 @@ class FilmIndexation
         $filmsCount = $em->getRepository(Film::class)->countFilms();
         $turns = ceil($filmsCount / $limit);
 
-        $output->writeln([
-            $filmsCount.' films to index.'
-        ]);
+        $progressBar = new ProgressBar($output, $filmsCount);
 
         for ($i = 0; $i < $turns; $i++) {
             $films = $em->getRepository(Film::class)->findPaginatedFilms($limit, $offset);
@@ -56,6 +55,7 @@ class FilmIndexation
                 $params['id']    = $film->getUuid();
 
                 $client->index($params);
+                $progressBar->advance();
             }
 
             $offset += $limit;
@@ -63,11 +63,9 @@ class FilmIndexation
             if ($limit >$filmsCount) {
                 $offset = $filmsCount;
             }
-
-            $output->writeln([
-                $offset.' films have been indexed.'
-            ]);
         }
+
+        $progressBar->finish();
 
         $output->writeln([
             '',
