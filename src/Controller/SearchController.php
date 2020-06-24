@@ -14,15 +14,23 @@ class SearchController extends AbstractController
      */
     public function getResults(string $type = null)
     {
+        // todo: create a post route, get request from parameters
+        $client = ElasticConnection::connect();
+
         $params = [
             'index' => 'mc2',
-            'id'    => 'e51d1683-0252-474e-9647-8dba4598fff8'
+            'body'  => [
+                'query' => [
+                    'match' => [
+                        'title' => 'West'
+                    ]
+                ]
+            ]
         ];
-        
 
-        $client = ElasticConnection::connect();
-        $response = $client->get($params);
 
-        return new JsonResponse($response);
+        $results = $client->search($params);
+
+        return new JsonResponse($results);
     }
 }

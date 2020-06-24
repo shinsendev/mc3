@@ -64,6 +64,21 @@ class FilmRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param int $limit
+     * @param int $offset
+     * @return Paginator
+     */
+    public function findPaginatedFilms(int $limit = 30, int $offset = 0):Paginator
+    {
+        $dql = "SELECT f FROM App\Entity\Film f ORDER BY f.title ASC";
+        $query = $this->getEntityManager()->createQuery($dql)
+            ->setFirstResult($offset)
+            ->setMaxResults($limit);
+
+        return new Paginator($query, $fetchJoinCollection = true);
+    }
+
+    /**
      * @param string $attributeUuid
      * @return int|null
      * @throws \Doctrine\ORM\NoResultException
@@ -101,6 +116,12 @@ class FilmRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    /**
+     * @param string $filmUuid
+     * @return int|mixed|string
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function computeNumbersLength(string $filmUuid)
     {
         $query = $this->getEntityManager()->createQuery('
