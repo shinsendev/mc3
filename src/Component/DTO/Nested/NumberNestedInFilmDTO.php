@@ -15,9 +15,9 @@ class NumberNestedInFilmDTO extends AbstractUniqueDTO
 {
     private int $order;
     private string $title;
-    private int $beginTc;
-    private int $endTc;
-    private int $length;
+    private int $beginTc = 0;
+    private int $endTc = 0;
+    private int $length = 0;
     private array $performers = [];
 
     /**

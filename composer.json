@@ -5,7 +5,9 @@
         "php": "^7.1.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-json": "*",
         "api-platform/api-pack": "^1.2",
+        "elasticsearch/elasticsearch": "^7.8",
         "gedmo/doctrine-extensions": "^2.4",
         "liip/test-fixtures-bundle": "^1.9",
         "ramsey/uuid": "^3.9",
@@ -30,8 +32,7 @@
         "symfony/validator": "5.0.*",
         "symfony/web-link": "5.0.*",
         "symfony/yaml": "5.0.*",
-        "webonyx/graphql-php": "^0.13.8",
-      "ext-json": "*"
+        "webonyx/graphql-php": "^0.13.8"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.3",
