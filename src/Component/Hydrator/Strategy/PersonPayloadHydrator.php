@@ -41,6 +41,8 @@ class PersonPayloadHydrator implements HydratorDTOInterface
             }
         }
 
+        $dto->setGender($person->getGender());
+
         // we don't use hydrate basics because it's a very simple model
         $person->setViaf($dto->getViaf());
         $dto->setUuid($person->getUuid());
@@ -112,13 +114,12 @@ class PersonPayloadHydrator implements HydratorDTOInterface
         $numbers = $em->getRepository(Person::class)->findPaginatedRelatedNumbers($dto->getUuid(), 1000, 0);
 
         // get films with direct relation between person and films (ex:director)
-        $numbersRelated = [];
         foreach ($numbers as $response) {
             $numberDTO = DTOFactory::create(ModelConstants::NUMBER_NESTED_IN_PERSON_DTO_MODEL);
             $numbersRelated[] = NestedNumberInPersonHydrator::hydrate($numberDTO, $response, $em);
         }
 
-        if ($numbersRelated) {
+        if (isset($numbersRelated)) {
             $dto->setRelatedNumbersByProfession($numbersRelated);
         }
 
@@ -152,7 +153,7 @@ class PersonPayloadHydrator implements HydratorDTOInterface
             $personsRelated[] = NestedPersonInPersonHydator::hydrate($personDTO, $response, $em);
         }
         
-        if ($personsRelated) {
+        if (isset($personsRelated)) {
             $dto->setRelatedPersonsByProfession($personsRelated);
         }
 
