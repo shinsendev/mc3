@@ -20,6 +20,7 @@ abstract class AbstractFunctionalTest extends ApiTestCase
         parent::setUp();
         $this->client = static::createClient();
         $this->loadFixtures([
+            'App\DataFixtures\PersonFixtures',
             'App\DataFixtures\CategoryFixtures',
             'App\DataFixtures\AttributeFixtures',
             'App\DataFixtures\SongFixtures',

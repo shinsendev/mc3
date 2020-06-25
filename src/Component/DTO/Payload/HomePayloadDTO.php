@@ -8,7 +8,7 @@ use App\Component\DTO\Hierarchy\AbstractDTO;
 use App\Component\DTO\Nested\FilmNestedDTO;
 use App\Component\Factory\DTOFactory;
 use App\Component\Hydrator\Strategy\NestedFilmHydrator;
-use App\Component\Hydrator\Strategy\PersonPayloadHydrator;
+use App\Component\Hydrator\Strategy\NestedPersonPayloadHydrator;
 use App\Component\Model\ModelConstants;
 use App\Entity\Attribute;
 use App\Entity\Category;
@@ -94,7 +94,7 @@ class HomePayloadDTO extends AbstractDTO
         $personsData = $em->getRepository(Person::class)->findPaginatedPopularPersonsByJob(30, 'performer');
         foreach ($personsData as $personData) {
             $personDTO = DTOFactory::create(ModelConstants::PERSON_NESTED_DTO_MODEL);
-            $personDTO = PersonPayloadHydrator::hydrate($personDTO, $personData, $em);
+            $personDTO = NestedPersonPayloadHydrator::hydrate($personDTO, $personData, $em);
             $performers[] = $personDTO;
         }
 
