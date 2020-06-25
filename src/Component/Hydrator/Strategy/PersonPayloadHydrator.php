@@ -41,7 +41,9 @@ class PersonPayloadHydrator implements HydratorDTOInterface
             }
         }
 
-        $dto->setGender($person->getGender());
+        if ($person->getGender()) {
+            $dto->setGender($person->getGender());
+        }
 
         // we don't use hydrate basics because it's a very simple model
         $person->setViaf($dto->getViaf());
