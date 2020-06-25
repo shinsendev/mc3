@@ -18,6 +18,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Person extends AbstractTarget
 {
+    const GENDER_MALE='M';
+    const GENDER_FEMALE='F';
+
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
