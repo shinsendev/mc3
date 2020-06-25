@@ -40,13 +40,13 @@ class PersonPayloadDTO extends AbstractUniqueDTO
     /** @var string */
     private $viaf = self::NO_VALUE;
 
-    /** @var FilmNestedDTO[] */
+    /** @var array[] */
     private $relatedFilms = [];
 
-    /** @var NumberNestedInPersonDTO[] */
+    /** @var array[] */
     private $relatedNumbersByProfession = [];
 
-    /** @var PersonNestedInPersonDTO[] */
+    /** @var array[] */
     private $relatedPersonsByProfession = [];
 
     private $works;
