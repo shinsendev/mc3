@@ -6,6 +6,8 @@ use App\Component\Model\ModelConstants;
 use App\Entity\Person;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
+
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
@@ -106,18 +108,20 @@ class PersonRepository extends ServiceEntityRepository
     }
 
     /***
+     * Warning ! Not the correct result
+     *
      * @param string $personUuid
      * @param int $limit
      * @param int $first
      * @return Paginator
      */
-    public function findPaginatedRelatedNumbers(string $personUuid, int $limit = 100, $first = 0):Paginator
+    public function findPaginatedRelatedNumbers(string $personUuid, int $limit = 100, $first = 0):array
     {
         $query = $this->getEntityManager()->createQuery('
-            SELECT n as number, w.profession FROM App\Entity\Number n 
+            SELECT n as number, w.profession FROM App\Entity\Number n
                 INNER JOIN App\Entity\Work w WITH w.targetUuid = n.uuid AND w.targetType = :numberModel
-                JOIN w.person p
-                WHERE w.targetType = :numberModel AND p.uuid = :personUuid
+                INNER JOIN App\Entity\Person p WITH p.id = w.person
+            WHERE w.targetType = :numberModel AND p.uuid = :personUuid
         ');
         $query->setParameters([
             'numberModel' => ModelConstants::NUMBER_MODEL,
@@ -129,6 +133,33 @@ class PersonRepository extends ServiceEntityRepository
         return new Paginator($query, $fetchJoinCollection = true);
     }
 
+    /**
+     * @param string $personUuid
+     * @param int $limit
+     * @param int $first
+     * @return array
+     */
+    public function findRelatedNumbersWithNativeSQL(string $personUuid):array
+    {
+        $dbal = $this->getEntityManager()->getConnection('default');
+
+        $stmt = "SELECT n.title, n.uuid, w.profession, f.released_year as film_released_year, f.imdb as film_imdb, f.uuid as film_uuid, f.title as film_title FROM number n
+    INNER JOIN work w ON w.target_uuid = n.uuid AND w.target_type = 'number'
+    INNER JOIN person p ON p.id = w.person_id
+    INNER JOIN film f ON n.film_id = f.id
+    WHERE w.target_type = 'number' AND p.uuid = '6130cb57-294b-47e3-b524-72a9ed8e1714'
+ORDER BY n.uuid";
+
+        return $dbal->fetchAll( $stmt);
+    }
+
+    /**
+     * @param string $personUuid
+     * @param array $targetsList
+     * @param int $limit
+     * @param int $first
+     * @return Paginator
+     */
     public function findPaginatedRelatedPersons(string $personUuid, array $targetsList, int $limit = 100, $first = 0):Paginator
     {
         $query = $this->getEntityManager()->createQuery('

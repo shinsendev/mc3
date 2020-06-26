@@ -113,16 +113,23 @@ class PersonPayloadHydrator implements HydratorDTOInterface
     public static function setNumbers(PersonPayloadDTO $dto, EntityManagerInterface $em)
     {
         // get all number linked to this person (with pagination see above)
-        $numbers = $em->getRepository(Person::class)->findPaginatedRelatedNumbers($dto->getUuid(), 1000, 0);
+        $numbers = $em->getRepository(Person::class)->findRelatedNumbersWithNativeSQL($dto->getUuid());
 
         // get films with direct relation between person and films (ex:director)
         foreach ($numbers as $response) {
             $numberDTO = DTOFactory::create(ModelConstants::NUMBER_NESTED_IN_PERSON_DTO_MODEL);
-            $numbersRelated[] = NestedNumberInPersonHydrator::hydrate($numberDTO, $response, $em);
+            $numbersRelated[] = NestedNumberInPersonHydrator::hydrate($numberDTO, ['number' => $response], $em);
         }
 
         if (isset($numbersRelated)) {
             $dto->setRelatedNumbersByProfession($numbersRelated);
+        }
+
+        // merge same persons?
+        foreach ($numbers as $data) {
+            if ($data['uuid'] == '258477c2-f0ea-4897-a16a-1603ded64057') {
+                $list[] = $data;
+            }
         }
 
         return $dto;

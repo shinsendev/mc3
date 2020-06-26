@@ -37,4 +37,6 @@ class ModelConstants
     const ELEMENT_NESTED_DTO_MODEL = 'elementNestedDTOModel';
 
     const HOME_PAYLOAD_MODEL='home';
+
+    const NO_DATA= 'no value';
 }
