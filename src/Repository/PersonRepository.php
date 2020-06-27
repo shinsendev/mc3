@@ -148,7 +148,7 @@ class PersonRepository extends ServiceEntityRepository
     INNER JOIN person p ON p.id = w.person_id
     INNER JOIN film f ON n.film_id = f.id
     WHERE w.target_type = 'number' AND p.uuid = :uuid
-ORDER BY n.uuid";
+ORDER BY f.released_year, f.title";
 
         $rsl = $dbal->prepare($stmt);
         $rsl->execute(['uuid' => $personUuid]);
