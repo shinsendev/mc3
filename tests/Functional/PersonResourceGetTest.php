@@ -22,7 +22,7 @@ class PersonResourceGetTest extends AbstractFunctionalTest
     public function testGetGroup()
     {
         $uuid = '44b995b2-a734-447b-9297-a9e8fb7fa542';
-        $response = $this->client->request('GET', 'api/numbers/'.$uuid);
+        $response = $this->client->request('GET', 'api/people/'.$uuid);
         $this->assertResponseIsSuccessful();
 
         $arrayResponse = $response->toArray();
