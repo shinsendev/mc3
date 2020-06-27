@@ -107,28 +107,52 @@ class PersonPayloadHydrator implements HydratorDTOInterface
     }
 
     /**
+     * @param array $data
+     * @param string $uuid
+     * @return int|null
+     */
+    public static function getExistingNumberIndex(array $data, string $uuid): ?int
+    {
+        foreach ($data as $index => $number) {
+            if ($number['uuid'] === $uuid) {
+                return $index;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @param PersonPayloadDTO $dto
      * @param EntityManagerInterface $em
      */
     public static function setNumbers(PersonPayloadDTO $dto, EntityManagerInterface $em)
     {
         // get all number linked to this person (with pagination see above)
-        $numbers = $em->getRepository(Person::class)->findRelatedNumbersWithNativeSQL($dto->getUuid());
+        if ($numbers = $em->getRepository(Person::class)->findRelatedNumbersWithNativeSQL($dto->getUuid())) {
+            // get films with direct relation between person and films (ex:director)
+            foreach ($numbers as $response) {
+                $numberDTO = DTOFactory::create(ModelConstants::NUMBER_NESTED_IN_PERSON_DTO_MODEL);
+                $numbersRelated[] = NestedNumberInPersonHydrator::hydrate($numberDTO, ['number' => $response], $em);
+            }
 
-        // get films with direct relation between person and films (ex:director)
-        foreach ($numbers as $response) {
-            $numberDTO = DTOFactory::create(ModelConstants::NUMBER_NESTED_IN_PERSON_DTO_MODEL);
-            $numbersRelated[] = NestedNumberInPersonHydrator::hydrate($numberDTO, ['number' => $response], $em);
-        }
+            // merge same persons?
+            $uniqueNumbersList = [];
+            foreach ($numbers as $number) {
 
-        if (isset($numbersRelated)) {
-            $dto->setRelatedNumbersByProfession($numbersRelated);
-        }
+                // we check if  the number uuid is in $uniqueNumbersList
+                if ($index = self::getExistingNumberIndex($uniqueNumbersList, $number['uuid'])) {
+                    // we find the corresponding number in $uniqueNumbersList and add the profession
+                    $uniqueNumbersList[$index]['profession'] .= $number['profession'];
+                }
+                // we add the number
+                else {
+                    $uniqueNumbersList[] = $number;
+                }
+            }
 
-        // merge same persons?
-        foreach ($numbers as $data) {
-            if ($data['uuid'] == '258477c2-f0ea-4897-a16a-1603ded64057') {
-                $list[] = $data;
+            if (isset($numbersRelated)) {
+                $dto->setRelatedNumbersByProfession($uniqueNumbersList);
             }
         }
 
@@ -151,7 +175,7 @@ class PersonPayloadHydrator implements HydratorDTOInterface
 
         // add numbers uuid
         foreach ($dto->getRelatedNumbersByProfession() as $target) {
-            $targetsList[] = $target->getUuid();
+            $targetsList[] = $target['uuid'];
         }
 
         // find all others persons who have worked on this films and numbers

@@ -147,10 +147,13 @@ class PersonRepository extends ServiceEntityRepository
     INNER JOIN work w ON w.target_uuid = n.uuid AND w.target_type = 'number'
     INNER JOIN person p ON p.id = w.person_id
     INNER JOIN film f ON n.film_id = f.id
-    WHERE w.target_type = 'number' AND p.uuid = '6130cb57-294b-47e3-b524-72a9ed8e1714'
+    WHERE w.target_type = 'number' AND p.uuid = :uuid
 ORDER BY n.uuid";
 
-        return $dbal->fetchAll( $stmt);
+        $rsl = $dbal->prepare($stmt);
+        $rsl->execute(['uuid' => $personUuid]);
+
+        return  $rsl->fetchAll();
     }
 
     /**
