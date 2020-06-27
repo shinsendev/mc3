@@ -170,6 +170,7 @@ ORDER BY f.released_year, f.title";
                 INNER JOIN App\Entity\Work w WITH w.person = p.id
             WHERE w.targetUuid IN (:targetsList)
             AND p.uuid != :personUuid
+            ORDER BY w.profession, p.firstname, p.lastname, p.groupname
         ');
         $query->setParameters([
             'personUuid' => $personUuid,
