@@ -111,10 +111,10 @@ class PersonPayloadHydrator implements HydratorDTOInterface
      * @param string $uuid
      * @return int|null
      */
-    public static function getExistingNumberIndex(array $data, string $uuid): ?int
+    protected static function getExistingNumberIndex(array $data, string $uuid): ?int
     {
         foreach ($data as $index => $number) {
-            if ($number['uuid'] === $uuid) {
+            if ($number->getUuid() === $uuid) {
                 return $index;
             }
         }
@@ -138,12 +138,12 @@ class PersonPayloadHydrator implements HydratorDTOInterface
 
             // merge same persons?
             $uniqueNumbersList = [];
-            foreach ($numbers as $number) {
+            foreach ($numbersRelated as $number) {
 
                 // we check if  the number uuid is in $uniqueNumbersList
-                if ($index = self::getExistingNumberIndex($uniqueNumbersList, $number['uuid'])) {
+                if ($index = self::getExistingNumberIndex($uniqueNumbersList, $number->getUuid())) {
                     // we find the corresponding number in $uniqueNumbersList and add the profession
-                    $uniqueNumbersList[$index]['profession'] .= $number['profession'];
+                    $uniqueNumbersList[$index]->addProfession($number->getProfessions()[0]);
                 }
                 // we add the number
                 else {
@@ -175,7 +175,7 @@ class PersonPayloadHydrator implements HydratorDTOInterface
 
         // add numbers uuid
         foreach ($dto->getRelatedNumbersByProfession() as $target) {
-            $targetsList[] = $target['uuid'];
+            $targetsList[] = $target->getUuid();
         }
 
         // find all others persons who have worked on this films and numbers

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Component\DTO\Nested;
 
 use App\Component\DTO\Hierarchy\AbstractDTO;
-use App\Component\Model\ModelConstants;
 
 /**
  * Class NumberNestedDTO
@@ -19,7 +18,7 @@ class NumberNestedInPersonDTO extends AbstractDTO
     private string $filmUuid;
     private string $filmImdb;
     private int $filmReleasedYear = 0;
-    private string $profession = ModelConstants::NO_DATA;
+    private array $professions = [];
 
     /**
      * @return string
@@ -118,19 +117,32 @@ class NumberNestedInPersonDTO extends AbstractDTO
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getProfession(): string
+    public function getProfessions(): array
     {
-        return $this->profession;
+        return $this->professions;
     }
 
     /**
      * @param string $profession
+     * @return $this
      */
-    public function setProfession(string $profession): void
+    public function addProfession(string $profession): self
     {
-        $this->profession = $profession;
+        if (!in_array($profession, $this->professions)) {
+            $this->professions[] = $profession;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param array $professions
+     */
+    public function setProfessions(array $professions): void
+    {
+        $this->professions = $professions;
     }
 
 }

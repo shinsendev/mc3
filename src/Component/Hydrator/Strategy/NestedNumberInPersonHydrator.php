@@ -26,7 +26,7 @@ class NestedNumberInPersonHydrator implements HydratorDTOInterface
         if ($data['number'] instanceof Number) {
             /** @var Number $number */
             $number = $data['number'];
-//            $profession = $data['profession'];
+            $profession = $data['profession'];
 
             $dto->setTitle($number->getTitle());
             $dto->setUuid($number->getUuid());
@@ -36,7 +36,7 @@ class NestedNumberInPersonHydrator implements HydratorDTOInterface
             $dto->setFilmUuid($number->getFilm()->getUuid());
             $dto->setFilmReleasedYear($number->getFilm()->getReleasedYear());
 
-//            $dto->addProfession($profession);
+            $dto->addProfession($profession);
         }
 
         // because we don't use doctrine here
@@ -49,7 +49,7 @@ class NestedNumberInPersonHydrator implements HydratorDTOInterface
             $dto->setFilmImdb($number['film_imdb']);
             $dto->setFilmUuid($number['film_uuid']);
             $dto->setFilmReleasedYear($number['film_released_year']);
-            $dto->setProfession($number['profession']);
+            $dto->addProfession($number['profession']);
         }
 
         return $dto;
