@@ -107,22 +107,53 @@ class PersonPayloadHydrator implements HydratorDTOInterface
     }
 
     /**
+     * @param array $data
+     * @param string $uuid
+     * @return int|null
+     */
+    protected static function getExistingNumberIndex(array $data, string $uuid): ?int
+    {
+        foreach ($data as $index => $number) {
+            if ($number->getUuid() === $uuid) {
+                return $index;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @param PersonPayloadDTO $dto
      * @param EntityManagerInterface $em
      */
     public static function setNumbers(PersonPayloadDTO $dto, EntityManagerInterface $em)
     {
         // get all number linked to this person (with pagination see above)
-        $numbers = $em->getRepository(Person::class)->findPaginatedRelatedNumbers($dto->getUuid(), 1000, 0);
+        if ($numbers = $em->getRepository(Person::class)->findRelatedNumbersWithNativeSQL($dto->getUuid())) {
+            // get films with direct relation between person and films (ex:director)
+            foreach ($numbers as $response) {
+                $numberDTO = DTOFactory::create(ModelConstants::NUMBER_NESTED_IN_PERSON_DTO_MODEL);
+                $numbersRelated[] = NestedNumberInPersonHydrator::hydrate($numberDTO, ['number' => $response], $em);
+            }
 
-        // get films with direct relation between person and films (ex:director)
-        foreach ($numbers as $response) {
-            $numberDTO = DTOFactory::create(ModelConstants::NUMBER_NESTED_IN_PERSON_DTO_MODEL);
-            $numbersRelated[] = NestedNumberInPersonHydrator::hydrate($numberDTO, $response, $em);
-        }
+            // merge same persons?
+            $uniqueNumbersList = [];
+            foreach ($numbersRelated as $number) {
 
-        if (isset($numbersRelated)) {
-            $dto->setRelatedNumbersByProfession($numbersRelated);
+                // we check if  the number uuid is in $uniqueNumbersList
+                if ($index = self::getExistingNumberIndex($uniqueNumbersList, $number->getUuid())) {
+                    // we find the corresponding number in $uniqueNumbersList and add the profession
+                    $uniqueNumbersList[$index]->addProfession($number->getProfessions()[0]);
+                }
+                // we add the number
+                else {
+                    $uniqueNumbersList[] = $number;
+                }
+            }
+
+            if (isset($numbersRelated)) {
+                $dto->setRelatedNumbersByProfession($uniqueNumbersList);
+            }
         }
 
         return $dto;
