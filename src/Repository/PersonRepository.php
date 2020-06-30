@@ -6,7 +6,6 @@ use App\Component\Model\ModelConstants;
 use App\Entity\Person;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
