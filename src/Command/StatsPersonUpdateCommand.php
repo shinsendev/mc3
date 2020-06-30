@@ -27,6 +27,10 @@ class StatsPersonUpdateCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $arg1 = $input->getArgument('arg1');
 
+        // if there is a uuid, we only update one person stats
+
+        // we compute the stats, create dto and convert in json file and save or update the stats
+
         if ($arg1) {
             $io->note(sprintf('You passed an argument: %s', $arg1));
         }
