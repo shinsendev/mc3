@@ -2,12 +2,13 @@
 
 namespace App\Command;
 
+use App\Component\Error\Mc3Error;
+use App\Component\Stats\StatsGenerator;
 use App\Entity\Person;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -32,6 +33,11 @@ class StatsPersonUpdateCommand extends Command
         ;
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
@@ -39,25 +45,28 @@ class StatsPersonUpdateCommand extends Command
 
         // if there is a uuid, we only update one person stats
         if ($personUuid = $input->getArgument('personUuid')) {
-            $person = $this->em->getRepository(Person::class)->findOneByUuid($personUuid);
-            // add stats to
-            // StatsGenerator->generate($person, Person)
-            dd($personUuid);
+            if (!$person = $this->em->getRepository(Person::class)->findOneByUuid($personUuid)) {
+               throw new Mc3Error('No person with uuid '.$personUuid.' has been found.');
+            }
+            StatsGenerator::generate($personUuid, StatsGenerator::PERSON_STRATEGY);
+
+            $message = 'Stats for Person '.$person->getUuid()." has been updated";
         }
 
         // we compute the stats, create dto and convert in json file and save or update the stats
         else {
+            // todo : use doctrine pagination 100 by 100
             $persons = $this->em->getRepository(Person::class)->findAll();
 
             foreach ($persons as $person) {
                 // add stats to one person
+                StatsGenerator::generate($person->getUuid(), StatsGenerator::PERSON_STRATEGY);
             }
-            // get person by 100
+
+            $message = 'All persons stats have been updated';
         }
 
-
-
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $io->success($message);
 
         return 0;
     }
