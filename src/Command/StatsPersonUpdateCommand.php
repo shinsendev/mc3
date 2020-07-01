@@ -2,6 +2,8 @@
 
 namespace App\Command;
 
+use App\Entity\Person;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,31 +15,47 @@ class StatsPersonUpdateCommand extends Command
 {
     protected static $defaultName = 'stats:person:update';
 
+    /** @var EntityManagerInterface */
+    private $em;
+
+    public function __construct(EntityManagerInterface $em, string $name = null)
+    {
+        parent::__construct($name);
+        $this->em = $em;
+    }
+
     protected function configure()
     {
         $this
-            ->setDescription('Add a short description for your command')
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
+            ->setDescription('Update stats for Person, if you add a person uuid, update only one person')
+            ->addArgument('personUuid', InputArgument::OPTIONAL, 'Argument description')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('arg1');
+
 
         // if there is a uuid, we only update one person stats
+        if ($personUuid = $input->getArgument('personUuid')) {
+            $person = $this->em->getRepository(Person::class)->findOneByUuid($personUuid);
+            // add stats to
+            // StatsGenerator->generate($person, Person)
+            dd($personUuid);
+        }
 
         // we compute the stats, create dto and convert in json file and save or update the stats
+        else {
+            $persons = $this->em->getRepository(Person::class)->findAll();
 
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
+            foreach ($persons as $person) {
+                // add stats to one person
+            }
+            // get person by 100
         }
 
-        if ($input->getOption('option1')) {
-            // ...
-        }
+
 
         $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
 
