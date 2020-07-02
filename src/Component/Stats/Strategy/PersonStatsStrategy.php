@@ -9,7 +9,6 @@ use App\Component\Model\ModelConstants;
 use App\Component\Stats\Computation\ComputePersonStats;
 use App\Entity\Statistic;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
@@ -50,15 +49,15 @@ class PersonStatsStrategy
     /**
      * @param string $personUuid
      * @param EntityManagerInterface $em
-     * @return PersonStatsDTO[]|array
+     * @return PersonStatsDTO
      */
     private function computeStats(string $personUuid, EntityManagerInterface $em):PersonStatsDTO
     {
-        $personStats = new PersonStatsDTO(); // to serialise in json array
+        $personStats = new PersonStatsDTO();
         $personStats->setAverageShotLength(ComputePersonStats::computeAverageShotLength($personUuid, $em));
 
         $films = ComputePersonStats::generateFilmsStats($personUuid, $em);
-        $personStats->setFilms([$films]);
+        $personStats->setFilms($films);
 
         return $personStats;
     }

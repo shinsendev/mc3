@@ -13,7 +13,7 @@ class PersonStatsDTO
 {
     private int $averageShotLength = 0;
 
-    /** @var PersonStatsDTO[] */
+    /** @var NestedFilmsInPersonStatsDTO[] */
     private array $films = [];
 
     /**
@@ -33,7 +33,7 @@ class PersonStatsDTO
     }
 
     /**
-     * @return PersonStatsDTO[]
+     * @return NestedFilmsInPersonStatsDTO[]
      */
     public function getFilms(): array
     {
@@ -41,7 +41,7 @@ class PersonStatsDTO
     }
 
     /**
-     * @param PersonStatsDTO[] $films
+     * @param NestedFilmsInPersonStatsDTO[] $films
      */
     public function setFilms(array $films): void
     {

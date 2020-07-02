@@ -131,4 +131,29 @@ class FilmRepository extends ServiceEntityRepository
 
         return $query->getSingleScalarResult();
     }
+
+    /**
+     * @param string $filmUuid
+     * @return int|mixed|string
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function computeNumbersLengthForPerson(string $filmUuid, string $personUuid)
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT SUM((n.endTc - n.beginTc)) 
+                FROM App\Entity\Number n JOIN n.film f
+                INNER JOIN App\Entity\Work w WITH w.targetUuid = n.uuid
+                INNER JOIN App\Entity\Person p WITH p.id = w.person AND w.profession = :profession
+                WHERE f.uuid = :filmUuid AND p.uuid = :personUuid
+        ');
+        $query->setParameters([
+            'filmUuid' => $filmUuid,
+            'personUuid' => $personUuid,
+            'profession' => 'performer'
+        ]);
+
+        return $query->getSingleScalarResult();
+    }
+
 }

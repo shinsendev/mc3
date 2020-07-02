@@ -18,7 +18,7 @@ class ComputePersonStats
      * @param EntityManagerInterface $em
      * @return int
      */
-    public static function computeAverageShotLength(string $personUuid, EntityManagerInterface $em):int
+    public static function computeAverageShotLength(string $personUuid, EntityManagerInterface $em):?int
     {
         return intval(100*round($em->getRepository(Person::class)->computeAverageShotLength($personUuid),2));
     }
@@ -29,29 +29,41 @@ class ComputePersonStats
     public static function generateFilmsStats(string $personUuid, EntityManagerInterface $em):array
     {
         // get all films by the numbers connected as performers to the person
-        $films = $em->getRepository(Person::class)->findFilmsWherePerforming($personUuid);
+        if ($films = $em->getRepository(Person::class)->findFilmsWherePerforming($personUuid)) {
+            $filmsDTO = [];
+            foreach ($films as $film) {
+                $filmDTO = self::generateFilmDTO($film, $personUuid, $em);
+                $filmsDTO[] = $filmDTO;
+            }
 
-        $filmsDTO = [];
-        foreach ($films as $film) {
-            $filmDTO = self::generateFilmDTO($film);
-            $filmsDTO[] = $filmDTO;
+            return $filmsDTO;
         }
 
-        return $filmsDTO;
+        return [];
     }
 
     /**
      * @param Film $film
+     * @param EntityManagerInterface $em
      * @return NestedFilmsInPersonStatsDTO
      */
-    private static function generateFilmDTO(Film $film):NestedFilmsInPersonStatsDTO
+    private static function generateFilmDTO(Film $film, string $personUuid, EntityManagerInterface $em):NestedFilmsInPersonStatsDTO
     {
+        $filmUuid = $film->getUuid();
+
         $filmDTO = new NestedFilmsInPersonStatsDTO();
         $filmDTO->setTitle($film->getTitle());
         $filmDTO->setImdb($film->getImdb());
         $filmDTO->setUUid($film->getUuid());
+        $filmDTO->setReleasedYear($film->getReleasedYear());
 
-        dd($filmDTO);
+        // $totalNumbersLength
+        $totalNumbersLength = $em->getRepository(Film::class)->computeNumbersLength($filmUuid);
+        $filmDTO->setTotalNumbersLength($totalNumbersLength);
+
+        // $totalPersonNumbersLength
+        $totalPersonNumbersLength = $em->getRepository(Film::class)->computeNumbersLengthForPerson($filmUuid, $personUuid);
+        $filmDTO->setTotalPersonNumbersLength($totalPersonNumbersLength);
 
         return $filmDTO;
     }

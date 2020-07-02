@@ -19,9 +19,9 @@ class NestedFilmsInPersonStatsDTO
 
     private int $releasedYear;
 
-    private int $totalNumberLength;
+    private int $totalNumbersLength;
 
-    private int $totalPersonNumberLength;
+    private int $totalPersonNumbersLength;
 
     /**
      * @return string
@@ -90,33 +90,33 @@ class NestedFilmsInPersonStatsDTO
     /**
      * @return int
      */
-    public function getTotalNumberLength(): int
+    public function getTotalNumbersLength(): int
     {
-        return $this->totalNumberLength;
+        return $this->totalNumbersLength;
     }
 
     /**
-     * @param int $totalNumberLength
+     * @param int $totalNumbersLength
      */
-    public function setTotalNumberLength(int $totalNumberLength): void
+    public function setTotalNumbersLength(int $totalNumbersLength): void
     {
-        $this->totalNumberLength = $totalNumberLength;
+        $this->totalNumbersLength = $totalNumbersLength;
     }
 
     /**
      * @return int
      */
-    public function getTotalPersonNumberLength(): int
+    public function getTotalPersonNumbersLength(): int
     {
-        return $this->totalPersonNumberLength;
+        return $this->totalPersonNumbersLength;
     }
 
     /**
-     * @param int $totalPersonNumberLength
+     * @param int $totalPersonNumbersLength
      */
-    public function setTotalPersonNumberLength(int $totalPersonNumberLength): void
+    public function setTotalPersonNumbersLength(int $totalPersonNumbersLength): void
     {
-        $this->totalPersonNumberLength = $totalPersonNumberLength;
+        $this->totalPersonNumbersLength = $totalPersonNumbersLength;
     }
 
 }
