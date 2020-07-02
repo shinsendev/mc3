@@ -75,10 +75,6 @@ class PersonPayloadHydrator implements HydratorDTOInterface
             }
         }
 
-
-        //todo: to complete
-        // add  length of the numbers in the film,  total length of the numbers with person in the film, ratio is computed on client side
-
         return $dto;
     }
 
