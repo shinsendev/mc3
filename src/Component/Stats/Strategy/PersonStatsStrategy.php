@@ -25,7 +25,7 @@ class PersonStatsStrategy
     public static function saveStats(string $personUuid, EntityManagerInterface $em):void
     {
         // if stat already exists, it's an update, if not we create a new stat
-        if (!$stat = $em->getRepository(Statistic::class)->findBy(['targetUuid' => $personUuid, 'key' => 'person'])) {
+        if (!$stat = $em->getRepository(Statistic::class)->findBy(['targetUuid' => $personUuid, 'key' => self::PERSON_STATS_KEY])) {
             $stat = new Statistic();
             $stat->setKey(self::PERSON_STATS_KEY);
             $stat->setTargetUuid($personUuid);
@@ -45,8 +45,9 @@ class PersonStatsStrategy
      */
     private function computeStats(string $personUuid, EntityManagerInterface $em): array
     {
-        $stat = new PersonStatsDTO(); // to serialise in json array
-        $stat->setAverageShotLength(ComputePersonStats::computeAverageShotLength($personUuid, $em));
+        $personStats = new PersonStatsDTO(); // to serialise in json array
+        $personStats->setAverageShotLength(ComputePersonStats::computeAverageShotLength($personUuid, $em));
+        dd($personStats);
 
         $films = [];
         $stat->setFilms([$films]);

@@ -134,9 +134,8 @@ class PersonRepository extends ServiceEntityRepository
 
     /**
      * @param string $personUuid
-     * @param int $limit
-     * @param int $first
      * @return array
+     * @throws \Doctrine\DBAL\DBALException
      */
     public function findRelatedNumbersWithNativeSQL(string $personUuid):array
     {
@@ -179,6 +178,29 @@ ORDER BY f.released_year, f.title";
             ->setMaxResults($limit);
 
         return new Paginator($query, $fetchJoinCollection = true);
+    }
+
+    /**
+     * @param $personUuid
+     * @return int
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function computeAverageShotLength($personUuid):int
+    {
+        $query = $this->getEntityManager()->createQuery('
+              SELECT (AVG(n.endTc - n.beginTc)/ AVG(n.shots)) FROM App\Entity\Number n
+                INNER JOIN App\Entity\Work w WITH w.targetUuid = n.uuid
+                INNER JOIN App\Entity\Person p WITH p.id = w.person
+               WHERE w.profession = :performer AND p.uuid = :personUuid
+        ')
+            ->setParameters([
+                'personUuid' => $personUuid,
+                'performer' => 'performer'
+            ])
+        ;
+
+        return $query->getSingleScalarResult();
     }
 
 }
