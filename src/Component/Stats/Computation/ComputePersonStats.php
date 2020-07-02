@@ -24,7 +24,11 @@ class ComputePersonStats
     }
 
     /**
-     * @return NestedFilmsInPersonStatsDTO[]
+     * @param string $personUuid
+     * @param EntityManagerInterface $em
+     * @return array
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public static function generateFilmsStats(string $personUuid, EntityManagerInterface $em):array
     {
@@ -44,8 +48,11 @@ class ComputePersonStats
 
     /**
      * @param Film $film
+     * @param string $personUuid
      * @param EntityManagerInterface $em
      * @return NestedFilmsInPersonStatsDTO
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     private static function generateFilmDTO(Film $film, string $personUuid, EntityManagerInterface $em):NestedFilmsInPersonStatsDTO
     {

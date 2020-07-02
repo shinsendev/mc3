@@ -56,6 +56,11 @@ class Person extends AbstractTarget
      */
     private $works;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Statistic::class)
+     */
+    private $stats;
+
     public function __construct()
     {
         parent::__construct();
@@ -161,6 +166,18 @@ class Person extends AbstractTarget
                 $work->setPerson(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStats(): ?Statistic
+    {
+        return $this->stats;
+    }
+
+    public function setStats(?Statistic $stats): self
+    {
+        $this->stats = $stats;
 
         return $this;
     }

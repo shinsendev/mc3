@@ -28,31 +28,17 @@ class PersonPayloadDTO extends AbstractUniqueDTO
     CONST PERSON = 'person';
     CONST NO_VALUE = 'blank';
 
-    /** @var string */
-    private $fullname = self::NO_VALUE;
-
-    /** @var string */
-    private $gender = self::NO_VALUE;
-
-    /** @var string */
-    private $type= self::NO_VALUE; // group or person
-
-    /** @var string */
-    private $viaf = self::NO_VALUE;
-
-    /** @var array[] */
-    private $relatedFilms = [];
-
-    /** @var array[] */
-    private $relatedNumbersByProfession = [];
-
-    /** @var array[] */
-    private $relatedPersonsByProfession = [];
+    private string $fullname = self::NO_VALUE;
+    private string $gender = self::NO_VALUE;
+    private string $type= self::NO_VALUE; // group or person
+    private string $viaf = self::NO_VALUE;
+    private array $relatedFilms = [];
+    private array $relatedNumbersByProfession = [];
+    private array $relatedPersonsByProfession = [];
+    private int $averageShotLength = 0;
+    private array $presenceInFilms = [];
 
     private $works;
-
-    // some stats // possible to preload, only if a data is changed the data is changed // person Stats
-    private $averageShotLength;
 
     private $performancesStats;
 
@@ -178,6 +164,38 @@ class PersonPayloadDTO extends AbstractUniqueDTO
     public function setRelatedPersonsByProfession(array $relatedPersonsByProfession): void
     {
         $this->relatedPersonsByProfession = $relatedPersonsByProfession;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAverageShotLength(): int
+    {
+        return $this->averageShotLength;
+    }
+
+    /**
+     * @param int $averageShotLength
+     */
+    public function setAverageShotLength(int $averageShotLength): void
+    {
+        $this->averageShotLength = $averageShotLength;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPresenceInFilms(): array
+    {
+        return $this->presenceInFilms;
+    }
+
+    /**
+     * @param array $presenceInFilms
+     */
+    public function setPresenceInFilms(array $presenceInFilms): void
+    {
+        $this->presenceInFilms = $presenceInFilms;
     }
 
 }

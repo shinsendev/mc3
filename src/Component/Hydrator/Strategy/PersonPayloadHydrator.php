@@ -10,6 +10,7 @@ use App\Component\Factory\DTOFactory;
 use App\Component\Hydrator\Description\HydratorDTOInterface;
 use App\Component\Model\ModelConstants;
 use App\Entity\Person;
+use App\Entity\Statistic;
 use Doctrine\ORM\EntityManagerInterface;
 
 class PersonPayloadHydrator implements HydratorDTOInterface
@@ -60,6 +61,21 @@ class PersonPayloadHydrator implements HydratorDTOInterface
         $dto = self::setPersons($dto, $em);
 
         // get stats
+        $statsRepository = $em->getRepository(Statistic::class);
+
+        if ($personStats = $statsRepository->findOneByTargetUuid($person->getUuid())) {
+            $value = $personStats->getValue();
+
+            if (isset($value['averageShotLength'])) {
+                $dto->setAverageShotLength($value['averageShotLength']);
+            }
+
+            if (isset($value['films'])) {
+                $dto->setPresenceInFilms($value['films']);
+            }
+        }
+
+
         //todo: to complete
         // add  length of the numbers in the film,  total length of the numbers with person in the film, ratio is computed on client side
 
