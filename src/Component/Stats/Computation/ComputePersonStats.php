@@ -7,6 +7,7 @@ namespace App\Component\Stats\Computation;
 
 
 use App\Component\DTO\Stats\Person\NestedFilmsInPersonStatsDTO;
+use App\Entity\Film;
 use App\Entity\Person;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -23,13 +24,35 @@ class ComputePersonStats
     }
 
     /**
+     * @return NestedFilmsInPersonStatsDTO[]
+     */
+    public static function generateFilmsStats(string $personUuid, EntityManagerInterface $em):array
+    {
+        // get all films by the numbers connected as performers to the person
+        $films = $em->getRepository(Person::class)->findFilmsWherePerforming($personUuid);
+
+        $filmsDTO = [];
+        foreach ($films as $film) {
+            $filmDTO = self::generateFilmDTO($film);
+            $filmsDTO[] = $filmDTO;
+        }
+
+        return $filmsDTO;
+    }
+
+    /**
+     * @param Film $film
      * @return NestedFilmsInPersonStatsDTO
      */
-    public static function generateFilmStats()
+    private static function generateFilmDTO(Film $film):NestedFilmsInPersonStatsDTO
     {
-        $film = new NestedFilmsInPersonStatsDTO();
-        $film = [];
+        $filmDTO = new NestedFilmsInPersonStatsDTO();
+        $filmDTO->setTitle($film->getTitle());
+        $filmDTO->setImdb($film->getImdb());
+        $filmDTO->setUUid($film->getUuid());
 
-        return $film;
+        dd($filmDTO);
+
+        return $filmDTO;
     }
 }

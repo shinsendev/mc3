@@ -194,13 +194,32 @@ ORDER BY f.released_year, f.title";
                 INNER JOIN App\Entity\Person p WITH p.id = w.person
                WHERE w.profession = :performer AND p.uuid = :personUuid
         ')
-            ->setParameters([
-                'personUuid' => $personUuid,
-                'performer' => 'performer'
-            ])
-        ;
+        ->setParameters([
+            'personUuid' => $personUuid,
+            'performer' => 'performer'
+        ]);
 
         return $query->getSingleScalarResult();
     }
 
+    /**
+     * @param string $personUuid
+     * @return int|mixed|string
+     */
+    public function findFilmsWherePerforming(string $personUuid)
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT f FROM App\Entity\Film f JOIN f.numbers n
+                INNER JOIN App\Entity\Work w WITH w.targetUuid = n.uuid
+                INNER JOIN App\Entity\Person p WITH p.id = w.person
+            WHERE w.profession = :performer AND p.uuid = :personUuid
+            GROUP BY f.id
+        ')
+        ->setParameters([
+            'personUuid' => $personUuid,
+            'performer' => 'performer'
+        ]);
+
+        return $query->getResult();
+    }
 }

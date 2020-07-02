@@ -57,7 +57,7 @@ class PersonStatsStrategy
         $personStats = new PersonStatsDTO(); // to serialise in json array
         $personStats->setAverageShotLength(ComputePersonStats::computeAverageShotLength($personUuid, $em));
 
-        $films = ComputePersonStats::generateFilmStats();
+        $films = ComputePersonStats::generateFilmsStats($personUuid, $em);
         $personStats->setFilms([$films]);
 
         return $personStats;

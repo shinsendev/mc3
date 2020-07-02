@@ -11,9 +11,10 @@ namespace App\Component\DTO\Stats\Person;
  */
 class PersonStatsDTO
 {
-    private int $averageShotLength = 0; // (round and multiply by 100)
+    private int $averageShotLength = 0;
 
-    private array $films = []; // release data, total length
+    /** @var PersonStatsDTO[] */
+    private array $films = [];
 
     /**
      * @return int
@@ -32,7 +33,7 @@ class PersonStatsDTO
     }
 
     /**
-     * @return array
+     * @return PersonStatsDTO[]
      */
     public function getFilms(): array
     {
@@ -40,7 +41,7 @@ class PersonStatsDTO
     }
 
     /**
-     * @param array $films
+     * @param PersonStatsDTO[] $films
      */
     public function setFilms(array $films): void
     {
