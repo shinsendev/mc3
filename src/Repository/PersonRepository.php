@@ -186,7 +186,7 @@ ORDER BY f.released_year, f.title";
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function computeAverageShotLength($personUuid):int
+    public function computeAverageShotLength($personUuid):float
     {
         $query = $this->getEntityManager()->createQuery('
               SELECT (AVG(n.endTc - n.beginTc)/ AVG(n.shots)) FROM App\Entity\Number n

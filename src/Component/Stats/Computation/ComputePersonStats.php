@@ -18,7 +18,6 @@ class ComputePersonStats
      */
     public static function computeAverageShotLength(string $personUuid, EntityManagerInterface $em):int
     {
-        //todo : round value
-        return $em->getRepository(Person::class)->computeAverageShotLength($personUuid);
+        return intval(100*round($em->getRepository(Person::class)->computeAverageShotLength($personUuid),2));
     }
 }
