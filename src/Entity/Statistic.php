@@ -34,7 +34,7 @@ class Statistic extends AbstractTarget
     /**
      * @ORM\Column(type="guid", nullable=true)
      */
-    private string $target_uuid;
+    private string $targetUuid;
 
     public function getKey(): ?string
     {
@@ -84,15 +84,19 @@ class Statistic extends AbstractTarget
         return $this;
     }
 
-    public function getTargetUuid(): ?string
+    /**
+     * @return string
+     */
+    public function getTargetUuid(): string
     {
-        return $this->target_uuid;
+        return $this->targetUuid;
     }
 
-    public function setTargetUuid(?string $target_uuid): self
+    /**
+     * @param string $targetUuid
+     */
+    public function setTargetUuid(string $targetUuid): void
     {
-        $this->target_uuid = $target_uuid;
-
-        return $this;
+        $this->targetUuid = $targetUuid;
     }
 }

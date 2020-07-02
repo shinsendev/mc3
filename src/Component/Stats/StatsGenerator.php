@@ -7,6 +7,7 @@ namespace App\Component\Stats;
 
 
 use App\Component\Stats\Strategy\PersonStatsStrategy;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class StatsGenerator
@@ -16,10 +17,19 @@ class StatsGenerator
 {
     const PERSON_STRATEGY = 'personStrategy';
 
-    public static function generate(string $strategy, string $itemUuid):void
+    /**
+     * @param string $strategy
+     * @param string $itemUuid
+     * @param EntityManagerInterface $em
+     */
+    public static function generate(
+        string $strategy,
+        string $itemUuid,
+        EntityManagerInterface $em
+    ):void
     {
         if ($strategy === self::PERSON_STRATEGY) {
-            PersonStatsStrategy::saveStats($itemUuid);
+            PersonStatsStrategy::saveStats($itemUuid, $em);
         }
     }
 }
