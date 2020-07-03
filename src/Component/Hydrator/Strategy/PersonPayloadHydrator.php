@@ -164,7 +164,7 @@ class PersonPayloadHydrator implements HydratorDTOInterface
             }
 
             if (isset($numbersRelated)) {
-                $dto->setRelatedNumbersByProfession($uniqueNumbersList);
+                $dto->setRelatedNumbers($uniqueNumbersList);
             }
         }
 
@@ -186,7 +186,7 @@ class PersonPayloadHydrator implements HydratorDTOInterface
         }
 
         // add numbers uuid
-        foreach ($dto->getRelatedNumbersByProfession() as $target) {
+        foreach ($dto->getRelatedNumbers() as $target) {
             $targetsList[] = $target->getUuid();
         }
 

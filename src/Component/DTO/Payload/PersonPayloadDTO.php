@@ -33,7 +33,7 @@ class PersonPayloadDTO extends AbstractUniqueDTO
     private string $type= self::NO_VALUE; // group or person
     private string $viaf = self::NO_VALUE;
     private array $relatedFilms = [];
-    private array $relatedNumbersByProfession = [];
+    private array $relatedNumbers = [];
     private array $relatedPersonsByProfession = [];
     private int $averageShotLength = 0;
     private array $presenceInFilms = [];
@@ -112,23 +112,7 @@ class PersonPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return NumberNestedInPersonDTO[]
-     */
-    public function getRelatedNumbersByProfession(): array
-    {
-        return $this->relatedNumbersByProfession;
-    }
-
-    /**
-     * @param NumberNestedInPersonDTO[] $relatedNumbersByProfession
-     */
-    public function setRelatedNumbersByProfession(array $relatedNumbersByProfession): void
-    {
-        $this->relatedNumbersByProfession = $relatedNumbersByProfession;
-    }
-
-    /**
-     * @return FilmNestedDTO[]
+     * @return array
      */
     public function getRelatedFilms(): array
     {
@@ -136,7 +120,7 @@ class PersonPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @param FilmNestedDTO[] $relatedFilms
+     * @param array $relatedFilms
      */
     public function setRelatedFilms(array $relatedFilms): void
     {
@@ -144,19 +128,20 @@ class PersonPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return PersonNestedInPersonDTO[]
+     * PersonNestedInPersonDTO
+     * @return array
      */
-    public function getRelatedPersonsByProfession(): array
+    public function getRelatedNumbers(): array
     {
-        return $this->relatedPersonsByProfession;
+        return $this->relatedNumbers;
     }
 
     /**
-     * @param PersonNestedInPersonDTO[] $relatedPersonsByProfession
+     * @param array $relatedNumbers
      */
-    public function setRelatedPersonsByProfession(array $relatedPersonsByProfession): void
+    public function setRelatedNumbers(array $relatedNumbers): void
     {
-        $this->relatedPersonsByProfession = $relatedPersonsByProfession;
+        $this->relatedNumbers = $relatedNumbers;
     }
 
     /**
@@ -191,4 +176,20 @@ class PersonPayloadDTO extends AbstractUniqueDTO
         $this->presenceInFilms = $presenceInFilms;
     }
 
+    /**
+     * @return array
+     */
+    public function getRelatedPersonsByProfession(): array
+    {
+        return $this->relatedPersonsByProfession;
+    }
+
+    /**
+     * @param array $relatedPersonsByProfession
+     */
+    public function setRelatedPersonsByProfession(array $relatedPersonsByProfession): void
+    {
+        $this->relatedPersonsByProfession = $relatedPersonsByProfession;
+    }
+    
 }
