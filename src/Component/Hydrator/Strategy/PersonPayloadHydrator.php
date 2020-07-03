@@ -198,13 +198,13 @@ class PersonPayloadHydrator implements HydratorDTOInterface
         foreach ($choreographers as $data) {
 
             /** @var CoworkerNestedDTO $coworker */
-            $coworkerDTO = DTOFactory::create(ModelConstants::PERSON_COWORKER);
-            $coworkerDTO = NestedCoworkerPayloadHydrator::hydrate($coworkerDTO, $data, $em);
-            $choreographersDTO[] = $coworkerDTO;
+            $choreographerDTO = DTOFactory::create(ModelConstants::PERSON_COWORKER);
+            $choreographerDTO = NestedCoworkerPayloadHydrator::hydrate($choreographerDTO, $data, $em);
+            $choreographersDTO[] = $choreographerDTO;
         }
 
-        if (isset($coworkersDTO)) {
-            $dto->setChoregraphers($coworkersDTO);
+        if (isset($choreographersDTO)) {
+            $dto->setChoregraphers($choreographersDTO);
         }
 
         // get all composers
