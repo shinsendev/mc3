@@ -222,4 +222,78 @@ ORDER BY f.released_year, f.title";
 
         return $query->getResult();
     }
+
+    public function findNumbersWherePerforming(string $personUuid)
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT n.uuid FROM App\Entity\Number n
+                INNER JOIN App\Entity\Work w WITH w.targetUuid = n.uuid
+                INNER JOIN App\Entity\Person p WITH p.id = w.person
+            WHERE w.profession = :performer AND p.uuid = :personUuid
+            GROUP BY n.id
+        ')
+            ->setParameters([
+                'personUuid' => $personUuid,
+                'performer' => 'performer'
+            ]);
+
+        return $query->getResult();
+    }
+
+    public function findChoreographers(array $numbers)
+    {
+        $query = $this->getEntityManager()->createQuery("
+            SELECT p, n FROM App\Entity\Person p 
+                INNER JOIN App\Entity\Work w WITH p.id = w.person
+                INNER JOIN App\Entity\Number n WITH w.targetUuid = n.uuid
+            WHERE w.profession = :choregraph AND n.uuid IN (:numbers)
+        ")
+            ->setParameters([
+                'choregraph' => 'choregraph',
+                'numbers' => $numbers
+            ]);
+
+        return $query->getResult();
+    }
+
+    public function findChoreographersGroupedByNumbers(array $numbers)
+    {
+        $query = $this->getEntityManager()->createQuery("
+            SELECT p as person, COUNT(n.id) as count FROM App\Entity\Person p 
+                INNER JOIN App\Entity\Work w WITH p.id = w.person
+                INNER JOIN App\Entity\Number n WITH w.targetUuid = n.uuid
+            WHERE w.profession = :profession AND n.uuid IN (:numbers)
+            GROUP BY p.id ORDER BY count DESC
+        ")
+            ->setParameters([
+                'profession' => 'choregraph',
+                'numbers' => $numbers
+            ]);
+
+        return $query->getResult();
+    }
+
+    /**
+     * @param array $numbers
+     * @return int|mixed|string
+     */
+    public function findSongCoworkersGroupedByNumbers(array $numbers, string $profession)
+    {
+        $query = $this->getEntityManager()->createQuery("
+            SELECT p as person, COUNT(s.id) as count FROM App\Entity\Person p
+                INNER JOIN App\Entity\Work w WITH p.id = w.person
+                INNER JOIN App\Entity\Song s WITH s.uuid = w.targetUuid
+                JOIN s.numbers n
+            WHERE w.profession = :profession AND n.uuid IN (:numbers)
+            GROUP BY p.id ORDER BY count DESC
+        ")
+            ->setParameters([
+                'profession' => $profession,
+                'numbers' => $numbers
+            ]);
+
+        return $query->getResult();
+    }
+
+
 }

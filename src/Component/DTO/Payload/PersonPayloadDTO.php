@@ -32,9 +32,16 @@ class PersonPayloadDTO extends AbstractUniqueDTO
     private string $gender = self::NO_VALUE;
     private string $type= self::NO_VALUE; // group or person
     private string $viaf = self::NO_VALUE;
+
     private array $relatedFilms = [];
     private array $relatedNumbers = [];
-    private array $relatedPersonsByProfession = [];
+
+    // co-workers
+    private array $choregraphers = [];
+    private array $composers = [];
+    private array $lyricists = [];
+
+    // presence stats
     private int $averageShotLength = 0;
     private array $presenceInFilms = [];
 
@@ -179,17 +186,49 @@ class PersonPayloadDTO extends AbstractUniqueDTO
     /**
      * @return array
      */
-    public function getRelatedPersonsByProfession(): array
+    public function getChoregraphers(): array
     {
-        return $this->relatedPersonsByProfession;
+        return $this->choregraphers;
     }
 
     /**
-     * @param array $relatedPersonsByProfession
+     * @param array $choregraphers
      */
-    public function setRelatedPersonsByProfession(array $relatedPersonsByProfession): void
+    public function setChoregraphers(array $choregraphers): void
     {
-        $this->relatedPersonsByProfession = $relatedPersonsByProfession;
+        $this->choregraphers = $choregraphers;
     }
-    
+
+    /**
+     * @return array
+     */
+    public function getComposers(): array
+    {
+        return $this->composers;
+    }
+
+    /**
+     * @param array $composers
+     */
+    public function setComposers(array $composers): void
+    {
+        $this->composers = $composers;
+    }
+
+    /**
+     * @return array
+     */
+    public function getLyricists(): array
+    {
+        return $this->lyricists;
+    }
+
+    /**
+     * @param array $lyricists
+     */
+    public function setLyricists(array $lyricists): void
+    {
+        $this->lyricists = $lyricists;
+    }
+
 }

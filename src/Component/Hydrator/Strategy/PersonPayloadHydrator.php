@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Component\Hydrator\Strategy;
 
 use App\Component\DTO\Definition\DTOInterface;
+use App\Component\DTO\Nested\CoworkerNestedDTO;
 use App\Component\DTO\Payload\PersonPayloadDTO;
 use App\Component\Factory\DTOFactory;
 use App\Component\Hydrator\Description\HydratorDTOInterface;
@@ -174,34 +175,65 @@ class PersonPayloadHydrator implements HydratorDTOInterface
     /**
      * @param PersonPayloadDTO $dto
      * @param EntityManagerInterface $em
-     * @return PersonPayloadDTO
+     * @return PersonPayloadDTO|void
      */
-    public static function setPersons(PersonPayloadDTO $dto, EntityManagerInterface $em)
+    public static function setPersons(PersonPayloadDTO $dto, EntityManagerInterface $em):PersonPayloadDTO
     {
-        // define all numbers and films uuid connected to this persons
-        $targetsList = [];
-        // add films uuid
-        foreach ($dto->getRelatedFilms() as $target) {
-            $targetsList[] = $target->getUuid();
+        $personUuid = $dto->getUuid();
+
+        // get all numbers where the person has been a performer
+        $numbers = $em->getRepository(Person::class)->findNumbersWherePerforming($personUuid);
+
+        foreach ($numbers as $number) {
+            $numbersList[] = $number['uuid'];
         }
 
-        // add numbers uuid
-        foreach ($dto->getRelatedNumbers() as $target) {
-            $targetsList[] = $target->getUuid();
+        // if there is no numbers, we don't need to go further
+        if (!isset($numbersList)) {
+            return $dto;
         }
 
-        // find all others persons who have worked on this films and numbers
-        $persons = $em->getRepository(Person::class)->findPaginatedRelatedPersons($dto->getUuid(), $targetsList, 500, 0);
+        // get all choreographers
+        $choreographers = $em->getRepository(Person::class)->findChoreographersGroupedByNumbers($numbers);
+        foreach ($choreographers as $data) {
 
-        foreach ($persons as $response) {
-            $personDTO = DTOFactory::create(ModelConstants::PERSON_NESTED_IN_PERSON_DTO_MODEL);
-            $personsRelated[] = NestedPersonInPersonHydator::hydrate($personDTO, $response, $em);
-        }
-        
-        if (isset($personsRelated)) {
-            $dto->setRelatedPersonsByProfession($personsRelated);
+            /** @var CoworkerNestedDTO $coworker */
+            $coworkerDTO = DTOFactory::create(ModelConstants::PERSON_COWORKER);
+            $coworkerDTO = NestedCoworkerPayloadHydrator::hydrate($coworkerDTO, $data, $em);
+            $choreographersDTO[] = $coworkerDTO;
         }
 
+        if (isset($coworkersDTO)) {
+            $dto->setChoregraphers($coworkersDTO);
+        }
+
+        // get all composers
+        $composers = $em->getRepository(Person::class)->findSongCoworkersGroupedByNumbers($numbers, 'composer');
+        foreach ($composers as $data) {
+            /** @var CoworkerNestedDTO $coworker */
+            $coworkerDTO = DTOFactory::create(ModelConstants::PERSON_COWORKER);
+            $coworkerDTO = NestedCoworkerPayloadHydrator::hydrate($coworkerDTO, $data, $em);
+            $composersDTO[] = $coworkerDTO;
+        }
+
+        if (isset($composersDTO)) {
+            $dto->setComposers($composersDTO);
+        }
+
+        // get all lyricists
+        $composers = $em->getRepository(Person::class)->findSongCoworkersGroupedByNumbers($numbers, 'lyricists');
+        foreach ($composers as $data) {
+            /** @var CoworkerNestedDTO $coworker */
+            $coworkerDTO = DTOFactory::create(ModelConstants::PERSON_COWORKER);
+            $coworkerDTO = NestedCoworkerPayloadHydrator::hydrate($coworkerDTO, $data, $em);
+            $composersDTO[] = $coworkerDTO;
+        }
+
+        if (isset($composersDTO)) {
+            $dto->setLyricists($composersDTO);
+        }
+
+        /** @var PersonPayloadDTO */
         return $dto;
     }
 
