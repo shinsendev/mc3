@@ -221,16 +221,16 @@ class PersonPayloadHydrator implements HydratorDTOInterface
         }
 
         // get all lyricists
-        $composers = $em->getRepository(Person::class)->findSongCoworkersGroupedByNumbers($numbers, 'lyricists');
-        foreach ($composers as $data) {
+        $lyricists = $em->getRepository(Person::class)->findSongCoworkersGroupedByNumbers($numbers, 'lyricist');
+        foreach ($lyricists as $data) {
             /** @var CoworkerNestedDTO $coworker */
             $coworkerDTO = DTOFactory::create(ModelConstants::PERSON_COWORKER);
             $coworkerDTO = NestedCoworkerPayloadHydrator::hydrate($coworkerDTO, $data, $em);
-            $composersDTO[] = $coworkerDTO;
+            $lyricistsDTO[] = $coworkerDTO;
         }
 
-        if (isset($composersDTO)) {
-            $dto->setLyricists($composersDTO);
+        if (isset($lyricistsDTO)) {
+            $dto->setLyricists($lyricistsDTO);
         }
 
         /** @var PersonPayloadDTO */
