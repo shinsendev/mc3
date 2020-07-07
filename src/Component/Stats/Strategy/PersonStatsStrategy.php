@@ -51,7 +51,7 @@ class PersonStatsStrategy
      * @param EntityManagerInterface $em
      * @return PersonStatsDTO
      */
-    private function computeStats(string $personUuid, EntityManagerInterface $em):PersonStatsDTO
+    private static function computeStats(string $personUuid, EntityManagerInterface $em):PersonStatsDTO
     {
         $personStats = new PersonStatsDTO();
         $personStats->setAverageShotLength(ComputePersonStats::computeAverageShotLength($personUuid, $em));

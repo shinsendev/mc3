@@ -7,6 +7,8 @@ namespace App\Tests\Functional;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\Client;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
+use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 abstract class AbstractFunctionalTest extends ApiTestCase
 {
@@ -27,5 +29,6 @@ abstract class AbstractFunctionalTest extends ApiTestCase
             'App\DataFixtures\FilmFixtures',
             'App\DataFixtures\NumberFixtures',
         ]);
+
     }
 }
