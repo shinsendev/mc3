@@ -28,44 +28,30 @@ class PersonPayloadDTO extends AbstractUniqueDTO
     CONST PERSON = 'person';
     CONST NO_VALUE = 'blank';
 
-    /** @var string */
-    private $fullname = self::NO_VALUE;
+    private string $fullname = self::NO_VALUE;
+    private string $gender = self::NO_VALUE;
+    private string $type= self::NO_VALUE; // group or person
+    private string $viaf = self::NO_VALUE;
 
-    /** @var string */
-    private $gender = self::NO_VALUE;
+    private array $relatedFilms = [];
+    private array $relatedNumbers = [];
 
-    /** @var string */
-    private $type= self::NO_VALUE; // group or person
+    // co-workers
+    private array $choregraphers = [];
+    private array $composers = [];
+    private array $lyricists = [];
 
-    /** @var string */
-    private $viaf = self::NO_VALUE;
-
-    /** @var array[] */
-    private $relatedFilms = [];
-
-    /** @var array[] */
-    private $relatedNumbersByProfession = [];
-
-    /** @var array[] */
-    private $relatedPersonsByProfession = [];
+    // presence stats
+    private int $averageShotLength = 0;
+    private array $presenceInFilms = [];
 
     private $works;
-
-    // some stats // possible to preload, only if a data is changed the data is changed // person Stats
-    private $averageShotLength;
-
     private $performancesStats;
-
     private $structuresStats;
-
     private $completenessStats;
-
     private $sourcesStats;
-
     private $diegeticStats;
-
     private $topicsStats;
-
     private $exoticismsStats;
 
     /**
@@ -133,23 +119,7 @@ class PersonPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return NumberNestedInPersonDTO[]
-     */
-    public function getRelatedNumbersByProfession(): array
-    {
-        return $this->relatedNumbersByProfession;
-    }
-
-    /**
-     * @param NumberNestedInPersonDTO[] $relatedNumbersByProfession
-     */
-    public function setRelatedNumbersByProfession(array $relatedNumbersByProfession): void
-    {
-        $this->relatedNumbersByProfession = $relatedNumbersByProfession;
-    }
-
-    /**
-     * @return FilmNestedDTO[]
+     * @return array
      */
     public function getRelatedFilms(): array
     {
@@ -157,7 +127,7 @@ class PersonPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @param FilmNestedDTO[] $relatedFilms
+     * @param array $relatedFilms
      */
     public function setRelatedFilms(array $relatedFilms): void
     {
@@ -165,19 +135,100 @@ class PersonPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return PersonNestedInPersonDTO[]
+     * PersonNestedInPersonDTO
+     * @return array
      */
-    public function getRelatedPersonsByProfession(): array
+    public function getRelatedNumbers(): array
     {
-        return $this->relatedPersonsByProfession;
+        return $this->relatedNumbers;
     }
 
     /**
-     * @param PersonNestedInPersonDTO[] $relatedPersonsByProfession
+     * @param array $relatedNumbers
      */
-    public function setRelatedPersonsByProfession(array $relatedPersonsByProfession): void
+    public function setRelatedNumbers(array $relatedNumbers): void
     {
-        $this->relatedPersonsByProfession = $relatedPersonsByProfession;
+        $this->relatedNumbers = $relatedNumbers;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAverageShotLength(): int
+    {
+        return $this->averageShotLength;
+    }
+
+    /**
+     * @param int $averageShotLength
+     */
+    public function setAverageShotLength(int $averageShotLength): void
+    {
+        $this->averageShotLength = $averageShotLength;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPresenceInFilms(): array
+    {
+        return $this->presenceInFilms;
+    }
+
+    /**
+     * @param array $presenceInFilms
+     */
+    public function setPresenceInFilms(array $presenceInFilms): void
+    {
+        $this->presenceInFilms = $presenceInFilms;
+    }
+
+    /**
+     * @return array
+     */
+    public function getChoregraphers(): array
+    {
+        return $this->choregraphers;
+    }
+
+    /**
+     * @param array $choregraphers
+     */
+    public function setChoregraphers(array $choregraphers): void
+    {
+        $this->choregraphers = $choregraphers;
+    }
+
+    /**
+     * @return array
+     */
+    public function getComposers(): array
+    {
+        return $this->composers;
+    }
+
+    /**
+     * @param array $composers
+     */
+    public function setComposers(array $composers): void
+    {
+        $this->composers = $composers;
+    }
+
+    /**
+     * @return array
+     */
+    public function getLyricists(): array
+    {
+        return $this->lyricists;
+    }
+
+    /**
+     * @param array $lyricists
+     */
+    public function setLyricists(array $lyricists): void
+    {
+        $this->lyricists = $lyricists;
     }
 
 }
