@@ -7,6 +7,7 @@ use App\Entity\Person;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
+use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
@@ -188,16 +189,17 @@ ORDER BY f.released_year, f.title";
      */
     public function computeAverageShotLength($personUuid):?float
     {
+        // to avoid division by zero error, we add 1 shot by default if there is no info
         $query = $this->getEntityManager()->createQuery('
-              SELECT (AVG(n.endTc - n.beginTc)/ AVG(n.shots)) FROM App\Entity\Number n
-                INNER JOIN App\Entity\Work w WITH w.targetUuid = n.uuid
-                INNER JOIN App\Entity\Person p WITH p.id = w.person
-               WHERE w.profession = :performer AND p.uuid = :personUuid
-        ')
-        ->setParameters([
-            'personUuid' => $personUuid,
-            'performer' => 'performer'
-        ]);
+          SELECT (AVG(n.endTc - n.beginTc)/ AVG(CASE WHEN n.shots > 0 THEN n.shots ELSE 1 END)) FROM App\Entity\Number n
+            INNER JOIN App\Entity\Work w WITH w.targetUuid = n.uuid
+            INNER JOIN App\Entity\Person p WITH p.id = w.person
+           WHERE w.profession = :performer AND p.uuid = :personUuid
+    ')
+            ->setParameters([
+                'personUuid' => $personUuid,
+                'performer' => 'performer'
+            ]);
 
         return $query->getSingleScalarResult();
     }

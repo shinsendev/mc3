@@ -5,9 +5,12 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\Component\Model\ModelConstants;
 use App\Entity\Attribute;
 use App\Entity\Film;
 use App\Entity\Number;
+use App\Entity\Person;
+use App\Entity\Work;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -23,8 +26,8 @@ class NumberFixtures extends Fixture implements DependentFixtureInterface
     public function getData()
     {
         return [
-            ['title'=> 'Overture', 'uuid' => '5d5bee4b-3fab-4c65-b045-9b116b218d4c', 'beginTc' => 22, 'endTc' => 301],
-            ['title'=> 'Prologue', 'uuid' => 'ec1b17fd-1578-4c69-a52a-094bf4c7b078', 'spectators' => 'no', 'attributes' => ['475a4966-bc8b-46e0-b0de-8faad3f8dc62']],
+            ['title'=> 'Overture', 'uuid' => '5d5bee4b-3fab-4c65-b045-9b116b218d4c', 'beginTc' => 22, 'endTc' => 301, 'performers' => ['Astaire'], 'shots' => 12],
+            ['title'=> 'Prologue', 'uuid' => 'ec1b17fd-1578-4c69-a52a-094bf4c7b078', 'spectators' => 'no', 'attributes' => ['475a4966-bc8b-46e0-b0de-8faad3f8dc62'], 'performers' => ['Astaire'], 'shots' => 15],
             ['title'=> 'Jet Song'],
             ['title'=> 'Something\'s Coming'],
             ['title'=> 'Dance at the Gym: Blues'],
@@ -64,6 +67,9 @@ class NumberFixtures extends Fixture implements DependentFixtureInterface
         isset($data['endTc']) ? $endTc = $data['endTc'] : $endTc = 10;
         $number->setEndTc($endTc);
 
+        isset($data['shots']) ? $shots = $data['shots'] : $shots = 6; // we arbitrary propose 6 shots by numbers by default
+        $number->setShots($shots);
+
         // add attribute
         if (isset($data['attributes'])) {
             $attributeRepository = $manager->getRepository(Attribute::class);
@@ -74,8 +80,21 @@ class NumberFixtures extends Fixture implements DependentFixtureInterface
             }
         }
 
-        $number->setShots(0);
         $number->setContributors(null);
+
+        // add performer
+        if (isset($data['performers'])) {
+            $personRepository = $manager->getRepository(Person::class);
+            foreach ($data['performers'] as $performerName) {
+                $performer = $personRepository->findOneByLastname($performerName);
+                $work = new Work();
+                $work->setTargetUuid($data['uuid']);
+                $work->setTargetType(ModelConstants::NUMBER_MODEL);
+                $work->setPerson($performer);
+                $work->setProfession('performer');
+                $manager->persist($work);
+            }
+        }
 
         return $number;
     }
@@ -84,6 +103,7 @@ class NumberFixtures extends Fixture implements DependentFixtureInterface
     {
         return array(
             FilmFixtures::class,
+            PersonFixtures::class
         );
     }
 }

@@ -171,7 +171,7 @@ class FilmPayloadHydrator implements HydratorDTOInterface
             $numberDTO->setUuid($numberUuid);
 
             // compute number length
-            if ( $numberBeginTc >= 0 && $numberEndTc && $numberEndTc >= $numberBeginTc) {
+            if ($numberBeginTc >= 0 && $numberEndTc && $numberEndTc >= $numberBeginTc) {
                 $numberDTO->setLength($numberEndTc - $numberBeginTc);
             }
 
