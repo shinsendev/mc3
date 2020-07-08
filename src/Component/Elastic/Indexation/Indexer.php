@@ -6,10 +6,6 @@ declare(strict_types=1);
 namespace App\Component\Elastic\Indexation;
 
 use App\Component\Elastic\ElasticConnection;
-use App\Component\Factory\DTOFactory;
-use App\Component\Hydrator\Strategy\FilmPayloadHydrator;
-use App\Component\Model\ModelConstants;
-use App\Entity\Film;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Serializer\Serializer;
