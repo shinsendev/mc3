@@ -61,6 +61,41 @@ class Indexer
         SongIndexation::index($em, $serializer, $client, $output);
     }
 
+    public static function createIndexes()
+    {
+        $client = ElasticConnection::connect();
+
+        $indexParams['index']  = ModelConstants::FILM_MODEL;
+        $client->indices()->create($indexParams);
+
+        $indexParams['index']  = ModelConstants::NUMBER_MODEL;
+        $client->indices()->create($indexParams);
+
+        $indexParams['index']  = ModelConstants::PERSON_MODEL;
+        $client->indices()->create($indexParams);
+
+        $indexParams['index']  = ModelConstants::SONG_MODEL;
+        $client->indices()->create($indexParams);
+    }
+
+    public static function delete()
+    {
+        $client = ElasticConnection::connect();
+
+        $indexParams['index']  = ModelConstants::FILM_MODEL;
+        $client->indices()->delete($indexParams);
+
+        $indexParams['index']  = ModelConstants::NUMBER_MODEL;
+        $client->indices()->delete($indexParams);
+
+        $indexParams['index']  = ModelConstants::PERSON_MODEL;
+        $client->indices()->delete($indexParams);
+
+        $indexParams['index']  = ModelConstants::SONG_MODEL;
+        $client->indices()->delete($indexParams);
+    }
+
+
     /**
      * @return Serializer
      */
