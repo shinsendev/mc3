@@ -22,8 +22,6 @@ use Symfony\Component\Serializer\Serializer;
  */
 class FilmIndexation
 {
-    const INDEX_NAME = 'mc2';
-
     public static function index(EntityManagerInterface $em, Serializer $serializer, Client $client, OutputInterface $output)
     {
         $output->writeln([
@@ -46,11 +44,12 @@ class FilmIndexation
             foreach ($films as $film) {
                 $filmDTO = DTOFactory::create(ModelConstants::FILM_PAYLOAD_MODEL);
                 $filmDTO = FilmPayloadHydrator::hydrate($filmDTO, ['film' => $film], $em);
+
                 $jsonContent = $serializer->serialize($filmDTO, 'json');
                 $filmArray = json_decode($jsonContent);
 
                 $params['body']  = $filmArray;
-                $params['index'] = self::INDEX_NAME;
+                $params['index'] = ModelConstants::FILM_MODEL;
                 $params['type']  = ModelConstants::FILM_MODEL;
                 $params['id']    = $film->getUuid();
 
