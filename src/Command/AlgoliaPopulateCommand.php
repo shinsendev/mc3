@@ -2,20 +2,16 @@
 
 namespace App\Command;
 
-use App\Component\Elastic\Indexation\Indexer;
+use App\Component\Algolia\Indexation\Indexer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-/**
- * Class ElasticPopulateCommand
- * @package App\Command
- */
-class ElasticPopulateCommand extends Command
+class AlgoliaPopulateCommand extends Command
 {
-    protected static $defaultName = 'elastic:populate';
+    protected static $defaultName = 'algolia:populate';
 
     /** @var EntityManagerInterface */
     private $em;
@@ -29,7 +25,7 @@ class ElasticPopulateCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Index all items for Elastic Search')
+            ->setDescription('Index all items for Algolia')
         ;
     }
 

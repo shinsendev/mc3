@@ -6,10 +6,7 @@ declare(strict_types=1);
 namespace App\Component\Elastic\Indexation;
 
 use App\Component\Elastic\ElasticConnection;
-use App\Component\Factory\DTOFactory;
-use App\Component\Hydrator\Strategy\FilmPayloadHydrator;
 use App\Component\Model\ModelConstants;
-use App\Entity\Film;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -29,22 +26,39 @@ class Indexer
     public static function populate(EntityManagerInterface $em, OutputInterface $output)
     {
         $client = ElasticConnection::connect();
-
-        // reset and create index
+        ini_set('memory_limit', '256M'); //because of php array adapter cache
 
         // In some rare cases, you may see an error like this when attempting to alter an index:
         // "Cannot delete indices that are being snapshotted: [[my_index/dPzLciT9RlmS8OtGGm61IQ]]. Try again after snapshot finishes or cancel the currently running snapshot."
         // The solution is to wait a minute or two and try again.
         // https://docs.bonsai.io/article/137-snapshots-on-bonsai
-        $indexParams['index']  = 'mc2';
-        $client->indices()->delete($indexParams);
-        $client->indices()->create($indexParams);
 
         // configure serializer
         $serializer = self::configureSerializer();
 
-        // foreach films, index it // just pass em
+        // reset and create index
+        $indexParams['index']  = ModelConstants::FILM_MODEL;
+        $client->indices()->delete($indexParams);
+        $client->indices()->create($indexParams);
         FilmIndexation::index($em, $serializer, $client, $output);
+
+        // reset and create index
+        $indexParams['index']  = ModelConstants::NUMBER_MODEL;
+        $client->indices()->delete($indexParams);
+        $client->indices()->create($indexParams);
+        NumberIndexation::index($em, $serializer, $client, $output);
+
+        // reset and create index
+        $indexParams['index']  = ModelConstants::PERSON_MODEL;
+        $client->indices()->delete($indexParams);
+        $client->indices()->create($indexParams);
+        PersonIndexation::index($em, $serializer, $client, $output);
+
+        // reset and create index
+        $indexParams['index']  = ModelConstants::SONG_MODEL;
+        $client->indices()->delete($indexParams);
+        $client->indices()->create($indexParams);
+        SongIndexation::index($em, $serializer, $client, $output);
     }
 
     /**

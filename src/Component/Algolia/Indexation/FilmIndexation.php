@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace App\Component\Elastic\Indexation;
+namespace App\Component\Algolia\Indexation;
 
 
 use App\Component\Factory\DTOFactory;
@@ -20,9 +20,11 @@ use Symfony\Component\Serializer\Serializer;
  * Class FilmIndexation
  * @package App\Component\Elastic\Indexation
  */
-class FilmIndexation
+class FilmIndexation implements IndexationInterface
 {
-    public static function index(EntityManagerInterface $em, Serializer $serializer, Client $client, OutputInterface $output)
+    const INDEX_NAME = 'mc2';
+
+    public static function index(EntityManagerInterface $em, Serializer $serializer, $client, OutputInterface $output)
     {
         $output->writeln([
             'Films indexation',
@@ -32,6 +34,8 @@ class FilmIndexation
 
         $limit = 100;
         $offset = 0;
+        $index = $client->initIndex(self::INDEX_NAME);
+        $index->clearObjects();
 
         $filmsCount = $em->getRepository(Film::class)->countFilms();
         $turns = ceil($filmsCount / $limit);
@@ -45,15 +49,11 @@ class FilmIndexation
                 $filmDTO = DTOFactory::create(ModelConstants::FILM_PAYLOAD_MODEL);
                 $filmDTO = FilmPayloadHydrator::hydrate($filmDTO, ['film' => $film], $em);
 
-                $jsonContent = $serializer->serialize($filmDTO, 'json');
-                $filmArray = json_decode($jsonContent);
+                $filmArray = $serializer->normalize($filmDTO);
+                $filmArray['modelType'] = ModelConstants::FILM_MODEL;
+                $filmArray['objectID'] = $filmDTO->getUuid();
+                $index->saveObject($filmArray);
 
-                $params['body']  = $filmArray;
-                $params['index'] = ModelConstants::FILM_MODEL;
-                $params['type']  = ModelConstants::FILM_MODEL;
-                $params['id']    = $film->getUuid();
-
-                $client->index($params);
                 $progressBar->advance();
             }
 
