@@ -16,6 +16,8 @@ class PersonResourceGetTest extends AbstractFunctionalTest
         $this->assertEquals('Fred Astaire', $arrayResponse['fullname']);
         $this->assertEquals('M', $arrayResponse['gender']);
         $this->assertEquals('person', $arrayResponse['type']);
+        $this->assertEquals('performer', $arrayResponse['professions'][0]);
+        $this->assertCount(1, $arrayResponse['professions']);
     }
 
     public function testGetGroup()

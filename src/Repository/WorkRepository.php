@@ -39,7 +39,11 @@ class WorkRepository extends ServiceEntityRepository
        return $query->getResult();
     }
 
-    public function findProfessionsByPerson(Person $person)
+    /**
+     * @param Person $person
+     * @return array
+     */
+    public function findProfessionsByPerson(Person $person):array
     {
         $dql = 'SELECT DISTINCT(w.profession) as profession FROM App\Entity\Work w WHERE w.person =:person';
         $query = $this->getEntityManager()->createQuery($dql);
