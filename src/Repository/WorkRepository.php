@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Person;
 use App\Entity\Work;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -36,6 +37,16 @@ class WorkRepository extends ServiceEntityRepository
        ]);
 
        return $query->getResult();
+    }
+
+    public function findProfessionsByPerson(Person $person)
+    {
+        $dql = 'SELECT DISTINCT(w.profession) as profession FROM App\Entity\Work w WHERE w.person =:person';
+        $query = $this->getEntityManager()->createQuery($dql);
+        $query->setParameters([
+            'person' => $person
+        ]);
+        return $query->getResult();
     }
 
 }
