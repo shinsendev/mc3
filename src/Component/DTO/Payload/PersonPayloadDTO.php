@@ -45,6 +45,9 @@ class PersonPayloadDTO extends AbstractUniqueDTO
     private int $averageShotLength = 0;
     private array $presenceInFilms = [];
 
+    // profession the person has done
+    private array $professions = [];
+
     private $works;
     private $performancesStats;
     private $structuresStats;
@@ -229,6 +232,22 @@ class PersonPayloadDTO extends AbstractUniqueDTO
     public function setLyricists(array $lyricists): void
     {
         $this->lyricists = $lyricists;
+    }
+
+    /**
+     * @return array
+     */
+    public function getProfessions(): array
+    {
+        return $this->professions;
+    }
+
+    /**
+     * @param array $professions
+     */
+    public function setProfessions(array $professions): void
+    {
+        $this->professions = $professions;
     }
 
 }

@@ -12,6 +12,7 @@ use App\Component\Hydrator\Description\HydratorDTOInterface;
 use App\Component\Model\ModelConstants;
 use App\Entity\Person;
 use App\Entity\Statistic;
+use App\Entity\Work;
 use Doctrine\ORM\EntityManagerInterface;
 
 class PersonPayloadHydrator implements HydratorDTOInterface
@@ -60,6 +61,15 @@ class PersonPayloadHydrator implements HydratorDTOInterface
 
         // get persons connected
         $dto = self::setPersons($dto, $em);
+
+        // add professions
+        $professions  = $em->getRepository(Work::class)->findProfessionsByPerson($person);
+        if ($professions) {
+            foreach ($professions as $profession) {
+                $results[] = $profession['profession'];
+            }
+            $dto->setProfessions($results);
+        }
 
         // get stats
         $statsRepository = $em->getRepository(Statistic::class);
