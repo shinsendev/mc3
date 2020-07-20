@@ -216,6 +216,7 @@ ORDER BY f.released_year, f.title";
                 INNER JOIN App\Entity\Person p WITH p.id = w.person
             WHERE w.profession = :performer AND p.uuid = :personUuid
             GROUP BY f.id
+            ORDER BY f.releasedYear
         ')
         ->setParameters([
             'personUuid' => $personUuid,
