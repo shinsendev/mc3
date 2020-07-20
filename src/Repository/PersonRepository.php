@@ -168,12 +168,35 @@ class PersonRepository extends ServiceEntityRepository
     {
         $dbal = $this->getEntityManager()->getConnection('default');
 
-        $stmt = "SELECT n.title, n.uuid, w.profession, f.released_year as film_released_year, f.imdb as film_imdb, f.uuid as film_uuid, f.title as film_title FROM number n
-    INNER JOIN work w ON w.target_uuid = n.uuid AND w.target_type = 'number'
-    INNER JOIN person p ON p.id = w.person_id
-    INNER JOIN film f ON n.film_id = f.id
-    WHERE w.target_type = 'number' AND p.uuid = :uuid
-ORDER BY f.released_year, f.title";
+        $stmt = "SELECT * FROM (SELECT DISTINCT ON(uuid, profession) *  FROM (
+          SELECT n.title,
+                 n.uuid,
+                 w.profession,
+                 f.released_year as film_released_year,
+                 f.imdb          as film_imdb,
+                 f.uuid          as film_uuid,
+                 f.title         as film_title
+          FROM number n
+                   INNER JOIN work w ON w.target_uuid = n.uuid
+                   INNER JOIN person p ON p.id = w.person_id
+                   INNER JOIN film f ON n.film_id = f.id
+            AND p.uuid = :uuid
+          UNION
+          SELECT n.title,
+                 n.uuid,
+                 w.profession,
+                 f.released_year as film_released_year,
+                 f.imdb          as film_imdb,
+                 f.uuid          as film_uuid,
+                 f.title         as film_title
+          FROM person p
+                   INNER JOIN work w on p.id = w.person_id
+                   INNER JOIN song s ON s.uuid = w.target_uuid
+                   INNER JOIN number_song ns on s.id = ns.song_id
+                   INNER JOIN number n on ns.number_id = n.id
+                   INNER JOIN film f ON n.film_id = f.id
+          WHERE p.uuid = :uuid
+        ) as UniqueNumbers) orderedUniqueNumbers ORDER BY film_released_year";
 
         $rsl = $dbal->prepare($stmt);
         $rsl->execute(['uuid' => $personUuid]);
