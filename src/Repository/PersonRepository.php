@@ -107,6 +107,32 @@ class PersonRepository extends ServiceEntityRepository
         return new Paginator($query, $fetchJoinCollection = true);
     }
 
+    /**
+     * @param string $personUuid
+     * @param int $limit
+     * @param int $first
+     * @return Paginator
+     */
+    public function findPaginatedRelatedFilmsBySongs(string $personUuid, int $limit = 100, $first = 0):Paginator
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT f FROM App\Entity\Film f 
+                JOIN f.numbers n
+                JOIN n.songs s
+                INNER JOIN App\Entity\Work w WITH w.targetUuid = s.uuid AND w.targetType = :songModel
+                JOIN w.person p
+                WHERE p.uuid = :personUuid
+                GROUP BY f.id');
+        $query->setParameters([
+            'songModel' => ModelConstants::SONG_MODEL,
+            'personUuid' => $personUuid
+        ])
+            ->setFirstResult($first)
+            ->setMaxResults($limit);
+
+        return new Paginator($query, $fetchJoinCollection = true);
+    }
+
     /***
      * Warning ! Not the correct result
      *

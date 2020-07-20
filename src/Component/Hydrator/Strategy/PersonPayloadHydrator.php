@@ -119,6 +119,18 @@ class PersonPayloadHydrator implements HydratorDTOInterface
         // merge array and remove non unique
         $filmsConnected = array_unique(array_merge($filmsDirectlyConnected,$filmsConnectedByNumbers), SORT_REGULAR);
 
+        // get films with indirect relation by songs -> numbers -> films (yricists and composers)
+        $filmsConnectedBySongs = [];
+        $filmsBySongs = $em->getRepository(Person::class)->findPaginatedRelatedFilmsBySongs($dto->getUuid(), 500, 0);
+
+        foreach ($filmsBySongs as $film) {
+            $filmDTO = DTOFactory::create(ModelConstants::FILM_NESTED_DTO_MODEL);
+            $filmsConnectedBySongs[] = NestedFilmHydrator::hydrate($filmDTO, ['film' => $film], $em);
+        }
+
+        // merge array and remove non unique
+        $filmsConnected = array_unique(array_merge($filmsConnected,$filmsConnectedBySongs), SORT_REGULAR);
+
         // sort array by released date (fn just for PHP7.4 +)
         usort($filmsConnected, fn($a, $b) => $a->getReleasedYear()> $b->getReleasedYear());
 
