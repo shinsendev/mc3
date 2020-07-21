@@ -64,6 +64,9 @@ class NumberPayloadHydrator implements HydratorDTOInterface
         $danceDirectors = PersonHelper::getPersonsByProfession('choregraph', ModelConstants::NUMBER_MODEL, $number, $em);
         $dto->setDanceDirectors($danceDirectors);
 
+        $directors = PersonHelper::getPersonsByProfession('director', ModelConstants::NUMBER_MODEL, $number, $em);
+        $dto->setDirectors($directors);
+
         // add songs
         $dto = self::setSongs($number->getSongs(), $dto, $em);
 

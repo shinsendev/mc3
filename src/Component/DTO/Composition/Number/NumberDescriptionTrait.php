@@ -55,6 +55,9 @@ trait NumberDescriptionTrait
     /** @var array */
     protected $noParticipationStars = [];
 
+    /** @var array */
+    protected $directors = []; // PersonNestedDTO
+
     /**
      * @return string
      */
@@ -293,5 +296,22 @@ trait NumberDescriptionTrait
     public function setNoParticipationStars(array $noParticipationStars): void
     {
         $this->noParticipationStars = $noParticipationStars;
-    } // PersonNestedDTO (figurants)
+    }
+
+    /**
+     * @return array
+     */
+    public function getDirectors(): array
+    {
+        return $this->directors;
+    }
+
+    /**
+     * @param array $directors
+     */
+    public function setDirectors(array $directors): void
+    {
+        $this->directors = $directors;
+    }
+
 }
