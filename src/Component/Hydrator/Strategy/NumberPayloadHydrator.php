@@ -47,10 +47,6 @@ class NumberPayloadHydrator implements HydratorDTOInterface
             $attributesList[] = $attribute->getCategory()->getCode();
         }
 
-        // set film with nested object
-//        $nestedFilm = DTOFactory::create(ModelConstants::FILM_NESTED_DTO_MODEL);
-//        $nestedFilm = NestedFilmHydrator::hydrate($nestedFilm, ['film' => $number->getFilm()], $em);
-
         // set film in a string
         $nestedFilm = $number->getFilm()->getTitle(). ' ('.$number->getFilm()->getReleasedYear().')';
         $dto->setFilm($nestedFilm);
@@ -64,6 +60,9 @@ class NumberPayloadHydrator implements HydratorDTOInterface
 
         $arrangers = PersonHelper::getPersonsByProfession('arranger', ModelConstants::NUMBER_MODEL, $number, $em);
         $dto->setArrangers($arrangers);
+
+        $danceDirectors = PersonHelper::getPersonsByProfession('choregraph', ModelConstants::NUMBER_MODEL, $number, $em);
+        $dto->setDanceDirectors($danceDirectors);
 
         // add songs
         $dto = self::setSongs($number->getSongs(), $dto, $em);

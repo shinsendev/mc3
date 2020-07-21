@@ -26,7 +26,7 @@ trait NumberMusicAndDanceTrait
     protected $arrangers = []; // PersonNestedDTO
 
     /** @var array */
-    protected $danceDirector = []; // PersonNestedDTO
+    protected $danceDirectors = []; // PersonNestedDTO
 
     /** @var array */
     protected $danceEnsemble = []; // AttributeNestedDTO
@@ -140,17 +140,17 @@ trait NumberMusicAndDanceTrait
     /**
      * @return array
      */
-    public function getDanceDirector(): array
+    public function getDanceDirectors(): array
     {
-        return $this->danceDirector;
+        return $this->danceDirectors;
     }
 
     /**
-     * @param array $danceDirector
+     * @param array $danceDirectors
      */
-    public function setDanceDirector(array $danceDirector): void
+    public function setDanceDirectors(array $danceDirectors): void
     {
-        $this->danceDirector = $danceDirector;
+        $this->danceDirectors = $danceDirectors;
     }
 
     /**
