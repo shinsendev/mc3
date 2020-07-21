@@ -20,6 +20,11 @@ class Person extends AbstractTarget
 {
     const GENDER_MALE='M';
     const GENDER_FEMALE='F';
+    const FIGURANT_PROFESSION='figurant';
+    const DIRECTOR_PROFESSION='director';
+    const CHOREGRAPH_PROFESSION='choregraph';
+    const ARRANGER_PROFESSION='arranger';
+    const PERFORMER_PROFESSION='performer';
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)

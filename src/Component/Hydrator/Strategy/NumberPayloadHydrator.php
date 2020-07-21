@@ -13,6 +13,7 @@ use App\Component\Hydrator\Description\HydratorDTOInterface;
 use App\Component\Hydrator\Helper\PersonHelper;
 use App\Component\Hydrator\HydratorBasics;
 use App\Component\Model\ModelConstants;
+use App\Entity\Person;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\PersistentCollection;
 
@@ -28,7 +29,7 @@ class NumberPayloadHydrator implements HydratorDTOInterface
     {
         $params = [];
         // set excludes parameters to treate manually some properties
-        $params['excludes'] = ['dubbing', 'film', 'songs'];
+        $params['excludes'] = ['film', 'songs'];
         // fields we are forced to complete, if not we throw an error
         $params['mandatory'] = ['title'];
 
@@ -51,17 +52,20 @@ class NumberPayloadHydrator implements HydratorDTOInterface
         $dto = self::setAttributes($number->getAttributes(), $dto);
 
         // add persons
-        $performers = PersonHelper::getPersonsByProfession('performer', ModelConstants::NUMBER_MODEL, $number, $em);
+        $performers = PersonHelper::getPersonsByProfession(Person::PERFORMER_PROFESSION, ModelConstants::NUMBER_MODEL, $number, $em);
         $dto->setPerformers($performers);
 
-        $arrangers = PersonHelper::getPersonsByProfession('arranger', ModelConstants::NUMBER_MODEL, $number, $em);
+        $arrangers = PersonHelper::getPersonsByProfession(Person::ARRANGER_PROFESSION, ModelConstants::NUMBER_MODEL, $number, $em);
         $dto->setArrangers($arrangers);
 
-        $danceDirectors = PersonHelper::getPersonsByProfession('choregraph', ModelConstants::NUMBER_MODEL, $number, $em);
+        $danceDirectors = PersonHelper::getPersonsByProfession(Person::CHOREGRAPH_PROFESSION, ModelConstants::NUMBER_MODEL, $number, $em);
         $dto->setDanceDirectors($danceDirectors);
 
-        $directors = PersonHelper::getPersonsByProfession('director', ModelConstants::NUMBER_MODEL, $number, $em);
+        $directors = PersonHelper::getPersonsByProfession(Person::DIRECTOR_PROFESSION, ModelConstants::NUMBER_MODEL, $number, $em);
         $dto->setDirectors($directors);
+
+        $figurants = PersonHelper::getPersonsByProfession(Person::FIGURANT_PROFESSION, ModelConstants::NUMBER_MODEL, $number, $em);
+        $dto->setNoParticipationStars($figurants);
 
         // add songs
         $dto = self::setSongs($number->getSongs(), $dto, $em);
