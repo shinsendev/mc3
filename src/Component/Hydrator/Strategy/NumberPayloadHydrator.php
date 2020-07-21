@@ -94,9 +94,6 @@ class NumberPayloadHydrator implements HydratorDTOInterface
      */
     public static function setAttributes(PersistentCollection $attributes, DTOInterface $dto):NumberPayloadDTO
     {
-        //todo is it a many to many?
-        // $manyToMany = [ 'source_thesaurus'];
-
         // todo : treat directly in importer ?
         // legacy = old MC2 thesaurus name and actual name in database, if we change them inside the MC3 importer, we don't need it anymore
         // handle many to one exception
@@ -107,7 +104,7 @@ class NumberPayloadHydrator implements HydratorDTOInterface
             ],
             [
                 'legacy' => 'source_thesaurus',
-                'current' => 'completeness'
+                'current' => 'sources'
             ],
             [
                 'legacy' => 'dancemble',
