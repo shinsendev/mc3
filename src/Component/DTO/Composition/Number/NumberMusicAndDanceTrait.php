@@ -35,7 +35,7 @@ trait NumberMusicAndDanceTrait
     protected $dancingType = []; // AttributeNestedDTO
 
     /** @var array */
-    protected $danceSubgenre = []; // AttributeNestedDTO
+    protected $danceSubgenre; // AttributeNestedDTO
 
     /** @var array */
     protected $danceContent = []; // AttributeNestedDTO

@@ -42,11 +42,7 @@ class NumberPayloadHydrator implements HydratorDTOInterface
         // set timecode
         $dto->setStartingTc($number->getBeginTc());
         $dto->setEndingTc($number->getEndTc());
-
-        foreach($number->getAttributes() as $attribute) {
-            $attributesList[] = $attribute->getCategory()->getCode();
-        }
-
+        
         // set film in a string
         $nestedFilm = $number->getFilm()->getTitle(). ' ('.$number->getFilm()->getReleasedYear().')';
         $dto->setFilm($nestedFilm);
@@ -73,6 +69,12 @@ class NumberPayloadHydrator implements HydratorDTOInterface
         return $dto;
     }
 
+    /**
+     * @param PersistentCollection $songs
+     * @param NumberPayloadDTO $dto
+     * @param EntityManagerInterface $em
+     * @return NumberPayloadDTO
+     */
     public static function setSongs(PersistentCollection $songs, NumberPayloadDTO $dto, EntityManagerInterface $em):NumberPayloadDTO
     {
         $songsDTO = [];
@@ -98,6 +100,7 @@ class NumberPayloadHydrator implements HydratorDTOInterface
         foreach ($attributes as $attribute) {
             $code = $attribute->getCategory()->getCode();
 
+            // todo : treat directly in importer
             $manyToOneExceptions = [
                 [
                     'legacy' => 'performance_thesaurus',
@@ -122,6 +125,65 @@ class NumberPayloadHydrator implements HydratorDTOInterface
                 [
                     'legacy' => 'complet_options',
                     'current' => 'completenessOption'
+                ]
+            ];
+
+            $manyToManyConfiguration = [
+                [
+                    'legacy' => 'completeness_thesaurus',
+                    'current' => 'completeness'
+                ],
+                [
+                    'legacy' => 'dancemble',
+                    'current' => 'danceEnsemble'
+                ],
+                [
+                    'legacy' => 'musensemble',
+                    'current' => 'musicalEnsemble'
+                ],
+                [
+                    'legacy' => 'imaginary',
+                    'current' => 'imaginaryPlace'
+                ],
+                [
+                    'legacy' => 'diegetic_place_thesaurus',
+                    'current' => 'diegeticPlace'
+                ],
+                [
+                    'legacy' => 'exoticism_thesaurus',
+                    'current' => 'exoticism'
+                ],
+                [
+                    'legacy' => 'musical_thesaurus',
+                    'current' => 'musicalStyles'
+                ],
+                [
+                    'legacy' => 'tempo_thesaurus',
+                    'current' => 'tempo'
+                ],
+                [
+                    'legacy' => 'quotation_thesaurus',
+                    'current' => 'quotation'
+                ],
+                [
+                    'legacy' => 'dancing_type',
+                    'current' => 'dancingType'
+                ],
+                [
+                    'legacy' => 'stereotype',
+                    'current' => 'ethnicStereotypes'
+                ],
+                [
+                    'legacy' => 'dance_subgenre',
+                    'current' => 'danceSubgenre'
+                ],
+                [
+                    'legacy' => 'genre',
+                    'current' => 'topic'
+                ],
+                [
+                    'legacy' => 'dance_content',
+                    'current' => 'danceContent'
                 ],
             ];
 
@@ -145,67 +207,6 @@ class NumberPayloadHydrator implements HydratorDTOInterface
             $setter = 'set'.ucfirst($attribute->getCategory()->getCode());
             $dto->$setter($attribute->getTitle());
         }
-
-
-        $manyToManyConfiguration = [
-            [
-                'legacy' => 'completeness_thesaurus',
-                'current' => 'completeness'
-            ],
-            [
-                'legacy' => 'dancemble',
-                'current' => 'danceEnsemble'
-            ],
-            [
-                'legacy' => 'musensemble',
-                'current' => 'musicalEnsemble'
-            ],
-            [
-                'legacy' => 'imaginary',
-                'current' => 'imaginaryPlace'
-            ],
-            [
-                'legacy' => 'diegetic_place_thesaurus',
-                'current' => 'diegeticPlace'
-            ],
-            [
-                'legacy' => 'exoticism_thesaurus',
-                'current' => 'exoticism'
-            ],
-            [
-                'legacy' => 'musical_thesaurus',
-                'current' => 'musicalStyles'
-            ],
-            [
-                'legacy' => 'tempo_thesaurus',
-                'current' => 'tempo'
-            ],
-            [
-                'legacy' => 'quotation_thesaurus',
-                'current' => 'quotation'
-            ],
-            [
-                'legacy' => 'dancing_type',
-                'current' => 'dancingType'
-            ],
-            [
-                'legacy' => 'stereotype',
-                'current' => 'ethnicStereotypes'
-            ],
-            [
-                'legacy' => 'danceSubgenre',
-                'current' => 'danceSubgenre'
-            ],
-            [
-                'legacy' => 'genre',
-                'current' => 'topic'
-            ],
-            [
-                'legacy' => 'dance_content',
-                'current' => 'danceContent'
-            ],
-        ];
-
 
         if (isset($manyToManyAttributes)) {
             $dto = AttributeManyToManyHydrator::setAllManyToManyAttributes($manyToManyAttributes, $manyToMany, $dto, $manyToManyConfiguration);
