@@ -13,6 +13,7 @@ use App\Component\Hydrator\Description\HydratorDTOInterface;
 use App\Component\Hydrator\Helper\PersonHelper;
 use App\Component\Hydrator\HydratorBasics;
 use App\Component\Model\ModelConstants;
+use App\Entity\Person;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\PersistentCollection;
 
@@ -28,7 +29,7 @@ class NumberPayloadHydrator implements HydratorDTOInterface
     {
         $params = [];
         // set excludes parameters to treate manually some properties
-        $params['excludes'] = ['dubbing', 'film', 'songs'];
+        $params['excludes'] = ['film', 'songs'];
         // fields we are forced to complete, if not we throw an error
         $params['mandatory'] = ['title'];
 
@@ -43,27 +44,28 @@ class NumberPayloadHydrator implements HydratorDTOInterface
         $dto->setStartingTc($number->getBeginTc());
         $dto->setEndingTc($number->getEndTc());
 
-        foreach($number->getAttributes() as $attribute) {
-            $attributesList[] = $attribute->getCategory()->getCode();
-        }
-
-        // set film with nested object
-//        $nestedFilm = DTOFactory::create(ModelConstants::FILM_NESTED_DTO_MODEL);
-//        $nestedFilm = NestedFilmHydrator::hydrate($nestedFilm, ['film' => $number->getFilm()], $em);
-
         // set film in a string
         $nestedFilm = $number->getFilm()->getTitle(). ' ('.$number->getFilm()->getReleasedYear().')';
         $dto->setFilm($nestedFilm);
 
-        $manyToMany = ['completeness_thesaurus', 'dancemble', 'dance_subgenre', 'musensemble', 'source_thesaurus', 'imaginary', 'diegetic_place_thesaurus', 'exoticism_thesaurus', 'musical_thesaurus', 'tempo_thesaurus', 'quotation_thesaurus', 'dancing_type', 'stereotype', 'genre', 'dance_content'];
-        $dto = self::setAttributes($number->getAttributes(), $dto, $manyToMany);
+        // set all attributes connected to a number
+        $dto = self::setAttributes($number->getAttributes(), $dto);
 
         // add persons
-        $performers = PersonHelper::getPersonsByProfession('performer', ModelConstants::NUMBER_MODEL, $number, $em);
+        $performers = PersonHelper::getPersonsByProfession(Person::PERFORMER_PROFESSION, ModelConstants::NUMBER_MODEL, $number, $em);
         $dto->setPerformers($performers);
 
-        $arrangers = PersonHelper::getPersonsByProfession('arranger', ModelConstants::NUMBER_MODEL, $number, $em);
+        $arrangers = PersonHelper::getPersonsByProfession(Person::ARRANGER_PROFESSION, ModelConstants::NUMBER_MODEL, $number, $em);
         $dto->setArrangers($arrangers);
+
+        $danceDirectors = PersonHelper::getPersonsByProfession(Person::CHOREGRAPH_PROFESSION, ModelConstants::NUMBER_MODEL, $number, $em);
+        $dto->setDanceDirectors($danceDirectors);
+
+        $directors = PersonHelper::getPersonsByProfession(Person::DIRECTOR_PROFESSION, ModelConstants::NUMBER_MODEL, $number, $em);
+        $dto->setDirectors($directors);
+
+        $figurants = PersonHelper::getPersonsByProfession(Person::FIGURANT_PROFESSION, ModelConstants::NUMBER_MODEL, $number, $em);
+        $dto->setNoParticipationStars($figurants);
 
         // add songs
         $dto = self::setSongs($number->getSongs(), $dto, $em);
@@ -71,6 +73,12 @@ class NumberPayloadHydrator implements HydratorDTOInterface
         return $dto;
     }
 
+    /**
+     * @param PersistentCollection $songs
+     * @param NumberPayloadDTO $dto
+     * @param EntityManagerInterface $em
+     * @return NumberPayloadDTO
+     */
     public static function setSongs(PersistentCollection $songs, NumberPayloadDTO $dto, EntityManagerInterface $em):NumberPayloadDTO
     {
         $songsDTO = [];
@@ -85,70 +93,22 @@ class NumberPayloadHydrator implements HydratorDTOInterface
 
     /**
      * @param PersistentCollection $attributes
-     * @param DTOInterface $dto
-     * @param array $manyToMany
+     * @param NumberPayloadDTO $dto
      * @return NumberPayloadDTO
      */
-    public static function setAttributes(PersistentCollection $attributes, DTOInterface $dto, array $manyToMany = []):NumberPayloadDTO
+    public static function setAttributes(PersistentCollection $attributes, DTOInterface $dto):NumberPayloadDTO
     {
-        $manyToManyAttributes = [];
-
-        foreach ($attributes as $attribute) {
-            $code = $attribute->getCategory()->getCode();
-
-            $manyToOneExceptions = [
-                [
-                    'legacy' => 'performance_thesaurus',
-                    'current' => 'performance'
-                ],
-                [
-                    'legacy' => 'musician_thesaurus',
-                    'current' => 'visibleMusicians'
-                ],
-                [
-                    'legacy' => 'begin_thesaurus',
-                    'current' => 'beginning'
-                ],
-                [
-                    'legacy' => 'ending_thesaurus',
-                    'current' => 'ending'
-                ],
-                [
-                    'legacy' => 'spectators_thesaurus',
-                    'current' => 'spectators'
-                ],
-                [
-                    'legacy' => 'complet_options',
-                    'current' => 'completenessOption'
-                ],
-            ];
-
-            // handle many to one exception
-            if (AttributeManyToOneHydrator::setManyToOneThesaurus($code, $attribute, $dto, $manyToOneExceptions)) {
-                $dto = AttributeManyToOneHydrator::setManyToOneThesaurus($code, $attribute, $dto, $manyToOneExceptions);
-                continue;
-            }
-
-            // handle many to many
-            if (in_array($code, $manyToMany)) {
-                if ($result = AttributeManyToManyHydrator::prepareManyToMany($code, $attribute)) {
-                    $manyToManyAttributes = array_merge($manyToManyAttributes, $result);
-                    continue;
-                }
-
-                $manyToManyAttributes[$code][] = $attribute->getTitle();
-            }
-
-            // for all normal many to one
-            $setter = 'set'.ucfirst($attribute->getCategory()->getCode());
-            $dto->$setter($attribute->getTitle());
-        }
-
-
+        // todo : treat directly in importer ?
+        // legacy = old MC2 thesaurus name and actual name in database, if we change them inside the MC3 importer, we don't need it anymore
+        // handle many to one exception
         $manyToManyConfiguration = [
             [
                 'legacy' => 'completeness_thesaurus',
                 'current' => 'completeness'
+            ],
+            [
+                'legacy' => 'source_thesaurus',
+                'current' => 'sources'
             ],
             [
                 'legacy' => 'dancemble',
@@ -191,7 +151,7 @@ class NumberPayloadHydrator implements HydratorDTOInterface
                 'current' => 'ethnicStereotypes'
             ],
             [
-                'legacy' => 'danceSubgenre',
+                'legacy' => 'dance_subgenre',
                 'current' => 'danceSubgenre'
             ],
             [
@@ -204,9 +164,68 @@ class NumberPayloadHydrator implements HydratorDTOInterface
             ],
         ];
 
+        $manyToOneExceptions = [
+            [
+                'legacy' => 'performance_thesaurus',
+                'current' => 'performance'
+            ],
+            [
+                'legacy' => 'musician_thesaurus',
+                'current' => 'visibleMusicians'
+            ],
+            [
+                'legacy' => 'begin_thesaurus',
+                'current' => 'beginning'
+            ],
+            [
+                'legacy' => 'ending_thesaurus',
+                'current' => 'ending'
+            ],
+            [
+                'legacy' => 'spectators_thesaurus',
+                'current' => 'spectators'
+            ],
+            [
+                'legacy' => 'complet_options',
+                'current' => 'completenessOption'
+            ]
+        ];
 
+        // prepare an array to collect all results for attributes
+        $manyToManyAttributes = [];
+
+        // we add each attribute to the number payload :
+        // 1) as a many to one exception if it's simply a string
+        // 2) as a many to many, if it's a list
+        // 3) as a simple string
+        foreach ($attributes as $index => $attribute) {
+            $code = $attribute->getCategory()->getCode();
+
+            // 1) manage simple attributes
+            if (AttributeManyToOneHydrator::setManyToOneThesaurus($code, $attribute, $dto, $manyToOneExceptions)) {
+                $dto = AttributeManyToOneHydrator::setManyToOneThesaurus($code, $attribute, $dto, $manyToOneExceptions);
+                unset($attributes[$index]);
+                continue;
+            }
+
+            // 2) handle many to many and get list
+            foreach ($manyToManyConfiguration as $manyToManyCode) {
+                if ($code === $manyToManyCode['legacy']) {
+                    $manyToManyAttributes = AttributeManyToManyHydrator::addOneManyToManyAttribute($manyToManyCode['current'], $attribute, $manyToManyAttributes);
+                    unset($attributes[$index]);
+                }
+            }
+        }
+
+        // 3) we reloop for all normal many to one
+        foreach ($attributes as $index => $attribute) {
+            $setter = 'set'.ucfirst($attribute->getCategory()->getCode());
+            $dto->$setter($attribute->getTitle());
+        }
+
+        // after getting all many to many attributes for all properties in the $manyToManyAttributes array, we hydrate each properties of the dto
         if (isset($manyToManyAttributes)) {
-            $dto = AttributeManyToManyHydrator::setAllManyToManyAttributes($manyToManyAttributes, $manyToMany, $dto, $manyToManyConfiguration);
+            $dto = AttributeManyToManyHydrator::setAllManyToManyAttributes($manyToManyAttributes, $dto, $manyToManyConfiguration);
         }
 
         return $dto;

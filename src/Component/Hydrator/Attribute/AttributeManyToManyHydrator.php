@@ -15,82 +15,17 @@ use App\Entity\Attribute;
  */
 class AttributeManyToManyHydrator
 {
-    public static function prepareManyToMany(string $code, Attribute $attribute)
+    /**
+     * @param string $currentCode
+     * @param Attribute $attribute
+     * @param array $manyToManyAttributes
+     * @return array
+     */
+    public static function addOneManyToManyAttribute(string $currentCode, Attribute $attribute, array $manyToManyAttributes):array
     {
-        if ($code === 'completeness_thesaurus') {
-            $manyToManyAttributes['completeness'][] = $attribute->getTitle();
-            return $manyToManyAttributes;
-        }
+        $manyToManyAttributes[$currentCode][] = $attribute->getTitle();
 
-        if ($code === 'dancemble') {
-            $manyToManyAttributes['danceEnsemble'][] = $attribute->getTitle();
-            return $manyToManyAttributes;
-        }
-
-        if ($code === 'musensemble') {
-            $manyToManyAttributes['musicalEnsemble'][] = $attribute->getTitle();
-            return $manyToManyAttributes;
-        }
-
-        if ($code === 'source_thesaurus') {
-            $manyToManyAttributes['source'][] = $attribute->getTitle();
-            return $manyToManyAttributes;
-        }
-
-        if ($code === 'imaginary') {
-            $manyToManyAttributes['imaginaryPlace'][] = $attribute->getTitle();
-            return $manyToManyAttributes;
-        }
-
-        if ($code === 'diegetic_place_thesaurus') {
-            $manyToManyAttributes['diegeticPlace'][] = $attribute->getTitle();
-            return $manyToManyAttributes;
-        }
-
-        if ($code === 'exoticism_thesaurus') {
-            $manyToManyAttributes['exoticism'][] = $attribute->getTitle();
-            return $manyToManyAttributes;
-        }
-
-        if ($code === 'musical_thesaurus') {
-            $manyToManyAttributes['musicalStyle'][] = $attribute->getTitle();
-            return $manyToManyAttributes;
-        }
-
-        if ($code === 'tempo_thesaurus') {
-            $manyToManyAttributes['tempo'][] = $attribute->getTitle();
-            return $manyToManyAttributes;
-        }
-
-        if ($code === 'quotation_thesaurus') {
-            $manyToManyAttributes['quotation'][] = $attribute->getTitle();
-            return $manyToManyAttributes;
-        }
-
-        if ($code === 'dance_subgenre') {
-            $manyToManyAttributes['danceSubgenre'][] = $attribute->getTitle();
-            return $manyToManyAttributes;
-        }
-
-        if ($code === 'genre') {
-            $manyToManyAttributes['topic'][] = $attribute->getTitle();
-            return $manyToManyAttributes;
-        }
-
-        if ($code === 'stereotype') {
-            $manyToManyAttributes['ethnicStereotypes'][] = $attribute->getTitle();
-            return $manyToManyAttributes;
-        }
-
-        if ($code === 'dancing_type') {
-            $manyToManyAttributes['dancingType'][] = $attribute->getTitle();
-            return $manyToManyAttributes;
-        }
-
-        if ($code === 'dance_content') {
-            $manyToManyAttributes['danceContent'][] = $attribute->getTitle();
-            return $manyToManyAttributes;
-        }
+        return $manyToManyAttributes;
     }
 
     /**
@@ -137,15 +72,15 @@ class AttributeManyToManyHydrator
 
     /**
      * @param array $manyToManyAttributes
-     * @param array $manyToMany
      * @param DTOInterface $dto
      * @param array $configuration
+     * @return DTOInterface
      */
-    public static function setAllManyToManyAttributes(array $manyToManyAttributes, array $manyToMany, DTOInterface $dto, array $configuration):DTOInterface
+    public static function setAllManyToManyAttributes(array $manyToManyAttributes, DTOInterface $dto, array $configuration):DTOInterface
     {
         // for attributes again: set many to many
-        foreach ($manyToMany as $category) {
-            $dto =  AttributeManyToManyHydrator::handleManyToManyAttribute($configuration, $category, $manyToManyAttributes, $dto);
+        foreach ($configuration as $code) {
+            $dto =  AttributeManyToManyHydrator::handleManyToManyAttribute($configuration, $code['legacy'], $manyToManyAttributes, $dto);
         }
 
         return $dto;
