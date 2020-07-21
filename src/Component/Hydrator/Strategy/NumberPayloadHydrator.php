@@ -105,10 +105,10 @@ class NumberPayloadHydrator implements HydratorDTOInterface
                 'legacy' => 'completeness_thesaurus',
                 'current' => 'completeness'
             ],
-//            [
-//                'legacy' => 'source_thesaurus',
-//                'current' => 'completeness'
-//            ],
+            [
+                'legacy' => 'source_thesaurus',
+                'current' => 'completeness'
+            ],
             [
                 'legacy' => 'dancemble',
                 'current' => 'danceEnsemble'
