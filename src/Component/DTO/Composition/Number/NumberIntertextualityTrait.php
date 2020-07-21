@@ -12,7 +12,7 @@ trait NumberIntertextualityTrait
     private $source = NumberPayloadDTO::NO_VALUE; // AttributeNestedDTO
 
     /** @var array */
-    private $quotation = [];
+    private $quotation = []; // AttributeNestedDTO
 
     /**
      * @return string
@@ -28,7 +28,7 @@ trait NumberIntertextualityTrait
     public function setSource(string $source): void
     {
         $this->source = $source;
-    } // AttributeNestedDTO
+    }
 
 
     /**
