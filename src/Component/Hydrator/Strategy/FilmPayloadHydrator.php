@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Component\Hydrator\Strategy;
 
 use App\Component\DTO\Definition\DTOInterface;
+use App\Component\DTO\Nested\AttributeNestedDTO;
 use App\Component\DTO\Nested\NumberNestedInFilmDTO;
 use App\Component\DTO\Payload\FilmPayloadDTO;
 use App\Component\Factory\DTOFactory;
@@ -12,6 +13,7 @@ use App\Component\Hydrator\Description\HydratorDTOInterface;
 use App\Component\Hydrator\Helper\PersonHelper;
 use App\Component\Hydrator\HydratorBasics;
 use App\Component\Model\ModelConstants;
+use App\Entity\Attribute;
 use App\Entity\Film;
 use App\Entity\Number;
 use App\Entity\Work;
@@ -59,21 +61,20 @@ class FilmPayloadHydrator implements HydratorDTOInterface
 
             // handle exception
             if ($code === 'verdict') { // is this pca verdict?
-                $dto->setPca($attribute->getTitle());
+                $dto->setPca(self::getAttribute($attribute, $em));
                 continue;
             }
 
             // handle many to many
             if (in_array($code, $manyToMany)) {
-                $manyToManyAttributes[$code][] = $attribute->getTitle();
+                $manyToManyAttributes[$code][] = self::getAttribute($attribute, $em);
                 continue;
             }
 
             // for all normal many to one
             $setter = 'set'.ucfirst($attribute->getCategory()->getCode());
-            $dto->$setter($attribute->getTitle());
+            $dto->$setter(self::getAttribute($attribute, $em));
         }
-
 
         // for attributes again: set many to many
         foreach ($manyToMany as $category) {
@@ -195,6 +196,17 @@ class FilmPayloadHydrator implements HydratorDTOInterface
         return $numbersDTOList;
     }
 
+    /**
+     * @param Attribute $attribute
+     * @param EntityManagerInterface $em
+     * @return AttributeNestedDTO
+     */
+    public static function getAttribute(Attribute $attribute, EntityManagerInterface $em):AttributeNestedDTO
+    {
+        $nestedAttributeDTO = DTOFactory::create(ModelConstants::ATTRIBUTE_NESTED_PAYLOAD);
+
+        return NestedAttribute::hydrate($nestedAttributeDTO, ['attribute' => $attribute], $em);
+    }
 
 
 }

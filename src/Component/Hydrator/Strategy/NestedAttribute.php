@@ -28,14 +28,6 @@ class NestedAttribute implements HydratorInterface
         $uuid = $attribute->getUuid();
         $dto->setUuid($uuid); //e3c612ea-0575-46e9-a971-4498e85d8ff
 
-        // optional params
-        if ($description = $attribute->getDescription()) {
-            $dto->setDescription($description);
-        }
-        if ($example = $attribute->getExample()) {
-            $dto->setExample($example);
-        }
-
         return $dto;
     }
 }
