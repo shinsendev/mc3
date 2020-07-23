@@ -31,7 +31,7 @@ class FilmPayloadHydrator implements HydratorDTOInterface
     {
         $params = [];
         // set excludes paramaters to treate manually some properties
-        $params['excludes'] = ['numbers', 'studios'];
+        $params['excludes'] = ['numbers', 'studios', 'pca'];
         // fields we are forced to complete, if not we throw an error
         $params['mandatory'] = ['uuid', 'title', 'imdb'];
 
