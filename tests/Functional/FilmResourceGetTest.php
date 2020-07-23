@@ -22,6 +22,7 @@ class FilmResourceGetTest extends AbstractFunctionalTest
         $this->assertEquals(6000, $arrayResponse['length']);
         $this->assertCount(1, $arrayResponse['studios']);
         $this->assertEquals('MGM',$arrayResponse['studios'][0]['name']);
+        $this->assertEquals([],$arrayResponse['pca']);
     }
 
 }

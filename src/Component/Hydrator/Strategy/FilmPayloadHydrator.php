@@ -61,7 +61,7 @@ class FilmPayloadHydrator implements HydratorDTOInterface
 
             // handle exception
             if ($code === 'verdict') { // is this pca verdict?
-                $dto->setPca(self::getAttribute($attribute, $em));
+                $dto->setPca([self::getAttribute($attribute, $em)]);
                 continue;
             }
 
@@ -73,7 +73,7 @@ class FilmPayloadHydrator implements HydratorDTOInterface
 
             // for all normal many to one
             $setter = 'set'.ucfirst($attribute->getCategory()->getCode());
-            $dto->$setter(self::getAttribute($attribute, $em));
+            $dto->$setter([self::getAttribute($attribute, $em)]);
         }
 
         // for attributes again: set many to many

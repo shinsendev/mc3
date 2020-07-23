@@ -48,15 +48,6 @@ class PersonPayloadDTO extends AbstractUniqueDTO
     // profession the person has done
     private array $professions = [];
 
-    private $works;
-    private $performancesStats;
-    private $structuresStats;
-    private $completenessStats;
-    private $sourcesStats;
-    private $diegeticStats;
-    private $topicsStats;
-    private $exoticismsStats;
-
     /**
      * @return string
      */
