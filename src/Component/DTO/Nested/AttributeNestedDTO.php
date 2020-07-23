@@ -15,12 +15,6 @@ class AttributeNestedDTO extends AbstractUniqueDTO
     /** @var string */
     private $title = '';
 
-    /** @var null|string */
-    private $description = '';
-
-    /** @var null|string */
-    private $example= '';
-
     /**
      * @return string
      */
@@ -35,38 +29,6 @@ class AttributeNestedDTO extends AbstractUniqueDTO
     public function setTitle(string $title): void
     {
         $this->title = $title;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     */
-    public function setDescription(string $description): void
-    {
-        $this->description = $description;
-    }
-
-    /**
-     * @return string
-     */
-    public function getExample(): ?string
-    {
-        return $this->example;
-    }
-
-    /**
-     * @param string $example
-     */
-    public function setExample(string $example): void
-    {
-        $this->example = $example;
     }
 
 }

@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace App\Component\DTO\Payload;
 
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
+use App\Component\DTO\Nested\AttributeNestedDTO;
 
 /**
  * Class FilmPayloadDTO
@@ -16,82 +17,39 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     CONST NO_VALUE = 'NA';
 
     // general infos
-    /** @var string */
-    private $title;
+    private string $title;
+    private string $sample = self::NO_VALUE;
+    private string $imdb = self::NO_VALUE;
+    private array $directors = [];
+    private array $studios = [];
+    private int $productionYear = 0;
+    private int $releasedYear = 0;
+    private string $viaf = self::NO_VALUE;
+    private string $stageshows = self::NO_VALUE;
 
-    /** @var string */
-    private $sample = self::NO_VALUE;
-
-    /** @var string */
-    private $imdb = self::NO_VALUE;
-
-    /** @var array */
-    private $directors = [];
-
-    /** @var array */
-    private $studios = [];
-
-    /** @var int */
-    private $productionYear = 0;
-
-    /** @var int */
-    private $releasedYear = 0;
-
-    /** @var string */
-    private $viaf = self::NO_VALUE;
-
-
-    // recycling
-    /** @var string */
-    private $remake = self::NO_VALUE;
-
-    /** @var string */
-    private $stageshows = self::NO_VALUE;
-
-    /** @var  string */
-    private $adaptation = self::NO_VALUE;
+    private string $remake = self::NO_VALUE;
+    private array $adaptation = []; // AttributeNestedDTO, just one result
 
 
     // censorship
     /** @var array */
-    private $censorships = [];
+    private array $censorships = []; // AttributeNestedDTO[], many results
+    private array $states = []; // AttributeNestedDTO[], many results
+    private array $pca = []; // AttributeNestedDTO, just one result
+    private array $legion = []; // AttributeNestedDTO, just one result
+    private array $protestant = []; // AttributeNestedDTO, just one result
+    private array $harrison = []; // AttributeNestedDTO, just one result
+    private array $board = []; // AttributeNestedDTO, just one result
 
-    /** @var string */
-    private $pca = self::NO_VALUE;
-
-    /** @var array */
-    private $states = [];
-
-    /** @var string */
-    private $legion = self::NO_VALUE;
-
-    /** @var string */
-    private $protestant = self::NO_VALUE;
-
-    /** @var string */
-    private $harrison = self::NO_VALUE;
-
-    /** @var string */
-    private $board = self::NO_VALUE;
-
-    /** @var array */
-    private  $numbers = [];
+    // numbers
+    private array $numbers = [];
 
     // stats
-    /** @var int */
-    private $numbersRatio = 0; // Ratio number/total length
-
-    /** @var int */
-    private $numbersLength = 0; // Running time for all numbers
-
-    /** @var int */
-    private $averageNumberLength = 0;
-
-    /** @var int */
-    private $globalAverageNumberLength = 0;
-
-    /** @var int */
-    private $length = 0;
+    private int $numbersRatio = 0; // Ratio number/total length
+    private int $numbersLength = 0; // Running time for all numbers
+    private int $averageNumberLength = 0;
+    private int $globalAverageNumberLength = 0;
+    private int $length = 0;
 
     /**
      * @return string
@@ -110,36 +68,19 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getProductionYear(): int
+    public function getSample(): string
     {
-        return $this->productionYear;
+        return $this->sample;
     }
 
     /**
-     * @param int $productionYear
+     * @param string $sample
      */
-    public function setProductionYear($productionYear): void
+    public function setSample(string $sample): void
     {
-        $this->productionYear = $productionYear;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getReleasedYear():int
-    {
-        return $this->releasedYear;
-    }
-
-    /**
-     * @param int $releasedYear
-     */
-    public function setReleasedYear($releasedYear): void
-    {
-        $this->releasedYear = $releasedYear;
+        $this->sample = $sample;
     }
 
     /**
@@ -156,86 +97,6 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     public function setImdb(string $imdb): void
     {
         $this->imdb = $imdb;
-    }
-
-    /**
-     * @return string|void
-     */
-    public function getViaf()
-    {
-        return $this->viaf;
-    }
-
-    /**
-     * @param string|void $viaf
-     */
-    public function setViaf($viaf): void
-    {
-        $this->viaf = $viaf;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRemake(): string
-    {
-        return $this->remake;
-    }
-
-    /**
-     * @param string $remake
-     */
-    public function setRemake(string $remake): void
-    {
-        $this->remake = $remake;
-    }
-
-    /**
-     * @return string
-     */
-    public function getStageshows()
-    {
-        return $this->stageshows;
-    }
-
-    /**
-     * @param string $stageshows
-     */
-    public function setStageshows($stageshows): void
-    {
-        $this->stageshows = $stageshows;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAdaptation()
-    {
-        return $this->adaptation;
-    }
-
-    /**
-     * @param string $adaptation
-     */
-    public function setAdaptation($adaptation): void
-    {
-        $this->adaptation = $adaptation;
-    }
-
-    /**
-     * @return string|void
-     */
-    public function getPca()
-    {
-        return $this->pca;
-    }
-
-    /**
-     * @param string|void $pca
-     */
-    public function setPca($pca): void
-    {
-        $this->pca = $pca;
     }
 
     /**
@@ -273,6 +134,262 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /**
      * @return int
      */
+    public function getProductionYear(): int
+    {
+        return $this->productionYear;
+    }
+
+    /**
+     * @param int $productionYear
+     */
+    public function setProductionYear(int $productionYear): void
+    {
+        $this->productionYear = $productionYear;
+    }
+
+    /**
+     * @return int
+     */
+    public function getReleasedYear(): int
+    {
+        return $this->releasedYear;
+    }
+
+    /**
+     * @param int $releasedYear
+     */
+    public function setReleasedYear(int $releasedYear): void
+    {
+        $this->releasedYear = $releasedYear;
+    }
+
+    /**
+     * @return string
+     */
+    public function getViaf(): string
+    {
+        return $this->viaf;
+    }
+
+    /**
+     * @param string $viaf
+     */
+    public function setViaf(string $viaf): void
+    {
+        $this->viaf = $viaf;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStageshows(): string
+    {
+        return $this->stageshows;
+    }
+
+    /**
+     * @param string $stageshows
+     */
+    public function setStageshows(string $stageshows): void
+    {
+        $this->stageshows = $stageshows;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRemake(): string
+    {
+        return $this->remake;
+    }
+
+    /**
+     * @param string $remake
+     */
+    public function setRemake(string $remake): void
+    {
+        $this->remake = $remake;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAdaptation(): array
+    {
+        return $this->adaptation;
+    }
+
+    /**
+     * @param array $adaptation
+     */
+    public function setAdaptation(array $adaptation): void
+    {
+        $this->adaptation = $adaptation;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCensorships(): array
+    {
+        return $this->censorships;
+    }
+
+    /**
+     * @param array $censorships
+     */
+    public function setCensorships(array $censorships): void
+    {
+        $this->censorships = $censorships;
+    }
+
+    /**
+     * @return array
+     */
+    public function getStates(): array
+    {
+        return $this->states;
+    }
+
+    /**
+     * @param array $states
+     */
+    public function setStates(array $states): void
+    {
+        $this->states = $states;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPca(): array
+    {
+        return $this->pca;
+    }
+
+    /**
+     * @param array $pca
+     */
+    public function setPca(array $pca): void
+    {
+        $this->pca = $pca;
+    }
+
+    /**
+     * @return array
+     */
+    public function getLegion(): array
+    {
+        return $this->legion;
+    }
+
+    /**
+     * @param array $legion
+     */
+    public function setLegion(array $legion): void
+    {
+        $this->legion = $legion;
+    }
+
+    /**
+     * @return array
+     */
+    public function getProtestant(): array
+    {
+        return $this->protestant;
+    }
+
+    /**
+     * @param array $protestant
+     */
+    public function setProtestant(array $protestant): void
+    {
+        $this->protestant = $protestant;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHarrison(): array
+    {
+        return $this->harrison;
+    }
+
+    /**
+     * @param array $harrison
+     */
+    public function setHarrison(array $harrison): void
+    {
+        $this->harrison = $harrison;
+    }
+
+    /**
+     * @return array
+     */
+    public function getBoard(): array
+    {
+        return $this->board;
+    }
+
+    /**
+     * @param array $board
+     */
+    public function setBoard(array $board): void
+    {
+        $this->board = $board;
+    }
+
+    /**
+     * @return array
+     */
+    public function getNumbers(): array
+    {
+        return $this->numbers;
+    }
+
+    /**
+     * @param array $numbers
+     */
+    public function setNumbers(array $numbers): void
+    {
+        $this->numbers = $numbers;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumbersRatio(): int
+    {
+        return $this->numbersRatio;
+    }
+
+    /**
+     * @param int $numbersRatio
+     */
+    public function setNumbersRatio(int $numbersRatio): void
+    {
+        $this->numbersRatio = $numbersRatio;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumbersLength(): int
+    {
+        return $this->numbersLength;
+    }
+
+    /**
+     * @param int $numbersLength
+     */
+    public function setNumbersLength(int $numbersLength): void
+    {
+        $this->numbersLength = $numbersLength;
+    }
+
+    /**
+     * @return int
+     */
     public function getAverageNumberLength(): int
     {
         return $this->averageNumberLength;
@@ -305,22 +422,6 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     /**
      * @return int
      */
-    public function getNumbersLength(): int
-    {
-        return $this->numbersLength;
-    }
-
-    /**
-     * @param int $numbersLength
-     */
-    public function setNumbersLength(int $numbersLength): void
-    {
-        $this->numbersLength = $numbersLength;
-    }
-
-    /**
-     * @return int
-     */
     public function getLength(): int
     {
         return $this->length;
@@ -333,152 +434,5 @@ class FilmPayloadDTO extends AbstractUniqueDTO
     {
         $this->length = $length;
     }
-
-    /**
-     * @return array
-     */
-    public function getStates()
-    {
-        return $this->states;
-    }
-
-    /**
-     * @param array $states
-     */
-    public function setStates($states): void
-    {
-        $this->states = $states;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLegion()
-    {
-        return $this->legion;
-    }
-
-    /**
-     * @param string $legion
-     */
-    public function setLegion($legion): void
-    {
-        $this->legion = $legion;
-    }
-
-    /**
-     * @return string
-     */
-    public function getProtestant()
-    {
-        return $this->protestant;
-    }
-
-    /**
-     * @param string $protestant
-     */
-    public function setProtestant($protestant): void
-    {
-        $this->protestant = $protestant;
-    }
-
-    /**
-     * @return string
-     */
-    public function getHarrison()
-    {
-        return $this->harrison;
-    }
-
-    /**
-     * @param string $harrison
-     */
-    public function setHarrison($harrison): void
-    {
-        $this->harrison = $harrison;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBoard()
-    {
-        return $this->board;
-    }
-
-    /**
-     * @param string $board
-     */
-    public function setBoard($board): void
-    {
-        $this->board = $board;
-    }
-
-    /**
-     * @return array
-     */
-    public function getNumbers(): array
-    {
-        return $this->numbers;
-    }
-
-    /**
-     * @param array $numbers
-     */
-    public function setNumbers(array $numbers): void
-    {
-        $this->numbers = $numbers;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSample(): string
-    {
-        return $this->sample;
-    }
-
-    /**
-     * @param string $sample
-     */
-    public function setSample(string $sample): void
-    {
-        $this->sample = $sample;
-    }
-
-    /**
-     * @return array
-     */
-    public function getCensorships(): array
-    {
-        return $this->censorships;
-    }
-
-    /**
-     * @param array $censorships
-     */
-    public function setCensorships(array $censorships): void
-    {
-        $this->censorships = $censorships;
-    }
-
-    /**
-     * @return int
-     */
-    public function getNumbersRatio(): int
-    {
-        return $this->numbersRatio;
-    }
-
-    /**
-     * @param int $numbersRatio
-     */
-    public function setNumbersRatio(int $numbersRatio): void
-    {
-        $this->numbersRatio = $numbersRatio;
-    }
-
-    // timeline dataviz data
-    // todo : add dataviz
 
 }
