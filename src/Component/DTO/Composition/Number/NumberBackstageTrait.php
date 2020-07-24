@@ -2,67 +2,64 @@
 
 declare(strict_types=1);
 
-
 namespace App\Component\DTO\Composition\Number;
-
 
 use App\Component\DTO\Payload\NumberPayloadDTO;
 
+/**+
+ * Trait NumberBackstageTrait
+ * @package App\Component\DTO\Composition\Number
+ */
 trait NumberBackstageTrait
 {
-    /** @var string */
-    protected $spectators = NumberPayloadDTO::NO_VALUE; // AttributeNestedDTO
-
-    /** @var string */
-    protected $diegeticPerformance = NumberPayloadDTO::NO_VALUE; // AttributeNestedDTO
-
-    /** @var string */
-    protected $visibleMusicians = NumberPayloadDTO::NO_VALUE; // AttributeNestedDTO
+    protected array $spectators = []; // AttributeNestedDTO - one value
+    protected array $diegeticPerformance = []; // AttributeNestedDTO - one value
+    protected array $visibleMusicians = []; // AttributeNestedDTO - one value
 
     /**
-     * @return string
+     * @return array
      */
-    public function getSpectators(): string
+    public function getSpectators(): array
     {
         return $this->spectators;
     }
 
     /**
-     * @param string $spectators
+     * @param array $spectators
      */
-    public function setSpectators(string $spectators): void
+    public function setSpectators(array $spectators): void
     {
         $this->spectators = $spectators;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getDiegeticPerformance(): string
+    public function getDiegeticPerformance(): array
     {
         return $this->diegeticPerformance;
     }
 
     /**
-     * @param string $diegeticPerformance
+     * @param array $diegeticPerformance
      */
-    public function setDiegeticPerformance(string $diegeticPerformance): void
+    public function setDiegeticPerformance(array $diegeticPerformance): void
     {
         $this->diegeticPerformance = $diegeticPerformance;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getVisibleMusicians(): string
+    public function getVisibleMusicians(): array
     {
         return $this->visibleMusicians;
     }
 
     /**
-     * @param string $visibleMusicians
+     * @param array $visibleMusicians
      */
-    public function setVisibleMusicians(string $visibleMusicians): void
+    public function setVisibleMusicians(array $visibleMusicians): void
     {
         $this->visibleMusicians = $visibleMusicians;
     }

@@ -10,53 +10,26 @@ use App\Component\DTO\Payload\NumberPayloadDTO;
 
 trait NumberDescriptionTrait
 {
-    /** @var string */
-    protected $title;
+    protected string $title;
+    protected string $film;
+    protected int $startingTc = 0;
+    protected int $endingTc = 0;
+    protected int $shots = 0;
+    protected int $averageShotLength = 0;
 
-    /** @var string */
-    protected $film;
+    // attributes
+    protected array $beginning = []; // AttributeNestedDTO
+    protected array $ending = []; // AttributeNestedDTO
+    protected array $completeness = []; // AttributeNestedDTO
+    protected array $completenessOption = []; // AttributeNestedDTO
+    protected array $structure = []; // AttributeNestedDTO
+    protected array $cast = []; // AttributeNestedDTO
+    protected array $performance = []; // AttributeNestedDTO - one choice
 
-    /** @var integer */
-    protected $startingTc = 0;
-
-    /** @var integer */
-    protected $endingTc = 0;
-
-    /** @var string */
-    protected $beginning = NumberPayloadDTO::NO_VALUE;
-
-    /** @var string */
-    protected $ending = NumberPayloadDTO::NO_VALUE;
-
-    /** @var array */
-    protected $completeness = []; // AttributeNestedDTO
-
-    /** @var string */
-    protected $completenessOption = NumberPayloadDTO::NO_VALUE; // AttributeNestedDTO
-
-    /** @var string */
-    protected $structure = NumberPayloadDTO::NO_VALUE; // AttributeNestedDTO
-
-    /** @var int */
-    protected $shots = 0;
-
-    /** @var int */
-    protected $averageShotLength = 0;
-
-    /** @var string */
-    protected $performance = NumberPayloadDTO::NO_VALUE; // one choice
-
-    /** @var array */
-    protected $performers = []; // PersonNestedDTO
-
-    /** @var string */
-    protected $cast = NumberPayloadDTO::NO_VALUE; // AttributeNestedDTO
-
-    /** @var array */
-    protected $noParticipationStars = [];
-
-    /** @var array */
-    protected $directors = []; // PersonNestedDTO
+    // people
+    protected array $performers = []; // PersonNestedDTO
+    protected array $directors = []; // PersonNestedDTO
+    protected array $noParticipationStars = []; // PersonNestedDTO
 
     /**
      * @return string
@@ -123,33 +96,33 @@ trait NumberDescriptionTrait
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getBeginning(): string
+    public function getBeginning(): array
     {
         return $this->beginning;
     }
 
     /**
-     * @param string $beginning
+     * @param array $beginning
      */
-    public function setBeginning(string $beginning): void
+    public function setBeginning(array $beginning): void
     {
         $this->beginning = $beginning;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getEnding(): string
+    public function getEnding(): array
     {
         return $this->ending;
     }
 
     /**
-     * @param string $ending
+     * @param array $ending
      */
-    public function setEnding(string $ending): void
+    public function setEnding(array $ending): void
     {
         $this->ending = $ending;
     }
@@ -171,35 +144,67 @@ trait NumberDescriptionTrait
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getCompletenessOption(): string
+    public function getCompletenessOption(): array
     {
         return $this->completenessOption;
     }
 
     /**
-     * @param string $completenessOption
+     * @param array $completenessOption
      */
-    public function setCompletenessOption(string $completenessOption): void
+    public function setCompletenessOption(array $completenessOption): void
     {
         $this->completenessOption = $completenessOption;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getStructure(): string
+    public function getStructure(): array
     {
         return $this->structure;
     }
 
     /**
-     * @param string $structure
+     * @param array $structure
      */
-    public function setStructure(string $structure): void
+    public function setStructure(array $structure): void
     {
         $this->structure = $structure;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCast(): array
+    {
+        return $this->cast;
+    }
+
+    /**
+     * @param array $cast
+     */
+    public function setCast(array $cast): void
+    {
+        $this->cast = $cast;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPerformance(): array
+    {
+        return $this->performance;
+    }
+
+    /**
+     * @param array $performance
+     */
+    public function setPerformance(array $performance): void
+    {
+        $this->performance = $performance;
     }
 
     /**
@@ -235,22 +240,6 @@ trait NumberDescriptionTrait
     }
 
     /**
-     * @return string
-     */
-    public function getPerformance(): string
-    {
-        return $this->performance;
-    }
-
-    /**
-     * @param string $performance
-     */
-    public function setPerformance(string $performance): void
-    {
-        $this->performance = $performance;
-    }
-
-    /**
      * @return array
      */
     public function getPerformers(): array
@@ -267,19 +256,19 @@ trait NumberDescriptionTrait
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getCast(): string
+    public function getDirectors(): array
     {
-        return $this->cast;
+        return $this->directors;
     }
 
     /**
-     * @param string $cast
+     * @param array $directors
      */
-    public function setCast(string $cast): void
+    public function setDirectors(array $directors): void
     {
-        $this->cast = $cast;
+        $this->directors = $directors;
     }
 
     /**
@@ -296,22 +285,6 @@ trait NumberDescriptionTrait
     public function setNoParticipationStars(array $noParticipationStars): void
     {
         $this->noParticipationStars = $noParticipationStars;
-    }
-
-    /**
-     * @return array
-     */
-    public function getDirectors(): array
-    {
-        return $this->directors;
-    }
-
-    /**
-     * @param array $directors
-     */
-    public function setDirectors(array $directors): void
-    {
-        $this->directors = $directors;
     }
 
 }

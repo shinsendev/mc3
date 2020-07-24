@@ -6,13 +6,14 @@ namespace App\Component\DTO\Composition\Number;
 
 use App\Component\DTO\Payload\NumberPayloadDTO;
 
+/**
+ * Trait NumberIntertextualityTrait
+ * @package App\Component\DTO\Composition\Number
+ */
 trait NumberIntertextualityTrait
 {
-    /** @var array */
-    private $sources = []; // AttributeNestedDTO
-
-    /** @var array */
-    private $quotation = []; // AttributeNestedDTO
+    private array $sources = []; // AttributeNestedDTO
+    private array $quotation = []; // AttributeNestedDTO
 
     /**
      * @return array

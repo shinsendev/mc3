@@ -8,20 +8,11 @@ namespace App\Component\DTO\Composition\Number;
 
 trait NumberThemeTrait
 {
-    /** @var array */
-    protected $topic = []; // AttributeNestedDTO
-
-    /** @var array */
-    protected $diegeticPlace = []; // AttributeNestedDTO
-
-    /** @var array */
-    protected $imaginaryPlace = []; // AttributeNestedDTO
-
-    /** @var array */
-    protected $ethnicStereotypes = []; // AttributeNestedDTO
-
-    /** @var array */
-    protected $exoticism = []; // AttributeNestedDTO
+    protected array $topic = []; // AttributeNestedDTO
+    protected array $diegeticPlace = []; // AttributeNestedDTO
+    protected array $imaginaryPlace = []; // AttributeNestedDTO
+    protected array $ethnicStereotypes = []; // AttributeNestedDTO
+    protected array $exoticism = []; // AttributeNestedDTO
 
     /**
      * @return array

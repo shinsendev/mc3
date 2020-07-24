@@ -10,6 +10,7 @@ use App\Component\Factory\DTOFactory;
 use App\Component\Hydrator\Attribute\AttributeManyToManyHydrator;
 use App\Component\Hydrator\Attribute\AttributeManyToOneHydrator;
 use App\Component\Hydrator\Description\HydratorDTOInterface;
+use App\Component\Hydrator\Helper\AttributeHelper;
 use App\Component\Hydrator\Helper\PersonHelper;
 use App\Component\Hydrator\HydratorBasics;
 use App\Component\Model\ModelConstants;
@@ -49,7 +50,7 @@ class NumberPayloadHydrator implements HydratorDTOInterface
         $dto->setFilm($nestedFilm);
 
         // set all attributes connected to a number
-        $dto = self::setAttributes($number->getAttributes(), $dto);
+        $dto = self::setAttributes($number->getAttributes(), $dto, $em);
 
         // add persons
         $performers = PersonHelper::getPersonsByProfession(Person::PERFORMER_PROFESSION, ModelConstants::NUMBER_MODEL, $number, $em);
@@ -93,12 +94,12 @@ class NumberPayloadHydrator implements HydratorDTOInterface
 
     /**
      * @param PersistentCollection $attributes
-     * @param NumberPayloadDTO $dto
+     * @param DTOInterface $dto
+     * @param EntityManagerInterface $em
      * @return NumberPayloadDTO
      */
-    public static function setAttributes(PersistentCollection $attributes, DTOInterface $dto):NumberPayloadDTO
+    private static function setAttributes(PersistentCollection $attributes, DTOInterface $dto, EntityManagerInterface $em):NumberPayloadDTO
     {
-        // todo : treat directly in importer ?
         // legacy = old MC2 thesaurus name and actual name in database, if we change them inside the MC3 importer, we don't need it anymore
         // handle many to one exception
         $manyToManyConfiguration = [
@@ -202,8 +203,8 @@ class NumberPayloadHydrator implements HydratorDTOInterface
             $code = $attribute->getCategory()->getCode();
 
             // 1) manage simple attributes
-            if (AttributeManyToOneHydrator::setManyToOneThesaurus($code, $attribute, $dto, $manyToOneExceptions)) {
-                $dto = AttributeManyToOneHydrator::setManyToOneThesaurus($code, $attribute, $dto, $manyToOneExceptions);
+            if ($newDTO = AttributeManyToOneHydrator::setManyToOneThesaurus($code, $attribute, $dto, $manyToOneExceptions, $em)) {
+                $dto = $newDTO;
                 unset($attributes[$index]);
                 continue;
             }
@@ -211,7 +212,7 @@ class NumberPayloadHydrator implements HydratorDTOInterface
             // 2) handle many to many and get list
             foreach ($manyToManyConfiguration as $manyToManyCode) {
                 if ($code === $manyToManyCode['legacy']) {
-                    $manyToManyAttributes = AttributeManyToManyHydrator::addOneManyToManyAttribute($manyToManyCode['current'], $attribute, $manyToManyAttributes);
+                    $manyToManyAttributes = AttributeManyToManyHydrator::addOneManyToManyAttribute($manyToManyCode['current'], $attribute, $manyToManyAttributes, $em);
                     unset($attributes[$index]);
                 }
             }
@@ -220,7 +221,7 @@ class NumberPayloadHydrator implements HydratorDTOInterface
         // 3) we reloop for all normal many to one
         foreach ($attributes as $index => $attribute) {
             $setter = 'set'.ucfirst($attribute->getCategory()->getCode());
-            $dto->$setter($attribute->getTitle());
+            $dto->$setter([AttributeHelper::getAttribute($attribute, $em)]);
         }
 
         // after getting all many to many attributes for all properties in the $manyToManyAttributes array, we hydrate each properties of the dto
