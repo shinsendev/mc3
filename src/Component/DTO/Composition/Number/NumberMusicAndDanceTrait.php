@@ -5,7 +5,10 @@ declare(strict_types=1);
 
 namespace App\Component\DTO\Composition\Number;
 
-
+/**
+ * Trait NumberMusicAndDanceTrait
+ * @package App\Component\DTO\Composition\Number
+ */
 trait NumberMusicAndDanceTrait
 {
     protected array $songs = []; // NestedSongDTO[]
