@@ -1,4 +1,4 @@
 sudo git pull upstream/master
-composer install
+sudo composer install
 php bin/console do:mi:mi --no-interaction
-php bin/console cache:clear
+sudo php bin/console cache:clear
