@@ -7,7 +7,9 @@ namespace App\Component\Hydrator\Attribute;
 
 
 use App\Component\DTO\Definition\DTOInterface;
+use App\Component\Hydrator\Helper\AttributeHelper;
 use App\Entity\Attribute;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class AttributeManyToManyHydrator
@@ -19,11 +21,12 @@ class AttributeManyToManyHydrator
      * @param string $currentCode
      * @param Attribute $attribute
      * @param array $manyToManyAttributes
+     * @param EntityManagerInterface $em
      * @return array
      */
-    public static function addOneManyToManyAttribute(string $currentCode, Attribute $attribute, array $manyToManyAttributes):array
+    public static function addOneManyToManyAttribute(string $currentCode, Attribute $attribute, array $manyToManyAttributes, EntityManagerInterface $em):array
     {
-        $manyToManyAttributes[$currentCode][] = $attribute->getTitle();
+        $manyToManyAttributes[$currentCode][] = [AttributeHelper::getAttribute($attribute, $em)];
 
         return $manyToManyAttributes;
     }
