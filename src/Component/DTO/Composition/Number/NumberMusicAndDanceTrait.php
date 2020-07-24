@@ -8,37 +8,17 @@ namespace App\Component\DTO\Composition\Number;
 
 trait NumberMusicAndDanceTrait
 {
-    /** @var array */
-    protected $songs = []; // NestedSongDTO[]
-
-    protected $musicalEnsemble = []; //
-
-    /** @var string */
-    protected $dubbing = 'NA'; // from number, not an attribute
-
-    /** @var array */
-    protected $tempo = []; // SongDTO or NestedSongDTO
-
-    /** @var array */
-    protected $musicalStyles = []; // SongDTO or NestedSongDTO
-
-    /** @var array */
-    protected $arrangers = []; // PersonNestedDTO
-
-    /** @var array */
-    protected $danceDirectors = []; // PersonNestedDTO
-
-    /** @var array */
-    protected $danceEnsemble = []; // AttributeNestedDTO
-
-    /** @var array */
-    protected $dancingType = []; // AttributeNestedDTO
-
-    /** @var array */
-    protected $danceSubgenre = []; // AttributeNestedDTO
-
-    /** @var array */
-    protected $danceContent = []; // AttributeNestedDTO
+    protected array $songs = []; // NestedSongDTO[]
+    protected array $musicalEnsemble = []; //
+    protected string $dubbing = 'NA'; // from number, not an attribute
+    protected array $tempo = []; // SongDTO or NestedSongDTO
+    protected array $musicalStyles = []; // SongDTO or NestedSongDTO
+    protected array $arrangers = []; // PersonNestedDTO
+    protected array $danceDirectors = []; // PersonNestedDTO
+    protected array $danceEnsemble = []; // AttributeNestedDTO
+    protected array $dancingType = []; // AttributeNestedDTO
+    protected array $danceSubgenre = []; // AttributeNestedDTO
+    protected array $danceContent = []; // AttributeNestedDTO
 
     /**
      * @return array
