@@ -26,7 +26,8 @@ class NumberResourceGetTest extends AbstractFunctionalTest
 
         $arrayResponse = $response->toArray();
         $this->assertEquals('Prologue', $arrayResponse['title']);
-        $this->assertEquals('virtual audience imagined by the performers', $arrayResponse['spectators']);
+        $this->assertEquals('virtual audience imagined by the performers', $arrayResponse['spectators'][0]['title']);
+        $this->assertEquals('Fred Astaire', $arrayResponse['performers'][0]['fullname']);
     }
 
     public function testGetNotFoundNumber()
