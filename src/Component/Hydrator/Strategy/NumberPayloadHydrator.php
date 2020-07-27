@@ -212,7 +212,7 @@ class NumberPayloadHydrator implements HydratorDTOInterface
             // 2) handle many to many and get list
             foreach ($manyToManyConfiguration as $manyToManyCode) {
                 if ($code === $manyToManyCode['legacy']) {
-                    $manyToManyAttributes = AttributeManyToManyHydrator::addOneManyToManyAttribute($manyToManyCode['current'], $attribute, $manyToManyAttributes, $em);
+                    $manyToManyAttributes = AttributeManyToManyHydrator::addManyToManyAttribute($manyToManyCode['current'], $attribute, $manyToManyAttributes, $em);
                     unset($attributes[$index]);
                 }
             }

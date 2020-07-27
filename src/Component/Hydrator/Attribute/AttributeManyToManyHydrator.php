@@ -24,9 +24,9 @@ class AttributeManyToManyHydrator
      * @param EntityManagerInterface $em
      * @return array
      */
-    public static function addOneManyToManyAttribute(string $currentCode, Attribute $attribute, array $manyToManyAttributes, EntityManagerInterface $em):array
+    public static function addManyToManyAttribute(string $currentCode, Attribute $attribute, array $manyToManyAttributes, EntityManagerInterface $em):array
     {
-        $manyToManyAttributes[$currentCode][] = [AttributeHelper::getAttribute($attribute, $em)];
+        $manyToManyAttributes[$currentCode][] = AttributeHelper::getAttribute($attribute, $em);
 
         return $manyToManyAttributes;
     }
