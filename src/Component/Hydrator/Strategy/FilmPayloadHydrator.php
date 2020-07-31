@@ -190,10 +190,94 @@ class FilmPayloadHydrator implements HydratorDTOInterface
                 $numberDTO->setPerformers($peformersList);
             }
 
+            // get attributes
+            $numberDTO = self::getAttributes($numberDTO, $number, $em);
+
             $numbersDTOList[] = $numberDTO;
+
         }
 
         return $numbersDTOList;
+    }
+
+    /**
+     * @param NumberNestedInFilmDTO $dto
+     * @param Number $number
+     * @param EntityManagerInterface $em
+     * @return NumberNestedInFilmDTO
+     */
+    private static function getAttributes(NumberNestedInFilmDTO $dto, Number $number, EntityManagerInterface  $em):NumberNestedInFilmDTO
+    {
+        foreach($number->getAttributes() as $attribute) {
+            $code = $attribute->getCategory()->getCode();
+
+            // Structure
+            if ($code === 'structure') {
+                $attributeDTO = self::createAttributeDTO($attribute, $em);
+
+                $structure = $dto->getStructure();
+                $structure[] = $attributeDTO;
+                $dto->setStructure($structure);
+            }
+
+            // Performance type
+            if ($code === 'performance_thesaurus') {
+                $attributeDTO = self::createAttributeDTO($attribute, $em);
+
+                $attributes = $dto->getPerformance();
+                $attributes[] = $attributeDTO;
+                $dto->setPerformance($attributes);
+            }
+
+            // Completeness
+            if ($code === 'completeness_thesaurus') {
+                $attributeDTO = self::createAttributeDTO($attribute, $em);
+
+                $attributes = $dto->getCompleteness();
+                $attributes[] = $attributeDTO;
+                $dto->setCompleteness($attributes);
+            }
+
+            // Diegetic status of the number
+            if ($code === 'diegetic_thesaurus') {
+                $attributeDTO = self::createAttributeDTO($attribute, $em);
+
+                $attributes = $dto->getDiegetic();
+                $attributes[] = $attributeDTO;
+                $dto->setDiegetic($attributes);
+            }
+
+            // Source of the number
+            if ($code === 'source_thesaurus') {
+                $attributeDTO = self::createAttributeDTO($attribute, $em);
+
+                $attributes = $dto->getSource();
+                $attributes[] = $attributeDTO;
+                $dto->setSource($attributes);
+            }
+
+            // Cast
+            if ($code === 'cast') {
+                $attributeDTO = self::createAttributeDTO($attribute, $em);
+
+                $attributes = $dto->getCast();
+                $attributes[] = $attributeDTO;
+                $dto->setCast($attributes);
+            }
+        }
+
+        return $dto;
+    }
+
+    /**
+     * @param Attribute $attribute
+     * @param EntityManagerInterface $em
+     * @return AttributeNestedDTO
+     */
+    public static function createAttributeDTO(Attribute $attribute, EntityManagerInterface $em)
+    {
+        $attributeDTO = DTOFactory::create(ModelConstants::ATTRIBUTE_NESTED_PAYLOAD);
+        return NestedAttribute::hydrate($attributeDTO, ['attribute' => $attribute], $em);
     }
 
 }
