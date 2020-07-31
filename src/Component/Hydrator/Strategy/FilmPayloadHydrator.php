@@ -200,11 +200,17 @@ class FilmPayloadHydrator implements HydratorDTOInterface
         return $numbersDTOList;
     }
 
+    /**
+     * @param NumberNestedInFilmDTO $dto
+     * @param Number $number
+     * @param EntityManagerInterface $em
+     * @return NumberNestedInFilmDTO
+     */
     private static function getAttributes(NumberNestedInFilmDTO $dto, Number $number, EntityManagerInterface  $em):NumberNestedInFilmDTO
     {
         foreach($number->getAttributes() as $attribute) {
             $code = $attribute->getCategory()->getCode();
-            dump($code);
+
             // Structure
             if ($code === 'structure') {
                 $attributeDTO = self::createAttributeDTO($attribute, $em);
@@ -263,6 +269,11 @@ class FilmPayloadHydrator implements HydratorDTOInterface
         return $dto;
     }
 
+    /**
+     * @param Attribute $attribute
+     * @param EntityManagerInterface $em
+     * @return AttributeNestedDTO
+     */
     public static function createAttributeDTO(Attribute $attribute, EntityManagerInterface $em)
     {
         $attributeDTO = DTOFactory::create(ModelConstants::ATTRIBUTE_NESTED_PAYLOAD);
