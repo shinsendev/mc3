@@ -89,14 +89,14 @@ class ComputePersonStats
     {
         $types = [Category::PERFORMANCE_TYPE, Category::STRUCTURE_TYPE, Category::COMPLETENESS_TYPE, Category::SOURCE_TYPE, Category::DIEGETIC_TYPE ];
 
+        $comparisonsByType= [];
+
         // get generic stats
         foreach ($types as $type) {
-            self::generateComparisonByType($type, $personUuid, $em);
+            $comparisonsByType[] = self::generateComparisonByType($type, $personUuid, $em);
         }
 
-        // todo : format result
-
-        return null;
+        return $comparisonsByType;
     }
 
     /**
@@ -111,19 +111,39 @@ class ComputePersonStats
         $currentData = $attributeThesaurus->computeAveragesForTypeAndPerson($type, $personUuid);
 
         // format result
+        $comparisons = [];
 
-        dd($currentData);
+        // first get average data
+        foreach ($averageData as $data) {
+            $comparisonDTO = DTOFactory::create(ModelConstants::COMPARISON_STATS);
+            $comparisonDTO->setCurrent(self::getCurrentData($data['uuid'], $currentData));
+            $comparisonDTO->setAverage($data['average']); // by default, we set to 0 the count of an attribute for a person
+            $comparisonDTO->setCategoryUuid($data['categoryUuid']);
+            $comparisonDTO->setCategoryCode($type);
+            $comparisonDTO->setAttributeTitle($data['title']);
+            $comparisonDTO->setAttributeUuid($data['uuid']);
+            $comparisons[] = $comparisonDTO;
+        }
 
-        $comparisonDTO = DTOFactory::create(ModelConstants::COMPARISON_STATS);
-        $comparisonDTO->setCurrent(1);
-        $comparisonDTO->setAverage(1);
-        $comparisonDTO->setCategoryUuid('oui');
-        $comparisonDTO->setCategoryCode($type);
+        return $comparisons;
+    }
 
-        dd($comparisonDTO);
-        // todo: create a dto
-        dd('return a dto');
-        // current, target, codeUuid, codeTitle
-        return null;
+    /**
+     * @param string $attributeUuid
+     * @param array $currentDataList
+     * @return int
+     */
+    private static function getCurrentData(string $attributeUuid, array $currentDataList):int
+    {
+        // by default, we set to 0 the count of an attribute for a person
+        $result = 0;
+
+        foreach ($currentDataList as $current) {
+            if ($current['uuid'] === $attributeUuid) {
+                return $current['current'];
+            }
+        }
+
+        return $result;
     }
 }

@@ -49,7 +49,7 @@ class AttributeRepository extends ServiceEntityRepository
     public function computeAveragesForType(string $type)
     {
         $query = $this->getEntityManager()->createQuery('
-            SELECT a.title, a.uuid, c.uuid as categoryUuid, c.code as categoryCode, COUNT(a.uuid) FROM App\Entity\Number n 
+            SELECT a.title, a.uuid, c.uuid as categoryUuid, c.code as categoryCode, COUNT(a.uuid) as average FROM App\Entity\Number n 
                 JOIN n.attributes a
                 JOIN a.category c
                 WHERE c.code = :code
@@ -69,7 +69,7 @@ class AttributeRepository extends ServiceEntityRepository
     public function computeAveragesForTypeAndPerson(string $type, string $personUuid)
     {
         $query = $this->getEntityManager()->createQuery('
-            SELECT a.title, a.uuid, c.uuid as categoryUuid, c.code as categoryCode, COUNT(a.uuid) FROM App\Entity\Number n 
+            SELECT a.title, a.uuid, c.uuid as categoryUuid, c.code as categoryCode, COUNT(a.uuid) as current FROM App\Entity\Number n 
                 JOIN n.attributes a
                 JOIN a.category c
                 INNER JOIN App\Entity\Work w WITH w.targetUuid = n.uuid
@@ -81,7 +81,6 @@ class AttributeRepository extends ServiceEntityRepository
         $query->setParameters([
             'code' => $type,
             'personUuid' => $personUuid
-//            'personUuid' => '5fccf77e-6e15-4373-8e83-27a071011e7a' // fred Astaire dev
         ]);
 
         return $query->getResult();

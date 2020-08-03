@@ -14,6 +14,8 @@ class NestedComparisonsDTO implements DTOInterface
     private int $average;
     private string $categoryUuid;
     private string $categoryCode;
+    private string $attributeTitle;
+    private string $attributeUuid;
 
     /**
      * @return int
@@ -77,6 +79,38 @@ class NestedComparisonsDTO implements DTOInterface
     public function setCategoryCode(string $categoryCode): void
     {
         $this->categoryCode = $categoryCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAttributeTitle(): string
+    {
+        return $this->attributeTitle;
+    }
+
+    /**
+     * @param string $attributeTitle
+     */
+    public function setAttributeTitle(string $attributeTitle): void
+    {
+        $this->attributeTitle = $attributeTitle;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAttributeUuid(): string
+    {
+        return $this->attributeUuid;
+    }
+
+    /**
+     * @param string $attributeUuid
+     */
+    public function setAttributeUuid(string $attributeUuid): void
+    {
+        $this->attributeUuid = $attributeUuid;
     }
 
 }
