@@ -59,6 +59,9 @@ class PersonStatsStrategy
         $films = ComputePersonStats::generateFilmsStats($personUuid, $em);
         $personStats->setFilms($films);
 
+        $comparisons = ComputePersonStats::generateComparisonsStats($personUuid, $em);
+        $personStats->setComparisons($comparisons);
+
         return $personStats;
     }
 }

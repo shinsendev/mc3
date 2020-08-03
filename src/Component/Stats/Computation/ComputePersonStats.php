@@ -7,6 +7,8 @@ namespace App\Component\Stats\Computation;
 
 
 use App\Component\DTO\Stats\Person\NestedFilmsInPersonStatsDTO;
+use App\Entity\Attribute;
+use App\Entity\Category;
 use App\Entity\Film;
 use App\Entity\Person;
 use Doctrine\ORM\EntityManagerInterface;
@@ -73,5 +75,36 @@ class ComputePersonStats
         $filmDTO->setTotalPersonNumbersLength($totalPersonNumbersLength);
 
         return $filmDTO;
+    }
+
+    /**
+     * @param string $personUuid
+     * @param EntityManagerInterface $em
+     * @return null
+     */
+    public static function generateComparisonsStats(string $personUuid, EntityManagerInterface $em)
+    {
+        $types = [Category::PERFORMANCE_TYPE, Category::STRUCTURE_TYPE, Category::COMPLETENESS_TYPE, Category::SOURCE_TYPE, Category::DIEGETIC_TYPE ];
+
+        // get generic stats
+        foreach ($types as $type) {
+            self::generateComparisonByType($type);
+        }
+
+        // todo : format result
+
+        return null;
+    }
+
+    /**
+     * @param string $type
+     * @return null
+     */
+    private static function generateComparisonByType(string $type)
+    {
+        // todo: create a dto
+        dd('return a dto');
+        // current, target, codeUuid, codeTitle
+        return null;
     }
 }
