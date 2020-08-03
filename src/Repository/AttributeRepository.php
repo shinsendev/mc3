@@ -60,4 +60,30 @@ class AttributeRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+
+    /**
+     * @param string $type
+     * @param string $personUuid
+     * @return int|mixed|string
+     */
+    public function computeAveragesForTypeAndPerson(string $type, string $personUuid)
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT a.title, a.uuid, c.uuid as categoryUuid, c.code as categoryCode, COUNT(a.uuid) FROM App\Entity\Number n 
+                JOIN n.attributes a
+                JOIN a.category c
+                INNER JOIN App\Entity\Work w WITH w.targetUuid = n.uuid
+                INNER JOIN App\Entity\Person p WITH p.id = w.person
+                WHERE c.code = :code AND p.uuid = :personUuid
+                GROUP BY a.title, a.uuid, c.uuid, c.code
+        ');
+
+        $query->setParameters([
+            'code' => $type,
+            'personUuid' => $personUuid
+//            'personUuid' => '5fccf77e-6e15-4373-8e83-27a071011e7a' // fred Astaire dev
+        ]);
+
+        return $query->getResult();
+    }
 }

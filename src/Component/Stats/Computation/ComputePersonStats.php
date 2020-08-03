@@ -91,7 +91,7 @@ class ComputePersonStats
 
         // get generic stats
         foreach ($types as $type) {
-            self::generateComparisonByType($type, $em);
+            self::generateComparisonByType($type, $personUuid, $em);
         }
 
         // todo : format result
@@ -104,14 +104,15 @@ class ComputePersonStats
      * @param EntityManagerInterface $em
      * @return null
      */
-    private static function generateComparisonByType(string $type, EntityManagerInterface $em)
+    private static function generateComparisonByType(string $type, string $personUuid, EntityManagerInterface $em)
     {
         $attributeThesaurus = $em->getRepository(Attribute::class);
         $averageData = $attributeThesaurus->computeAveragesForType($type);
+        $currentData = $attributeThesaurus->computeAveragesForTypeAndPerson($type, $personUuid);
 
-        dd($averageData);
-        $averageData = [];
-        $currentData = [];
+        // format result
+
+        dd($currentData);
 
         $comparisonDTO = DTOFactory::create(ModelConstants::COMPARISON_STATS);
         $comparisonDTO->setCurrent(1);
