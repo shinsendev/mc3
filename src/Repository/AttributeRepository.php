@@ -42,4 +42,22 @@ class AttributeRepository extends ServiceEntityRepository
         return $query->getSingleScalarResult();
     }
 
+    /**
+     * @param string $type
+     * @return int|mixed|string
+     */
+    public function computeAveragesForType(string $type)
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT a.title, a.uuid, c.uuid as categoryUuid, c.code as categoryCode, COUNT(a.uuid) FROM App\Entity\Number n 
+                JOIN n.attributes a
+                JOIN a.category c
+                WHERE c.code = :code
+                GROUP BY a.title, a.uuid, c.uuid, c.code
+        ');
+
+        $query->setParameters(['code' => $type]);
+
+        return $query->getResult();
+    }
 }

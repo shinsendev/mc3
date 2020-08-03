@@ -7,10 +7,13 @@ namespace App\Component\Stats\Computation;
 
 
 use App\Component\DTO\Stats\Person\NestedFilmsInPersonStatsDTO;
+use App\Component\Factory\DTOFactory;
+use App\Component\Model\ModelConstants;
 use App\Entity\Attribute;
 use App\Entity\Category;
 use App\Entity\Film;
 use App\Entity\Person;
+use App\Entity\Statistic;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ComputePersonStats
@@ -88,7 +91,7 @@ class ComputePersonStats
 
         // get generic stats
         foreach ($types as $type) {
-            self::generateComparisonByType($type);
+            self::generateComparisonByType($type, $em);
         }
 
         // todo : format result
@@ -98,10 +101,25 @@ class ComputePersonStats
 
     /**
      * @param string $type
+     * @param EntityManagerInterface $em
      * @return null
      */
-    private static function generateComparisonByType(string $type)
+    private static function generateComparisonByType(string $type, EntityManagerInterface $em)
     {
+        $attributeThesaurus = $em->getRepository(Attribute::class);
+        $averageData = $attributeThesaurus->computeAveragesForType($type);
+
+        dd($averageData);
+        $averageData = [];
+        $currentData = [];
+
+        $comparisonDTO = DTOFactory::create(ModelConstants::COMPARISON_STATS);
+        $comparisonDTO->setCurrent(1);
+        $comparisonDTO->setAverage(1);
+        $comparisonDTO->setCategoryUuid('oui');
+        $comparisonDTO->setCategoryCode($type);
+
+        dd($comparisonDTO);
         // todo: create a dto
         dd('return a dto');
         // current, target, codeUuid, codeTitle

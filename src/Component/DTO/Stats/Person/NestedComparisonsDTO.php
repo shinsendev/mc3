@@ -1,17 +1,19 @@
 <?php
 
-
 namespace App\Component\DTO\Stats\Person;
-
 
 use App\Component\DTO\Definition\DTOInterface;
 
+/**
+ * Class NestedComparisonsDTO
+ * @package App\Component\DTO\Stats\Person
+ */
 class NestedComparisonsDTO implements DTOInterface
 {
     private int $current;
-    private int $target;
+    private int $average;
     private string $categoryUuid;
-    private string $catagoryCode;
+    private string $categoryCode;
 
     /**
      * @return int
@@ -32,17 +34,17 @@ class NestedComparisonsDTO implements DTOInterface
     /**
      * @return int
      */
-    public function getTarget(): int
+    public function getAverage(): int
     {
-        return $this->target;
+        return $this->average;
     }
 
     /**
-     * @param int $target
+     * @param int $average
      */
-    public function setTarget(int $target): void
+    public function setAverage(int $average): void
     {
-        $this->target = $target;
+        $this->average = $average;
     }
 
     /**
@@ -64,17 +66,17 @@ class NestedComparisonsDTO implements DTOInterface
     /**
      * @return string
      */
-    public function getCatagoryCode(): string
+    public function getCategoryCode(): string
     {
-        return $this->catagoryCode;
+        return $this->categoryCode;
     }
 
     /**
-     * @param string $catagoryCode
+     * @param string $categoryCode
      */
-    public function setCatagoryCode(string $catagoryCode): void
+    public function setCategoryCode(string $categoryCode): void
     {
-        $this->catagoryCode = $catagoryCode;
+        $this->categoryCode = $categoryCode;
     }
 
 }
