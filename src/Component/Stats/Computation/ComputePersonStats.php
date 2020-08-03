@@ -110,37 +110,56 @@ class ComputePersonStats
         $averageData = $attributeThesaurus->computeAveragesForType($type);
         $currentData = $attributeThesaurus->computeAveragesForTypeAndPerson($type, $personUuid);
 
+        $totalAverage = 0;
+        foreach ($averageData as $data) {
+            $totalAverage += $data['average'];
+        }
+        if ($totalAverage) {
+            $totalAverage = 100/$totalAverage;
+        }
+
+        $totalCurrent = 0;
+        foreach ($currentData as $data) {
+            $totalCurrent += $data['current'];
+        }
+        if ($totalCurrent) {
+            $totalCurrent = 100/$totalCurrent;
+        }
+
         // format result
         $comparisons = [];
 
-        // first get average data
-        foreach ($averageData as $data) {
-            $comparisonDTO = DTOFactory::create(ModelConstants::COMPARISON_STATS);
-            $comparisonDTO->setCurrent(self::getCurrentData($data['uuid'], $currentData));
-            $comparisonDTO->setAverage($data['average']); // by default, we set to 0 the count of an attribute for a person
-            $comparisonDTO->setCategoryUuid($data['categoryUuid']);
-            $comparisonDTO->setCategoryCode($type);
-            $comparisonDTO->setAttributeTitle($data['title']);
-            $comparisonDTO->setAttributeUuid($data['uuid']);
-            $comparisons[] = $comparisonDTO;
+        // if there is no totalCurrent, it means we don't need to create stats because there is no data
+        if ($totalCurrent) {
+            // first get average data
+            foreach ($averageData as $data) {
+                $comparisonDTO = DTOFactory::create(ModelConstants::COMPARISON_STATS);
+                $comparisonDTO->setCurrent(self::getCurrentData($data['uuid'], $currentData, $totalCurrent));
+                $comparisonDTO->setAverage(intval(round($totalAverage*$data['average'], 2)*100));
+                $comparisonDTO->setCategoryUuid($data['categoryUuid']);
+                $comparisonDTO->setCategoryCode($type);
+                $comparisonDTO->setAttributeTitle($data['title']);
+                $comparisonDTO->setAttributeUuid($data['uuid']);
+                $comparisons[] = $comparisonDTO;
+            }
         }
-
         return $comparisons;
     }
 
     /**
      * @param string $attributeUuid
      * @param array $currentDataList
+     * @param int $totalCurrent
      * @return int
      */
-    private static function getCurrentData(string $attributeUuid, array $currentDataList):int
+    private static function getCurrentData(string $attributeUuid, array $currentDataList, float $totalCurrent):int
     {
         // by default, we set to 0 the count of an attribute for a person
         $result = 0;
 
         foreach ($currentDataList as $current) {
             if ($current['uuid'] === $attributeUuid) {
-                return $current['current'];
+                return (intval(round($totalCurrent*$current['current'], 2)*100));
             }
         }
 
