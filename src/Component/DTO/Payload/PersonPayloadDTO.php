@@ -48,6 +48,9 @@ class PersonPayloadDTO extends AbstractUniqueDTO
     // profession the person has done
     private array $professions = [];
 
+    // melviz stats
+    private array $comparisons = [];
+
     /**
      * @return string
      */
@@ -241,4 +244,20 @@ class PersonPayloadDTO extends AbstractUniqueDTO
         $this->professions = $professions;
     }
 
+    /**
+     * @return array
+     */
+    public function getComparisons(): array
+    {
+        return $this->comparisons;
+    }
+
+    /**
+     * @param array $comparisons
+     */
+    public function setComparisons(array $comparisons): void
+    {
+        $this->comparisons = $comparisons;
+    }
+    
 }

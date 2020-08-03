@@ -7,8 +7,13 @@ namespace App\Component\Stats\Computation;
 
 
 use App\Component\DTO\Stats\Person\NestedFilmsInPersonStatsDTO;
+use App\Component\Factory\DTOFactory;
+use App\Component\Model\ModelConstants;
+use App\Entity\Attribute;
+use App\Entity\Category;
 use App\Entity\Film;
 use App\Entity\Person;
+use App\Entity\Statistic;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ComputePersonStats
@@ -73,5 +78,91 @@ class ComputePersonStats
         $filmDTO->setTotalPersonNumbersLength($totalPersonNumbersLength);
 
         return $filmDTO;
+    }
+
+    /**
+     * @param string $personUuid
+     * @param EntityManagerInterface $em
+     * @return null
+     */
+    public static function generateComparisonsStats(string $personUuid, EntityManagerInterface $em)
+    {
+        $types = [Category::PERFORMANCE_TYPE, Category::STRUCTURE_TYPE, Category::COMPLETENESS_TYPE, Category::SOURCE_TYPE, Category::DIEGETIC_TYPE ];
+
+        $comparisonsByType= [];
+
+        // get generic stats
+        foreach ($types as $type) {
+            $comparisonsByType[] = self::generateComparisonByType($type, $personUuid, $em);
+        }
+
+        return $comparisonsByType;
+    }
+
+    /**
+     * @param string $type
+     * @param EntityManagerInterface $em
+     * @return null
+     */
+    private static function generateComparisonByType(string $type, string $personUuid, EntityManagerInterface $em)
+    {
+        $attributeThesaurus = $em->getRepository(Attribute::class);
+        $averageData = $attributeThesaurus->computeAveragesForType($type);
+        $currentData = $attributeThesaurus->computeAveragesForTypeAndPerson($type, $personUuid);
+
+        $totalAverage = 0;
+        foreach ($averageData as $data) {
+            $totalAverage += $data['average'];
+        }
+        if ($totalAverage) {
+            $totalAverage = 100/$totalAverage;
+        }
+
+        $totalCurrent = 0;
+        foreach ($currentData as $data) {
+            $totalCurrent += $data['current'];
+        }
+        if ($totalCurrent) {
+            $totalCurrent = 100/$totalCurrent;
+        }
+
+        // format result
+        $comparisons = [];
+
+        // if there is no totalCurrent, it means we don't need to create stats because there is no data
+        if ($totalCurrent) {
+            // first get average data
+            foreach ($averageData as $data) {
+                $comparisonDTO = DTOFactory::create(ModelConstants::COMPARISON_STATS);
+                $comparisonDTO->setCurrent(self::getCurrentData($data['uuid'], $currentData, $totalCurrent));
+                $comparisonDTO->setAverage(intval(round($totalAverage*$data['average'], 2)*100));
+                $comparisonDTO->setCategoryUuid($data['categoryUuid']);
+                $comparisonDTO->setCategoryCode($type);
+                $comparisonDTO->setAttributeTitle($data['title']);
+                $comparisonDTO->setAttributeUuid($data['uuid']);
+                $comparisons[] = $comparisonDTO;
+            }
+        }
+        return $comparisons;
+    }
+
+    /**
+     * @param string $attributeUuid
+     * @param array $currentDataList
+     * @param int $totalCurrent
+     * @return int
+     */
+    private static function getCurrentData(string $attributeUuid, array $currentDataList, float $totalCurrent):int
+    {
+        // by default, we set to 0 the count of an attribute for a person
+        $result = 0;
+
+        foreach ($currentDataList as $current) {
+            if ($current['uuid'] === $attributeUuid) {
+                return (intval(round($totalCurrent*$current['current'], 2)*100));
+            }
+        }
+
+        return $result;
     }
 }

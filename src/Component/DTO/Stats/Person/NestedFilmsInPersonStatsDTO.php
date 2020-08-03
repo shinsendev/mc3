@@ -5,11 +5,13 @@ declare(strict_types=1);
 
 namespace App\Component\DTO\Stats\Person;
 
+use App\Component\DTO\Definition\DTOInterface;
+
 /**
  * Class NestedFilmsInPersonStatsDTO
  * @package App\Component\DTO\Stats\Person
  */
-class NestedFilmsInPersonStatsDTO
+class NestedFilmsInPersonStatsDTO implements DTOInterface
 {
     private string $title;
 

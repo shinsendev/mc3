@@ -18,6 +18,12 @@ use App\Component\DTO\Payload\CategoryPayloadDTO;
  */
 class Category extends AbstractTarget
 {
+    CONST PERFORMANCE_TYPE = 'performance_thesaurus';
+    CONST STRUCTURE_TYPE = 'structure';
+    CONST COMPLETENESS_TYPE = 'completeness_thesaurus';
+    CONST SOURCE_TYPE = 'source_thesaurus';
+    CONST DIEGETIC_TYPE = 'diegetic_thesaurus';
+
     /**
      * @ORM\Column(type="string", length=510)
      */

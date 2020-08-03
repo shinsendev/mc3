@@ -6,6 +6,7 @@ namespace App\Component\Hydrator\Strategy;
 
 use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Nested\CoworkerNestedDTO;
+use App\Component\DTO\Payload\FilmPayloadDTO;
 use App\Component\DTO\Payload\PersonPayloadDTO;
 use App\Component\Factory\DTOFactory;
 use App\Component\Hydrator\Description\HydratorDTOInterface;
@@ -71,7 +72,20 @@ class PersonPayloadHydrator implements HydratorDTOInterface
             $dto->setProfessions($results);
         }
 
-        // get stats
+        // add stats
+        $dto = self::setStats($person, $dto, $em);
+
+        return $dto;
+    }
+
+    /**
+     * @param Person $person
+     * @param PersonPayloadDTO $dto
+     * @param EntityManagerInterface $em
+     * @return PersonPayloadDTO
+     */
+    public static function setStats(Person $person, PersonPayloadDTO $dto, EntityManagerInterface  $em)
+    {
         $statsRepository = $em->getRepository(Statistic::class);
 
         if ($personStats = $statsRepository->findOneByTargetUuid($person->getUuid())) {
@@ -83,6 +97,11 @@ class PersonPayloadHydrator implements HydratorDTOInterface
 
             if (isset($value['films'])) {
                 $dto->setPresenceInFilms($value['films']);
+            }
+
+            //todo: add comparisons
+            if (isset($value['comparisons'])) {
+                $dto->setComparisons($value['comparisons']);
             }
         }
 

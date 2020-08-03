@@ -25,6 +25,7 @@ use App\Component\DTO\Payload\HomePayloadDTO;
 use App\Component\DTO\Payload\NumberPayloadDTO;
 use App\Component\DTO\Payload\PersonPayloadDTO;
 use App\Component\DTO\Payload\SongPayloadDTO;
+use App\Component\DTO\Stats\Person\NestedComparisonsDTO;
 use App\Component\Model\ModelConstants;
 
 class DTOFactory
@@ -59,6 +60,8 @@ class DTOFactory
             ModelConstants::PERSON_COWORKER => new CoworkerNestedDTO(),
 
             ModelConstants::HOME_PAYLOAD_MODEL => new HomePayloadDTO(),
+
+            ModelConstants::COMPARISON_STATS => new NestedComparisonsDTO(),
         ];
 
         foreach ($config as $configEntityName => $entity) {

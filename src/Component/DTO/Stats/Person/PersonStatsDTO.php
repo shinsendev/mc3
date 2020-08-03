@@ -5,16 +5,21 @@ declare(strict_types=1);
 
 namespace App\Component\DTO\Stats\Person;
 
+use App\Component\DTO\Definition\DTOInterface;
+
 /**
  * Class PersonStatsDTO
  * @package App\Component\DTO\Stats
  */
-class PersonStatsDTO
+class PersonStatsDTO implements DTOInterface
 {
     private int $averageShotLength = 0;
 
     /** @var NestedFilmsInPersonStatsDTO[] */
     private array $films = [];
+
+    /** @var NestedComparisonsDTO[] */
+    private array $comparisons = [];
 
     /**
      * @return int
@@ -46,6 +51,22 @@ class PersonStatsDTO
     public function setFilms(array $films): void
     {
         $this->films = $films;
+    }
+
+    /**
+     * @return NestedComparisonsDTO[]
+     */
+    public function getComparisons(): array
+    {
+        return $this->comparisons;
+    }
+
+    /**
+     * @param NestedComparisonsDTO[] $comparisons
+     */
+    public function setComparisons(array $comparisons): void
+    {
+        $this->comparisons = $comparisons;
     }
 
 }
