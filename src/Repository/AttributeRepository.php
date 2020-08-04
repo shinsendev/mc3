@@ -74,13 +74,14 @@ class AttributeRepository extends ServiceEntityRepository
                 JOIN a.category c
                 INNER JOIN App\Entity\Work w WITH w.targetUuid = n.uuid
                 INNER JOIN App\Entity\Person p WITH p.id = w.person
-                WHERE c.code = :code AND p.uuid = :personUuid
+                WHERE c.code = :code AND p.uuid = :personUuid AND w.profession = :performer
                 GROUP BY a.title, a.uuid, c.uuid, c.code
         ');
 
         $query->setParameters([
             'code' => $type,
-            'personUuid' => $personUuid
+            'personUuid' => $personUuid,
+            'performer' => 'performer'
         ]);
 
         return $query->getResult();

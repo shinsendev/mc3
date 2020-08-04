@@ -137,7 +137,7 @@ class ComputePersonStats
                 $comparisonDTO->setCurrent(self::getCurrentData($data['uuid'], $currentData, $totalCurrent));
                 $comparisonDTO->setAverage(intval(round($totalAverage*$data['average'], 2)*100));
                 $comparisonDTO->setCategoryUuid($data['categoryUuid']);
-                $comparisonDTO->setCategoryCode($type);
+                $comparisonDTO->setCategoryCode(self::convertCode($type));
                 $comparisonDTO->setAttributeTitle($data['title']);
                 $comparisonDTO->setAttributeUuid($data['uuid']);
                 $comparisons[] = $comparisonDTO;
@@ -160,6 +160,32 @@ class ComputePersonStats
         foreach ($currentDataList as $current) {
             if ($current['uuid'] === $attributeUuid) {
                 return (intval(round($totalCurrent*$current['current'], 2)*100));
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param string $type
+     * @return string
+     */
+    private static function convertCode(string $type):string
+    {
+        $result = 'default';
+
+        $adaptater = [
+            ["raw" => "structure", "computed"=> "structure"],
+            ["raw" => "performance_thesaurus", "computed"=> "performance"],
+            ["raw" => "source_thesaurus", "computed"=> "source"],
+            ["raw" => "completeness_thesaurus", "computed"=> "completeness"],
+            ["raw" => "diegetic_thesaurus", "computed"=> "diegetic"],
+            ["raw" => "cast", "computed"=> "cast"],
+        ];
+
+        foreach ($adaptater as $code) {
+            if ($code['raw'] === $type) {
+                return $code['computed'];
             }
         }
 

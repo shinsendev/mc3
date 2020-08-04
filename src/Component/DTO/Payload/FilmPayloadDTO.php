@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace App\Component\DTO\Payload;
 
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
-use App\Component\DTO\Nested\AttributeNestedDTO;
 
 /**
  * Class FilmPayloadDTO
