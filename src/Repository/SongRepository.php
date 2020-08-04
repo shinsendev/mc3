@@ -84,6 +84,22 @@ class SongRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function getFilmsReleasedYears(string $songUuid):?array
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT f.releasedYear FROM App\Entity\Song s
+                JOIN s.numbers n
+                JOIN n.film f
+            WHERE s.uuid = :uuid
+        ');
+        $query->setParameters([
+            'uuid' => $songUuid
+        ]);
+
+        return $query->getResult();
+    }
+
+
     /**
      * @return int|mixed|string
      * @throws \Doctrine\ORM\NoResultException

@@ -35,7 +35,7 @@ class AttributePayloadDTO extends AbstractUniqueDTO
     private $example= '';
 
     /** @var array */
-    private $elements = [];
+    private $elements = []; // ElementNestedDTO[]
 
     /** @var string */
     private $model = ''; // model type of the element linked to this attribute : number, song, film

@@ -64,7 +64,7 @@ class AttributePayloadHydrator implements HydratorDTOInterface
         if (isset($elements)) {
             foreach ($elements as $element) {
                 $elementDTO = DTOFactory::create(ModelConstants::ELEMENT_NESTED_DTO_MODEL);
-                $elementDTO->hydrate(['element' => $element], $em);
+                $elementDTO = NestedElementInAttributeHydrator::hydrate($elementDTO, ['element' => $element], $em);
                 $elementsNestedDTOList[] = $elementDTO;
             }
             if (isset($elementsNestedDTOList)) {

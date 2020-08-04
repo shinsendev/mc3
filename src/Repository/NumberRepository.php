@@ -79,4 +79,22 @@ class NumberRepository extends ServiceEntityRepository
         $query = $this->getEntityManager()->createQuery('SELECT SUM(n.endTc-n.beginTc) FROM App\Entity\Number n');
         return $query->getSingleScalarResult();
     }
+
+    /**
+     * @param string $numberUuid
+     * @return int|null
+     */
+    public function getFilmReleasedYear(string $numberUuid):?int
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT f.releasedYear FROM App\Entity\Number n
+                JOIN n.film f
+            WHERE n.uuid = :uuid
+        ');
+        $query->setParameters([
+            'uuid' => $numberUuid
+        ]);
+
+        return $query->getSingleScalarResult();
+    }
 }
