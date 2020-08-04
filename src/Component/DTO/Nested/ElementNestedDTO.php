@@ -14,8 +14,8 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class ElementNestedDTO extends AbstractUniqueDTO
 {
-    /** @var string */
-    private $title;
+    private string $title;
+    private array $years = []; // film(s) released for film and number, and songs, it is possible to have many years only for songs
 
     public function hydrate(array $data, EntityManagerInterface $em)
     {
@@ -38,6 +38,22 @@ class ElementNestedDTO extends AbstractUniqueDTO
     public function setTitle(string $title): void
     {
         $this->title = $title;
+    }
+
+    /**
+     * @return array
+     */
+    public function getYears(): array
+    {
+        return $this->years;
+    }
+
+    /**
+     * @param array $years
+     */
+    public function setYears(array $years): void
+    {
+        $this->years = $years;
     }
 
 }
