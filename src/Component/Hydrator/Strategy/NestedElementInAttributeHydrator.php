@@ -43,7 +43,7 @@ class NestedElementInAttributeHydrator implements HydratorDTOInterface
                 return [$repository->findOneByUuid($element['uuid'])->getReleasedyear()];
             case ModelConstants::NUMBER_MODEL:
                 $repository = $em->getRepository(Number::class);
-                return [$repository->findOneByUuid($element['uuid'])->getFilm()->getReleasedyear()];
+                return [$repository->getFilmReleasedYear($element['uuid'])];
             case ModelConstants::SONG_MODEL:
                 $repository = $em->getRepository(Song::class);
                 $years = $repository->getFilmsReleasedYears($element['uuid']);
