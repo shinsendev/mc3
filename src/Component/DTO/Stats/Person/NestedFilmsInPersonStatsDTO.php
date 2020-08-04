@@ -14,15 +14,10 @@ use App\Component\DTO\Definition\DTOInterface;
 class NestedFilmsInPersonStatsDTO implements DTOInterface
 {
     private string $title;
-
     private string $uuid;
-
     private string $imdb;
-
     private int $releasedYear;
-
     private int $totalNumbersLength;
-
     private int $totalPersonNumbersLength;
 
     /**
