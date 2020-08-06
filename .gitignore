@@ -17,8 +17,7 @@
 ###< symfony/phpunit-bridge ###
 
 ###> custom ###
-.idea
-.env
-.env.test
+/.idea
+/.env
+/keys/*
 ###< custom ###
-
