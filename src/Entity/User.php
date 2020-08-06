@@ -3,19 +3,31 @@
 namespace App\Entity;
 
 use App\Entity\Heredity\AbstractTarget;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\Table(name="`user`")
  */
-class User extends AbstractTarget
+class User extends AbstractTarget implements UserInterface
 {
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $name;
+    private $username;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="string")
+     */
+    private $password;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -23,51 +35,39 @@ class User extends AbstractTarget
     private $email;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
-     */
-    private $roles = [];
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author")
      */
     private $comments;
-
-    public function __construct()
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
     {
-        parent::__construct();
-        $this->comments = new ArrayCollection();
+        return (string) $this->username;
     }
 
-    public function getName(): ?string
+    public function setUsername(string $username): self
     {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+        $this->username = $username;
 
         return $this;
     }
 
-    public function getEmail(): ?string
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
     {
-        return $this->email;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
-    public function setEmail(?string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    public function getRoles(): ?array
-    {
-        return $this->roles;
-    }
-
-    public function setRoles(?array $roles): self
+    public function setRoles(array $roles): self
     {
         $this->roles = $roles;
 
@@ -75,33 +75,67 @@ class User extends AbstractTarget
     }
 
     /**
-     * @return Collection|Comment[]
+     * @see UserInterface
      */
-    public function getComments(): Collection
+    public function getPassword(): string
+    {
+        return (string) $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt()
+    {
+        // not needed when using the "bcrypt" algorithm in security.yaml
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email): void
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComments()
     {
         return $this->comments;
     }
 
-    public function addComment(Comment $comment): self
+    /**
+     * @param mixed $comments
+     */
+    public function setComments($comments): void
     {
-        if (!$this->comments->contains($comment)) {
-            $this->comments[] = $comment;
-            $comment->setAuthor($this);
-        }
-
-        return $this;
+        $this->comments = $comments;
     }
 
-    public function removeComment(Comment $comment): self
-    {
-        if ($this->comments->contains($comment)) {
-            $this->comments->removeElement($comment);
-            // set the owning side to null (unless already changed)
-            if ($comment->getAuthor() === $this) {
-                $comment->setAuthor(null);
-            }
-        }
-
-        return $this;
-    }
 }
