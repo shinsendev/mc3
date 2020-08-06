@@ -20,7 +20,19 @@ class SecurityController extends AbstractController
         $uid = 'some-uid';
 
         $customToken = $auth->createCustomToken($uid);
-        dd($customToken);
+
+        $userProperties = [
+            'email' => 'user@example.com',
+            'emailVerified' => false,
+            'phoneNumber' => '+15555550100',
+            'password' => 'secretPassword',
+            'displayName' => 'John Doe',
+            'photoUrl' => 'http://www.example.com/12345678/photo.png',
+            'disabled' => false,
+        ];
+
+        $createdUser = $auth->createUser($userProperties);
+        dd($createdUser);
 
         return $this->json([
                 'user' => $this->getUser() ? $this->getUser()->getId() : null]
