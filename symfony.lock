@@ -173,6 +173,9 @@
     "kreait/clock": {
         "version": "1.0.1"
     },
+    "kreait/firebase-bundle": {
+        "version": "2.2.0"
+    },
     "kreait/firebase-php": {
         "version": "5.7.0"
     },
