@@ -16,7 +16,7 @@ class User extends AbstractTarget implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $username;
+    private $email;
 
     /**
      * @ORM\Column(type="json")
@@ -32,25 +32,21 @@ class User extends AbstractTarget implements UserInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $email;
+    private $username;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author")
-     */
-    private $comments;
     /**
      * A visual identifier that represents this user.
      *
      * @see UserInterface
      */
-    public function getUsername(): string
+    public function getEmail(): string
     {
-        return (string) $this->username;
+        return (string) $this->email;
     }
 
-    public function setUsername(string $username): self
+    public function setEmail(string $email): self
     {
-        $this->username = $username;
+        $this->email = $email;
 
         return $this;
     }
@@ -109,33 +105,17 @@ class User extends AbstractTarget implements UserInterface
     /**
      * @return mixed
      */
-    public function getEmail()
+    public function getUsername()
     {
-        return $this->email;
+        return $this->username;
     }
 
     /**
-     * @param mixed $email
+     * @param mixed $username
      */
-    public function setEmail($email): void
+    public function setUsername($username): void
     {
-        $this->email = $email;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getComments()
-    {
-        return $this->comments;
-    }
-
-    /**
-     * @param mixed $comments
-     */
-    public function setComments($comments): void
-    {
-        $this->comments = $comments;
+        $this->username = $username;
     }
 
 }

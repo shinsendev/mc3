@@ -14,6 +14,7 @@ class SecurityController extends AbstractController
      */
     public function login()
     {
+        dd('ici');
         $factory = (new Factory)->withServiceAccount('../keys/firebase.json');
         $auth = $factory->createAuth();
 

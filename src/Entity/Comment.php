@@ -16,7 +16,7 @@ class Comment extends AbstractTarget
     private $content;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Contributor", inversedBy="comments")
      */
     private $author;
 
