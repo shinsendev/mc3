@@ -11,7 +11,9 @@ use App\Component\DTO\Payload\FilmPayloadDTO;
 
 /**
  * @ApiResource(
- *     output=FilmPayloadDTO::class
+ *     output=FilmPayloadDTO::class,
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"}
  * )
  *
  * @ORM\Entity(repositoryClass="App\Repository\FilmRepository")
