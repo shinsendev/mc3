@@ -17,6 +17,11 @@ class Contributor extends AbstractTarget
     private $name;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $email;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author")
      */
     private $comments;
@@ -48,4 +53,21 @@ class Contributor extends AbstractTarget
     {
         $this->comments = $comments;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email): void
+    {
+        $this->email = $email;
+    }
+
 }
