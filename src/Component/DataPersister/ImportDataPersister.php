@@ -14,9 +14,7 @@ class ImportDataPersister implements ContextAwareDataPersisterInterface
 
     public function persist($data, array $context = [])
     {
-        dd('ici');
-        //todo : launch import
-        // TODO: Implement persist() method.
+        //todo : launch import here
     }
 
     public function remove($data, array $context = [])

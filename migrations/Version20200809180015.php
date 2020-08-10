@@ -32,4 +32,3 @@ final class Version20200809180015 extends AbstractMigration
         $this->addSql('ALTER TABLE contributor DROP email');
     }
 }
-    

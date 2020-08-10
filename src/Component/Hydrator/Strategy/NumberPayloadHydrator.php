@@ -189,6 +189,10 @@ class NumberPayloadHydrator implements HydratorDTOInterface
             [
                 'legacy' => 'complet_options',
                 'current' => 'completenessOption'
+            ],
+            [
+                'legacy' => 'diegetic_thesaurus',
+                'current' => 'diegeticPerformance'
             ]
         ];
 
