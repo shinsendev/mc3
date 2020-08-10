@@ -12,6 +12,10 @@ use App\Entity\Number;
 use App\Entity\Song;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * Class NestedElementInAttributeHydrator
+ * @package App\Component\Hydrator\Strategy
+ */
 class NestedElementInAttributeHydrator implements HydratorDTOInterface
 {
     /**

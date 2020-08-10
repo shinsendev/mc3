@@ -12,7 +12,9 @@ use App\Component\DTO\Payload\CategoryPayloadDTO;
 /**
  * @ApiResource(
  *     output=CategoryPayloadDTO::class,
- *     attributes={"pagination_items_per_page"=100}
+ *     attributes={"pagination_items_per_page"=100},
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"}
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
  */

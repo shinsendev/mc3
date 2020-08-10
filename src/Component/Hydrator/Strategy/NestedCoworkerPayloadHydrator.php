@@ -16,6 +16,12 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class NestedCoworkerPayloadHydrator implements HydratorDTOInterface
 {
+    /**
+     * @param DTOInterface $dto
+     * @param array $data
+     * @param EntityManagerInterface $em
+     * @return DTOInterface
+     */
     public static function hydrate(DTOInterface $dto, array $data, EntityManagerInterface $em):DTOInterface
     {
         /** @var Person $person */

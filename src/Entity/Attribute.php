@@ -9,7 +9,9 @@ use App\Component\DTO\Payload\AttributePayloadDTO;
 
 /**
  * @ApiResource(
- *     output=AttributePayloadDTO::class
+ *     output=AttributePayloadDTO::class,
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"}
  * )
  * @ORM\Entity(repositoryClass="App\Repository\AttributeRepository")
  */

@@ -11,7 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource(
- *     output=NumberPayloadDTO::class
+ *     output=NumberPayloadDTO::class,
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"}
  * )
  *
  * @ORM\Entity(repositoryClass="App\Repository\NumberRepository")

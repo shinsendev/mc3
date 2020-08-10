@@ -13,12 +13,16 @@
 ###> symfony/phpunit-bridge ###
 .phpunit
 .phpunit.result.cache
-/phpunit.xml
+/phpunit.xmla       
 ###< symfony/phpunit-bridge ###
 
 ###> custom ###
+/.idea
+/.env
+/keys/*
 .idea
 .env
 .env.test
+bin/.phpunit
+bin/.phpunit.xml
 ###< custom ###
-

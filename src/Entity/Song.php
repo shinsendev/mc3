@@ -11,7 +11,9 @@ use App\Component\DTO\Payload\SongPayloadDTO;
 
 /**
  * @ApiResource(
- *     output=SongPayloadDTO::class
+ *     output=SongPayloadDTO::class,
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"}
  * )
  * @ORM\Entity(repositoryClass="App\Repository\SongRepository")
  */
