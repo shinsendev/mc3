@@ -4,17 +4,24 @@
 namespace App\Component\DataTransformer;
 
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
+use App\Component\Authentication\Authentication;
 use App\Component\DTO\Import\ImportInputDTO;
 use App\Entity\Import;
+use Ramsey\Uuid\Uuid;
 
 class ImportInputTransformer implements DataTransformerInterface
 {
     public function transform($importDTO, string $to, array $context = [])
     {
-        // supposed to convert DTO into entity before persisting
-//        dd('ici');
+        Authentication::checkRefreshToken(Authentication::createFirebaseAuth(), $importDTO->getAccessToken());
 
+        // convert ImportDTO into Import object
         $import = new Import();
+        $import->setUuid(Uuid::uuid4()->toString());
+        $import->setStatus($importDTO->getStatus());
+        $import->setInProgress(Import::STARTED_STATUS);
+
+        return $import;
         return ["import" => $import, "accessKey" => $importDTO->getAccessToken()];
     }
 

@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Component\Authentication\Authentication;
+use App\Component\Error\Mc3Error;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Kreait\Firebase\Factory;
@@ -13,16 +15,26 @@ class AccessController extends AbstractController
     /**
      * @Route("/login", name="app_login", methods={"POST"})
      */
-    public function login(Request $request)
+    public function login()
     {
-        $auth = Authentication::createFirebaseAuth();
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->json([
+                'error' => 'Invalid login request: content type must be application/json',
+            ], 403);
+        }
 
-        $content = json_decode($request->getContent());
-        $email = $content->email;
-        $password = $content->password;
+        return $this->json([
+            'user' => $this->getUser() ? $this->getUser()->getId() : null
+        ]);
 
-        //return a token front can keep
-        return $this->json(Authentication::checkPassword($auth, $email, $password), 200);
+//        $auth = Authentication::createFirebaseAuth();
+//
+//        $content = json_decode($request->getContent());
+//        $email = $content->email;
+//        $password = $content->password;
+//
+//        //return a token front can keep
+//        return $this->json(Authentication::checkPassword($auth, $email, $password), 200);
     }
 
     private function checkPassword($auth, string $email, string $password)
