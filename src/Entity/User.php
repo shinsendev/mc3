@@ -12,21 +12,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
 
 
 /**
- * todo : remove as a ressource?
- *
- * @ApiResource(
- *     input=UserInputDTO::class,
- *     output=UserOutputDTO::class,
- *     collectionOperations={
- *      "get" = { "security" = "is_granted('ROLE_ADMIN') or object.owner == user"},
- *      "post",
- *     },
- *     itemOperations={
- *      "get" = { "security" = "is_granted('ROLE_ADMIN')"},
- *      "put" = { "security" = "is_granted('ROLE_ADMIN') or object.owner == user"},
- *      "delete" = { "security" = "is_granted('ROLE_ADMIN')"},
- *     }
- * )
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  */
