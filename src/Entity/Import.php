@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     output=ImportOutputDTO::class,
  *     collectionOperations={
  *      "get",
- *      "post" = { "security_post_denormalize" = "is_granted('IMPORT_CREATE', object)" }
+ *      "post" = { "security" = "is_granted('ACTIVATED_USER')" }
  *     },
  *     itemOperations={"get"}
  * )

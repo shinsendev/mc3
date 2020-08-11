@@ -12,6 +12,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
 
 
 /**
+ * todo : remove as a ressource?
+ *
  * @ApiResource(
  *     input=UserInputDTO::class,
  *     output=UserOutputDTO::class,
