@@ -15,8 +15,8 @@ use Doctrine\ORM\Mapping as ORM;
  *     output=ImportOutputDTO::class,
  *     collectionOperations={
  *      "get",
- *      "post" = {"security" = "is_granted('IMPORT_CREATE', object)" }
- *      },
+ *      "post" = { "security_post_denormalize" = "is_granted('IMPORT_CREATE', object)" }
+ *     },
  *     itemOperations={"get"}
  * )
  * @ORM\Entity(repositoryClass=ImportRepository::class)

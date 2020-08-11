@@ -14,7 +14,7 @@ class AbstractImportDTO extends AbstractUniqueDTO implements DTOInterface
     const FAILED_STATUS = 'failed';
 
     private string $status = self::READY_STATUS;
-    private Boolean $inProgress;
+    private bool $inProgress;
 
     /**
      * @return string
