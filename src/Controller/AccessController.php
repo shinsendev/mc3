@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Kreait\Firebase\Factory;
 
-class SecurityController extends AbstractController
+class AccessController extends AbstractController
 {
     /**
      * @Route("/login", name="app_login", methods={"POST"})

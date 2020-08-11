@@ -13,7 +13,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @ApiResource(
  *     input=ImportInputDTO::class,
  *     output=ImportOutputDTO::class,
- *     collectionOperations={"get", "post"},
+ *     collectionOperations={
+ *      "get",
+ *      "post" = {"security" = "is_granted('IMPORT_CREATE', object)" }
+ *      },
  *     itemOperations={"get"}
  * )
  * @ORM\Entity(repositoryClass=ImportRepository::class)
