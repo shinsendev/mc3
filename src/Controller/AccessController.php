@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use ApiPlatform\Core\Api\IriConverterInterface;
 use App\Component\Authentication\Authentication;
 use App\Component\Error\Mc3Error;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,26 +16,17 @@ class AccessController extends AbstractController
     /**
      * @Route("/login", name="app_login", methods={"POST"})
      */
-    public function login()
+    public function login(IriConverterInterface $iriConverter)
     {
-        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if (!$this->isGranted('ACTIVATED_USER', $this->getUser())) {
             return $this->json([
-                'error' => 'Invalid login request: content type must be application/json',
+                'error' => 'Invalid login request: content type must be application/json and user must be activated',
             ], 403);
         }
 
-        return $this->json([
-            'user' => $this->getUser() ? $this->getUser()->getId() : null
+        return new JsonResponse([
+            'Location' => $iriConverter->getIriFromItem($this->getUser())
         ]);
-
-//        $auth = Authentication::createFirebaseAuth();
-//
-//        $content = json_decode($request->getContent());
-//        $email = $content->email;
-//        $password = $content->password;
-//
-//        //return a token front can keep
-//        return $this->json(Authentication::checkPassword($auth, $email, $password), 200);
     }
 
     private function checkPassword($auth, string $email, string $password)
