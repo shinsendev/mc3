@@ -30,7 +30,7 @@ class StatsPersonUpdateCommand extends Command
     {
         $this
             ->setDescription('Update stats for Person, if you add a person uuid, update only one person')
-            ->addArgument('personUuid', InputArgument::OPTIONAL, 'Argument description')
+            ->addArgument('personUuid', InputArgument::OPTIONAL, 'Optional : the uuid of the person you will update')
         ;
     }
 
