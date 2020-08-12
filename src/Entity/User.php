@@ -2,12 +2,26 @@
 
 namespace App\Entity;
 
+use App\Component\DTO\User\UserInputDTO;
+use App\Component\DTO\User\UserOutputDTO;
 use App\Entity\Heredity\AbstractTarget;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Core\Annotation\ApiResource;
+
 
 /**
+ * @ApiResource(
+ *     input=UserInputDTO::class,
+ *     output=UserOutputDTO::class,
+ *     collectionOperations={
+ *      "get" = { "security" = "is_granted('ROLE_ADMIN')"},
+ *     },
+ *     itemOperations={
+ *      "get" = { "security" = "is_granted('ROLE_ADMIN') or object.owner == user"},
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  */
@@ -16,7 +30,7 @@ class User extends AbstractTarget implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\Column(type="json")
@@ -27,12 +41,17 @@ class User extends AbstractTarget implements UserInterface
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $password;
+    private string $password;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $username;
+    private string $username;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $active = false;
 
     /**
      * A visual identifier that represents this user.
@@ -116,6 +135,18 @@ class User extends AbstractTarget implements UserInterface
     public function setUsername($username): void
     {
         $this->username = $username;
+    }
+
+    public function getActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
+
+        return $this;
     }
 
 }

@@ -5,16 +5,13 @@ namespace App\Component\DTO\Import;
 
 use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
-use phpDocumentor\Reflection\Types\Boolean;
+use App\Entity\Import;
 
 class AbstractImportDTO extends AbstractUniqueDTO implements DTOInterface
 {
-    const READY_STATUS = 'ready';
-    const COMPLETED_STATUS = 'completed';
-    const FAILED_STATUS = 'failed';
 
-    private string $status = self::READY_STATUS;
-    private Boolean $inProgress;
+    private string $status = Import::READY_STATUS;
+    private bool $inProgress = false;
 
     /**
      * @return string
