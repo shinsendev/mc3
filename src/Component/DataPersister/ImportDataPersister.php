@@ -64,7 +64,8 @@ class ImportDataPersister implements ContextAwareDataPersisterInterface
                 [
                     'headers' => [
                         'mc3-importer-security-hash' => 'ly0uM1Blk+XChU/4+IhKulYK0YjTPGrAJoI1/1AAtHY='
-                    ]
+                    ],
+                    'timeout' => 900
                 ]
             );
         } catch(\Exception $e) {
