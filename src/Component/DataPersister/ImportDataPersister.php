@@ -85,6 +85,7 @@ class ImportDataPersister implements ContextAwareDataPersisterInterface
     {
         $data->setStatus($status);
         $data->setInprogress($progress);
+        $data->setUpdatedAt(new \DateTime());
         $this->em->persist($data);
         $this->em->flush();
     }
