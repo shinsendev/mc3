@@ -23,14 +23,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Import extends AbstractTarget
 {
-    const STARTED_STATUS = "started";
+    const READY_STATUS = 'ready'; // by default
+    const STARTED_STATUS = "started"; // set just before sending the POST to the importer and until there is e reponse
     const FAILED_STATUS = 'failed';
     const SUCCESS_STATUS = 'success';
 
-//      "post" = { "security_post_denormalize" = "is_granted('IMPORT_CREATE', object)" }
-
-
-/**
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private string $status;

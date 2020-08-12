@@ -17,6 +17,12 @@ class AdminCreateUserCommand extends Command
     private EntityManagerInterface $em;
     private UserPasswordEncoderInterface $encoder;
 
+    /**
+     * AdminCreateUserCommand constructor.
+     * @param EntityManagerInterface $em
+     * @param UserPasswordEncoderInterface $encoder
+     * @param string|null $name
+     */
     public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, string $name = null)
     {
         parent::__construct($name);
@@ -31,6 +37,11 @@ class AdminCreateUserCommand extends Command
         ;
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);

@@ -12,6 +12,16 @@ use ApiPlatform\Core\Annotation\ApiResource;
 
 
 /**
+ * @ApiResource(
+ *     input=UserInputDTO::class,
+ *     output=UserOutputDTO::class,
+ *     collectionOperations={
+ *      "get" = { "security" = "is_granted('ROLE_ADMIN')"},
+ *     },
+ *     itemOperations={
+ *      "get" = { "security" = "is_granted('ROLE_ADMIN') or object.owner == user"},
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  */
