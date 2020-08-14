@@ -28,4 +28,12 @@ class AccessController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/logout", name="app_logout")
+     */
+    public function logout()
+    {
+        throw new \Exception('Not supposed to be reached, Loggout is supposed to be managed by Symfony');
+    }
+
 }
