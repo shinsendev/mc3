@@ -17,7 +17,7 @@ class CreateUser
     public static function execute(EntityManagerInterface $em, UserPasswordEncoderInterface $encoder)
     {
         // create an user with mc2@shinsen.fr email if it doesn't already exist
-        if ($em->getRepository(User::class)->findOneByEmail(self::adminEmail)) {
+        if ($em->getRepository(User::class)->findOneByEmail(User::ADMIN_EMAIL)) {
             return;
         }
 
