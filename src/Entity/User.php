@@ -27,6 +27,9 @@ use ApiPlatform\Core\Annotation\ApiResource;
  */
 class User extends AbstractTarget implements UserInterface
 {
+    const ADMIN_EMAIL = 'mc2@shinsen.fr';
+    const ADMIN_NAME = 'mc2';
+
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
