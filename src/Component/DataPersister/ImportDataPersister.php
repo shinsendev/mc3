@@ -73,7 +73,7 @@ class ImportDataPersister implements ContextAwareDataPersisterInterface
             throw new Mc3Error('Forbidden access to Importer, it might be a problem with request header key :  '.$e->getMessage(), 400 );
         }
 
-        $this->updateImport($data, Import::SUCCESS_STATUS);
+        $this->updateImport($data, Import::STARTED_STATUS);
     }
 
     /**

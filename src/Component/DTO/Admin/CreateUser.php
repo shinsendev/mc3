@@ -10,9 +10,6 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class CreateUser
 {
-    const adminEmail = 'mc2@shinsen.fr';
-    const username = 'mc2';
-
     /**
      * @param EntityManagerInterface $em
      * @param UserPasswordEncoderInterface $encoder
@@ -25,8 +22,8 @@ class CreateUser
         }
 
         $user = new User();
-        $user->setEmail(self::adminEmail);
-        $user->setUsername(self::username);
+        $user->setEmail(User::ADMIN_EMAIL);
+        $user->setUsername(User::ADMIN_NAME);
         $user->setPassword($encoder->encodePassword($user, $_ENV['ADMIN_PASSWORD']));
         $user->setActive(true);
 
