@@ -8,6 +8,8 @@ use App\Entity\Heredity\AbstractImportable;
 use App\Entity\Import;
 use App\Entity\Indexation;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Process\Process;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class IndexationDataPersister implements ContextAwareDataPersisterInterface
@@ -40,18 +42,19 @@ class IndexationDataPersister implements ContextAwareDataPersisterInterface
     public function persist($data, array $context = [])
     {
         // check if last indexation is finished
-//        if ($lastImport = $this->em->getRepository(Import::class)->getLastImport()) {
-//            if ($lastImport->getInProgress()) {
-//                throw new Mc3Error('Import avoided and not created. Another process is already running.', 400);
-//            }
-//        }
-//
-//        // get data and save the import
-//        $this->em->persist($data);
-//        $this->em->flush();
-//
-//        // launch a new import of all data from the importer
-//        $this->launchImport($data);
+        // todo = add a command that set the indexation in progress to false at the end
+        if ($lastIndexation = $this->em->getRepository(Indexation::class)->getLastIndexation()) {
+            if ($lastIndexation->getInProgress()) {
+                throw new Mc3Error('Indexation avoided and not created. Another process is already running.', 400);
+            }
+        }
+
+        // get data and save the import
+        $this->em->persist($data);
+        $this->em->flush();
+
+        $this->launchIndexation($data);
+
     }
 
     public function remove($data, array $context = [])
@@ -60,27 +63,14 @@ class IndexationDataPersister implements ContextAwareDataPersisterInterface
     }
 
     /**
-     * @param Import $data
+     * @param Indexation $data
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    private function launchIndexation(Import $data):void
+    private function launchIndexation(Indexation $data):void
     {
-//        try {
-//            $url = $_ENV['IMPORTER_API_URL'].'/import/all';
-//            $this->client->request(
-//                'POST',
-//                $url,
-//                [
-//                    'headers' => [
-//                        'mc3-importer-security-hash' => $_ENV['MC3_IMPORTER_SECURITY_KEY']
-//                    ],
-//                    'timeout' => 900
-//                ]
-//            );
-//        } catch(\Exception $e) {
-//            $this->updateImport($data, AbstractImportable::FAILED_STATUS);
-//            throw new Mc3Error('Forbidden access to Importer, it might be a problem with request header key :  '.$e->getMessage(), 400 );
-//        }
+        $process = Process::fromShellCommandline('cd ../src/Component/Shell && sh indexation.sh');
+        $process->start();
+        sleep(3); // fot letting the time to launch the commands
     }
 
     /**
