@@ -37,6 +37,13 @@ class ImportDataPersister implements ContextAwareDataPersisterInterface
      */
     public function persist($data, array $context = [])
     {
+        // check if last import is finished
+        if ($lastImport = $this->em->getRepository(Import::class)->getLastImport()) {
+            if ($lastImport->getInProgress()) {
+                throw new Mc3Error('Import avoided and not created. Another process is already running.', 400);
+            }
+        }
+
         // get data and save the import
         $this->em->persist($data);
         $this->em->flush();
@@ -63,7 +70,7 @@ class ImportDataPersister implements ContextAwareDataPersisterInterface
                 $url,
                 [
                     'headers' => [
-                        'mc3-importer-security-hash' => 'ly0uM1Blk+XChU/4+IhKulYK0YjTPGrAJoI1/1AAtHY='
+                        'mc3-importer-security-hash' => $_ENV['MC3_IMPORTER_SECURITY_KEY']
                     ],
                     'timeout' => 900
                 ]
@@ -72,8 +79,6 @@ class ImportDataPersister implements ContextAwareDataPersisterInterface
             $this->updateImport($data, Import::FAILED_STATUS);
             throw new Mc3Error('Forbidden access to Importer, it might be a problem with request header key :  '.$e->getMessage(), 400 );
         }
-
-        $this->updateImport($data, Import::STARTED_STATUS);
     }
 
     /**

@@ -19,32 +19,13 @@ class ImportRepository extends ServiceEntityRepository
         parent::__construct($registry, Import::class);
     }
 
-    // /**
-    //  * @return Import[] Returns an array of Import objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getLastImport()
     {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $query = $this->getEntityManager()->createQuery('
+            SELECT i FROM App\Entity\Import i ORDER BY i.id DESC
+        ')->setMaxResults(1);
 
-    /*
-    public function findOneBySomeField($value): ?Import
-    {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $query->getSingleResult();
     }
-    */
+
 }
