@@ -20,7 +20,7 @@ class AccessController extends AbstractController
         }
 
         if (!$this->isGranted('ACTIVATED_USER', $this->getUser())) {
-            throw new Mc3Error('Error with login permission', 403);
+            throw new Mc3Error('Error with login permission :', 403);
         }
 
         return new JsonResponse([
