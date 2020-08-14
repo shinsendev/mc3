@@ -39,7 +39,7 @@ class IndexationDataPersister implements ContextAwareDataPersisterInterface
      */
     public function persist($data, array $context = [])
     {
-//        // check if last import is finished
+        // check if last indexation is finished
 //        if ($lastImport = $this->em->getRepository(Import::class)->getLastImport()) {
 //            if ($lastImport->getInProgress()) {
 //                throw new Mc3Error('Import avoided and not created. Another process is already running.', 400);
