@@ -63,7 +63,7 @@ class ImportDataPersister implements ContextAwareDataPersisterInterface
                 $url,
                 [
                     'headers' => [
-                        'mc3-importer-security-hash' => 'ly0uM1Blk+XChU/4+IhKulYK0YjTPGrAJoI1/1AAtHY='
+                        'mc3-importer-security-hash' => $_ENV['MC3_IMPORTER-SECURITY_KEY']
                     ],
                     'timeout' => 900
                 ]
