@@ -5,6 +5,7 @@ namespace App\Component\DataTransformer;
 
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
 use App\Component\DTO\Import\ImportInputDTO;
+use App\Entity\Heredity\AbstractImportable;
 use App\Entity\Import;
 use Ramsey\Uuid\Uuid;
 
@@ -15,7 +16,7 @@ class ImportInputTransformer implements DataTransformerInterface
         // convert ImportDTO into Import object
         $import = new Import();
         $import->setUuid(Uuid::uuid4()->toString());
-        $import->setStatus(Import::STARTED_STATUS);
+        $import->setStatus(AbstractImportable::STARTED_STATUS);
         $import->setInProgress(true);
 
         return $import;

@@ -4,6 +4,7 @@ namespace App\Component\DataPersister;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use App\Component\Error\Mc3Error;
+use App\Entity\Heredity\AbstractImportable;
 use App\Entity\Import;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -76,7 +77,7 @@ class ImportDataPersister implements ContextAwareDataPersisterInterface
                 ]
             );
         } catch(\Exception $e) {
-            $this->updateImport($data, Import::FAILED_STATUS);
+            $this->updateImport($data, AbstractImportable::FAILED_STATUS);
             throw new Mc3Error('Forbidden access to Importer, it might be a problem with request header key :  '.$e->getMessage(), 400 );
         }
     }
