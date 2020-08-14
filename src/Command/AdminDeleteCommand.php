@@ -26,7 +26,6 @@ class AdminDeleteCommand extends Command
     {
         parent::__construct($name);
         $this->em = $em;
-        $this->encoder = $encoder;
     }
 
     protected function configure()

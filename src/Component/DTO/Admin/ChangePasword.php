@@ -13,7 +13,6 @@ class ChangePasword
 {
     public static function execute(EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, string $password)
     {
-        // create an user with mc2@shinsen.fr email if it doesn't already exist
         if (!$user = $em->getRepository(User::class)->findOneByEmail(User::ADMIN_EMAIL)) {
             throw new Mc3Error('No user found with email '.User::ADMIN_EMAIL);
         }
