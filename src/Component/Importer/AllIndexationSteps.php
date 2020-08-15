@@ -5,7 +5,9 @@ namespace App\Component\Importer;
 
 
 use App\Component\Algolia\Indexation\Indexer as AlgoliaIndexer;
+use App\Component\Error\Mc3Error;
 use App\Component\Stats\StatsGenerator;
+use App\Entity\Import;
 use App\Entity\Indexation;
 use App\Entity\Person;
 use Doctrine\ORM\EntityManagerInterface;
@@ -38,4 +40,5 @@ class AllIndexationSteps
         $em->getRepository(Indexation::class)->updateLastIndexation($em->getRepository(Indexation::class)->getLastIndexation());
         $logger->info('Indexation is complete.');
     }
+
 }

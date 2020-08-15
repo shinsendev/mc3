@@ -4,6 +4,7 @@ namespace App\Component\DataPersister;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use App\Component\Error\Mc3Error;
+use App\Component\Importer\ImporterVoter;
 use App\Entity\Indexation;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Process\Process;
@@ -38,18 +39,6 @@ class IndexationDataPersister implements ContextAwareDataPersisterInterface
      */
     public function persist($data, array $context = [])
     {
-        // check if last indexation is finished
-        // todo = add a command that set the indexation in progress to false at the end
-        if ($lastIndexation = $this->em->getRepository(Indexation::class)->getLastIndexation()) {
-            if ($lastIndexation->getInProgress()) {
-                throw new Mc3Error('Indexation avoided and not created. Another process is already running.', 400);
-            }
-        }
-
-        // get data and save the import
-        $this->em->persist($data);
-        $this->em->flush();
-
         $this->launchIndexation($data);
     }
 
@@ -64,6 +53,15 @@ class IndexationDataPersister implements ContextAwareDataPersisterInterface
      */
     private function launchIndexation(Indexation $data):bool
     {
+        // check if last indexation is finished
+        if (!ImporterVoter::isAllowed($this->em)) {
+            throw new Mc3Error('Not allowed to launched the import or indexation process');
+        }
+
+        // get data and save the import
+        $this->em->persist($data);
+        $this->em->flush();
+
         $process = Process::fromShellCommandline('cd ../ && php bin/console indexation:start');
         $process->start();
         sleep(3); // fot letting the time to launch the commands
