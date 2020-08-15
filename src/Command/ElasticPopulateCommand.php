@@ -36,9 +36,7 @@ class ElasticPopulateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-
         Indexer::populate($this->em, $output);
-
         $io->success('Indexation is ok');
 
         return 0;

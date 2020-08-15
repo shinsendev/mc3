@@ -53,6 +53,10 @@ class FilmIndexation implements IndexationInterface
                 $filmArray['modelType'] = ModelConstants::FILM_MODEL;
                 $filmArray['objectID'] = $filmDTO->getUuid();
                 $index->saveObject($filmArray);
+                // for liberating some memory
+                $film = null;
+                $filmArray = null;
+                $filmDTO = null;
 
                 $progressBar->advance();
             }
@@ -62,6 +66,9 @@ class FilmIndexation implements IndexationInterface
             if ($limit >$filmsCount) {
                 $offset = $filmsCount;
             }
+
+            // for liberating some memory
+            $films = null;
         }
 
         $progressBar->finish();

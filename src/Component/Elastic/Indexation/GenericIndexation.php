@@ -65,14 +65,22 @@ class GenericIndexation
 
                 $client->index($params);
                 $progressBar->advance();
+
+                // for liberating some memory
+                $item = null;
+                $itemArray = null;
+                $itemDTO = null;
             }
 
             $offset += $limit;
 
             if ($limit > $itemsCount) {
-                unset($items);
+                $items = null;
                 $offset = $itemsCount;
             }
+
+            // for liberating some memory
+            $items = null;
         }
 
         $progressBar->finish();

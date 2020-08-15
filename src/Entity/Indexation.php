@@ -3,16 +3,16 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Component\DTO\Import\ImportInputDTO;
-use App\Component\DTO\Import\ImportOutputDTO;
 use App\Entity\Heredity\AbstractImportable;
-use App\Repository\ImportRepository;
+use App\Repository\IndexationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Component\DTO\Import\IndexationInputDTO;
+use App\Component\DTO\Import\IndexationOutputDTO;
 
 /**
  * @ApiResource(
- *     input=ImportInputDTO::class,
- *     output=ImportOutputDTO::class,
+ *     input=IndexationInputDTO::class,
+ *     output=IndexationOutputDTO::class,
  *     collectionOperations={
  *      "get" = { "security" = "is_granted('ACTIVATED_USER')" },
  *      "post" = { "security" = "is_granted('ACTIVATED_USER')" }
@@ -21,9 +21,9 @@ use Doctrine\ORM\Mapping as ORM;
  *      "get" = { "security" = "is_granted('ACTIVATED_USER')" }
  *     }
  * )
- * @ORM\Entity(repositoryClass=ImportRepository::class)
+ * @ORM\Entity(repositoryClass=IndexationRepository::class)
  */
-class Import extends AbstractImportable
+class Indexation extends AbstractImportable
 {
 
 }

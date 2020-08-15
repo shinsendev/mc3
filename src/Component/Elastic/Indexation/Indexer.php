@@ -26,7 +26,6 @@ class Indexer
     public static function populate(EntityManagerInterface $em, OutputInterface $output)
     {
         $client = ElasticConnection::connect();
-        ini_set('memory_limit', '256M'); //because of php array adapter cache
 
         // In some rare cases, you may see an error like this when attempting to alter an index:
         // "Cannot delete indices that are being snapshotted: [[my_index/dPzLciT9RlmS8OtGGm61IQ]]. Try again after snapshot finishes or cancel the currently running snapshot."

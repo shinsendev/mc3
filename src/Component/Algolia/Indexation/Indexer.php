@@ -17,7 +17,6 @@ class Indexer
     public static function populate(EntityManagerInterface $em, OutputInterface $output)
     {
         $client = AlgoliaConnection::connect();
-        ini_set('memory_limit', '256M'); //because of php array adapter cache
 
         // configure serializer
         $serializer = self::configureSerializer();

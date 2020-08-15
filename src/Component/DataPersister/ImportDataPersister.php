@@ -4,7 +4,10 @@ namespace App\Component\DataPersister;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use App\Component\Error\Mc3Error;
+use App\Component\Importer\ImporterVoter;
+use App\Entity\Heredity\AbstractImportable;
 use App\Entity\Import;
+use App\Entity\Indexation;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -37,18 +40,6 @@ class ImportDataPersister implements ContextAwareDataPersisterInterface
      */
     public function persist($data, array $context = [])
     {
-        // check if last import is finished
-        if ($lastImport = $this->em->getRepository(Import::class)->getLastImport()) {
-            if ($lastImport->getInProgress()) {
-                throw new Mc3Error('Import avoided and not created. Another process is already running.', 400);
-            }
-        }
-
-        // get data and save the import
-        $this->em->persist($data);
-        $this->em->flush();
-
-        // launch a new import of all data from the importer
         $this->launchImport($data);
     }
 
@@ -63,6 +54,14 @@ class ImportDataPersister implements ContextAwareDataPersisterInterface
      */
     private function launchImport(Import $data):void
     {
+        // check if last import and last indexation are finished
+        if (!ImporterVoter::isAllowed($this->em)) {
+            throw new Mc3Error('Not allowed to launched the import or indexation process');
+        }
+
+        $this->em->persist($data);
+        $this->em->flush();
+
         try {
             $url = $_ENV['IMPORTER_API_URL'].'/import/all';
             $this->client->request(
@@ -76,7 +75,7 @@ class ImportDataPersister implements ContextAwareDataPersisterInterface
                 ]
             );
         } catch(\Exception $e) {
-            $this->updateImport($data, Import::FAILED_STATUS);
+            $this->updateImport($data, AbstractImportable::FAILED_STATUS);
             throw new Mc3Error('Forbidden access to Importer, it might be a problem with request header key :  '.$e->getMessage(), 400 );
         }
     }

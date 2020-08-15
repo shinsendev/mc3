@@ -52,7 +52,7 @@ class User extends AbstractTarget implements UserInterface
     private string $username;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default" : false})
      */
     private bool $active = false;
 

@@ -5,12 +5,12 @@ namespace App\Component\DTO\Import;
 
 use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
-use App\Entity\Import;
+use App\Entity\Heredity\AbstractImportable;
 
-class AbstractImportDTO extends AbstractUniqueDTO implements DTOInterface
+abstract class AbstractImportableDTO extends AbstractUniqueDTO implements DTOInterface
 {
 
-    private string $status = Import::READY_STATUS;
+    private string $status = AbstractImportable::READY_STATUS;
     private bool $inProgress = false;
 
     /**

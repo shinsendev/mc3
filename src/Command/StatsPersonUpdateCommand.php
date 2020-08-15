@@ -43,7 +43,6 @@ class StatsPersonUpdateCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-
         // if there is a uuid, we only update ONE person stats
         if ($personUuid = $input->getArgument('personUuid')) {
             if (!$person = $this->em->getRepository(Person::class)->findOneByUuid($personUuid)) {
@@ -62,15 +61,14 @@ class StatsPersonUpdateCommand extends Command
         // if we don't have a specific uuid, we update ALL persons
         else {
             // todo : use doctrine pagination 100 by 100
-            $persons = $this->em->getRepository(Person::class)->findAll();
 
+            $persons = $this->em->getRepository(Person::class)->findAll();
             $personsCount = count($persons);
+            $progressBar = new ProgressBar($output, $personsCount);
 
             $output->writeln([
                 'Generate Stats for all persons.',
             ]);
-
-            $progressBar = new ProgressBar($output, $personsCount);
 
             foreach ($persons as $person) {
                 StatsGenerator::generate(StatsGenerator::PERSON_STRATEGY, $person->getUuid(), $this->em);
