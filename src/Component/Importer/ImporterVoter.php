@@ -55,7 +55,7 @@ class ImporterVoter
 
     public static function checkInterval(\DateTime $updatedAt)
     {
-        $interval = new \DateInterval("PT30M");
+        $interval = new \DateInterval("PT45M");
         $updatedAt->add($interval);
 
         if ($updatedAt < new \DateTime()) {
