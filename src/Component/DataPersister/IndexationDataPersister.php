@@ -4,11 +4,8 @@ namespace App\Component\DataPersister;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use App\Component\Error\Mc3Error;
-use App\Entity\Heredity\AbstractImportable;
-use App\Entity\Import;
 use App\Entity\Indexation;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Process\Process;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -54,7 +51,6 @@ class IndexationDataPersister implements ContextAwareDataPersisterInterface
         $this->em->flush();
 
         $this->launchIndexation($data);
-
     }
 
     public function remove($data, array $context = [])
@@ -64,27 +60,14 @@ class IndexationDataPersister implements ContextAwareDataPersisterInterface
 
     /**
      * @param Indexation $data
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @return bool
      */
-    private function launchIndexation(Indexation $data):void
+    private function launchIndexation(Indexation $data):bool
     {
-        $process = Process::fromShellCommandline('cd ../src/Component/Shell && sh indexation.sh');
+        $process = Process::fromShellCommandline('cd ../ && php bin/console indexation:start');
         $process->start();
         sleep(3); // fot letting the time to launch the commands
-    }
-
-    /**
-     * @param Indexation $data
-     * @param string $status
-     * @param false $progress
-     */
-    private function updateIndexation(Indexation $data, string $status, $progress = false):void
-    {
-        $data->setStatus($status);
-        $data->setInprogress($progress);
-        $data->setUpdatedAt(new \DateTime());
-        $this->em->persist($data);
-        $this->em->flush();
+        return true;
     }
 
 }

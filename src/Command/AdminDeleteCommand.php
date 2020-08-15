@@ -8,7 +8,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AdminDeleteCommand extends Command
 {
@@ -17,12 +16,10 @@ class AdminDeleteCommand extends Command
     private EntityManagerInterface $em;
 
     /**
-     * AdminCreateUserCommand constructor.
      * @param EntityManagerInterface $em
-     * @param UserPasswordEncoderInterface $encoder
      * @param string|null $name
      */
-    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, string $name = null)
+    public function __construct(EntityManagerInterface $em, string $name = null)
     {
         parent::__construct($name);
         $this->em = $em;

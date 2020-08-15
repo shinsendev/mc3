@@ -10,17 +10,17 @@ abstract class AbstractImportable extends AbstractTarget
     const READY_STATUS = 'ready'; // by default
     const STARTED_STATUS = "started"; // set just before sending the POST to the importer and until there is e reponse
     const FAILED_STATUS = 'failed';
-    const SUCCESS_STATUS = 'success';
+    const SUCCESS_STATUS = 'finished';
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, options={"default": "ready"})
      */
-    private string $status;
+    protected string $status;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default": false})
      */
-    private bool $inProgress;
+    protected bool $inProgress;
 
     public function getStatus(): ?string
     {

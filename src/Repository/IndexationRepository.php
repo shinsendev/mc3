@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Heredity\AbstractImportable;
 use App\Entity\Indexation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -25,6 +26,19 @@ class IndexationRepository extends ServiceEntityRepository
             SELECT i FROM App\Entity\Indexation i ORDER BY i.id DESC
         ')->setMaxResults(1);
 
-        return $query->getSingleResult();
+        return $query->getOneOrNullResult();
+    }
+
+    public function updateLastIndexation(Indexation $indexation)
+    {
+        $query = $this->getEntityManager()->createQuery('
+            UPDATE App\Entity\Indexation i SET i.inProgress = false, i.status = :status, i.updatedAt = NOW() WHERE i.id = :indexation
+        ')
+        ->setParameters([
+            'indexation'=> $indexation,
+            'status' => AbstractImportable::SUCCESS_STATUS
+        ]);
+
+        return $query->execute();
     }
 }

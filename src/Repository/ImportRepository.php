@@ -25,7 +25,7 @@ class ImportRepository extends ServiceEntityRepository
             SELECT i FROM App\Entity\Import i ORDER BY i.id DESC
         ')->setMaxResults(1);
 
-        return $query->getSingleResult();
+        return $query->getOneOrNullResult();
     }
 
 }

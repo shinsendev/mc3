@@ -7,7 +7,7 @@ use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
 use App\Entity\Heredity\AbstractImportable;
 
-class AbstractImportableDTO extends AbstractUniqueDTO implements DTOInterface
+abstract class AbstractImportableDTO extends AbstractUniqueDTO implements DTOInterface
 {
 
     private string $status = AbstractImportable::READY_STATUS;
