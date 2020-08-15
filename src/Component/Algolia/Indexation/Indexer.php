@@ -28,6 +28,7 @@ class Indexer
         SongIndexation::index($em, $serializer, $client, $output);
         sleep(1);
         PersonIndexation::index($em, $serializer, $client, $output);
+        sleep(1);
     }
 
     /**
