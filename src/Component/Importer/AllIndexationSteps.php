@@ -17,6 +17,10 @@ class AllIndexationSteps
 {
     public static function execute(EntityManagerInterface $em, LoggerInterface $logger, Output $output)
     {
+        // reindex elastic search
+        $logger->info('Bonsai indexation has begun.');
+        ElasticIndexer::populate($em, $output);
+
         // compute stats
         $logger->info('Stats for people starts to be computed.');
         $people = $em->getRepository(Person::class)->findAll();
@@ -26,15 +30,12 @@ class AllIndexationSteps
         }
         $logger->info('Stats for people starts has been successfully completed.');
 
-        // reindex elastic search
-        $logger->info('Bonsai indexation has begun.');
-        ElasticIndexer::populate($em, $output);
-
         // reindex algolia
         $logger->info('Algolia indexation has begun.');
         AlgoliaIndexer::populate($em, $output);
 
         // update Indexation entity when process is finished
         $em->getRepository(Indexation::class)->updateLastIndexation($em->getRepository(Indexation::class)->getLastIndexation());
+        $logger->info('Indexation is complete.');
     }
 }

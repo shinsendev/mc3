@@ -62,7 +62,10 @@ class GenericIndexation
                 $itemArray['modelType'] = $type;
                 $itemArray['objectID'] = $itemDTO->getUuid();
                 $index->saveObject($itemArray);
-                unset($item);
+                // for liberating some memory
+                $item = null;
+                $itemArray = null;
+                $itemDTO = null;
 
                 $progressBar->advance();
             }
@@ -73,6 +76,9 @@ class GenericIndexation
                 unset($items);
                 $offset = $itemsCount;
             }
+
+            // for liberating some memory
+            $items = null;
         }
 
         $progressBar->finish();

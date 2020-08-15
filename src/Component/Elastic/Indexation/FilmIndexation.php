@@ -55,14 +55,24 @@ class FilmIndexation
 
                 $client->index($params);
                 $progressBar->advance();
+
+                // for liberating some memory
+                $film = null;
+                $filmsArray = null;
+                $filmDTO = null;
             }
 
             $offset += $limit;
 
             if ($limit >$filmsCount) {
+                $films = null;
                 $offset = $filmsCount;
             }
+
+            // for liberating some memory
+            $films = null;
         }
+
 
         $progressBar->finish();
 
