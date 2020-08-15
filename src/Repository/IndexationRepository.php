@@ -32,7 +32,7 @@ class IndexationRepository extends ServiceEntityRepository
     public function updateLastIndexation(Indexation $indexation)
     {
         $query = $this->getEntityManager()->createQuery('
-            UPDATE App\Entity\Indexation i SET i.inProgress = false, i.status = :status, i.updatedAt = NOW() WHERE i.id = :indexation
+            UPDATE App\Entity\Indexation i SET i.inProgress = false, i.status = :status, i.updatedAt = CURRENT_TIMESTAMP() WHERE i.id = :indexation
         ')
         ->setParameters([
             'indexation'=> $indexation,
