@@ -21,7 +21,7 @@ api_platform:
 
     collection:
         pagination:
-            items_per_page: 100 # Default value
+            items_per_page: 100 # 30 is the default value
 
     # Convert Camel case into snake case
 #    name_converter: 'Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter'
