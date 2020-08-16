@@ -50,7 +50,7 @@ class Song extends AbstractTarget
     private $numbers;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Attribute")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Attribute", inversedBy="songs")
      */
     private $attributes;
 

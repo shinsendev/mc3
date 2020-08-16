@@ -47,7 +47,7 @@ class Number extends AbstractTarget
     private $shots;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Attribute")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Attribute", inversedBy="numbers")
      */
     private $attributes;
 

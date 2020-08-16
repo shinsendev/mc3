@@ -34,9 +34,6 @@ class AttributePayloadDTO extends AbstractUniqueDTO
     /** @var string */
     private $example= '';
 
-    /** @var array */
-    private $elements = []; // ElementNestedDTO[]
-
     /** @var string */
     private $model = ''; // model type of the element linked to this attribute : number, song, film
 
@@ -118,22 +115,6 @@ class AttributePayloadDTO extends AbstractUniqueDTO
     public function setExample($example): void
     {
         $this->example = $example;
-    }
-
-    /**
-     * @return array
-     */
-    public function getElements():array
-    {
-        return $this->elements;
-    }
-
-    /**
-     * @param array|void $elements
-     */
-    public function setElements($elements): void
-    {
-        $this->elements = $elements;
     }
 
     /**

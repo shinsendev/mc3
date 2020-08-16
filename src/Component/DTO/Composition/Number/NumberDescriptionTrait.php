@@ -12,6 +12,8 @@ trait NumberDescriptionTrait
 {
     protected string $title;
     protected string $film;
+    protected string $filmUuid = '';
+    protected int $releasedYear = 0;
     protected int $startingTc = 0;
     protected int $endingTc = 0;
     protected int $shots = 0;
@@ -45,6 +47,38 @@ trait NumberDescriptionTrait
     public function setTitle(string $title): void
     {
         $this->title = $title;
+    }
+
+    /**
+     * @return int
+     */
+    public function getReleasedYear(): int
+    {
+        return $this->releasedYear;
+    }
+
+    /**
+     * @param int $releasedYear
+     */
+    public function setReleasedYear(int $releasedYear): void
+    {
+        $this->releasedYear = $releasedYear;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFilmUuid(): string
+    {
+        return $this->filmUuid;
+    }
+
+    /**
+     * @param string $filmUuid
+     */
+    public function setFilmUuid(string $filmUuid): void
+    {
+        $this->filmUuid = $filmUuid;
     }
 
     /**

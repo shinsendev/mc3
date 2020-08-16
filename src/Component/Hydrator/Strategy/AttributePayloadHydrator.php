@@ -23,7 +23,6 @@ class AttributePayloadHydrator implements HydratorDTOInterface
         /** @var Attribute $attribute */
         $attribute = $data['attribute'];
 
-        $attributeUuid = $attribute->getUuid();
         $dto->setTitle($attribute->getTitle());
         $dto->setCategoryTitle($attribute->getCategory()->getTitle());
         $dto->setCategoryUuid($attribute->getCategory()->getUuid());
@@ -38,28 +37,29 @@ class AttributePayloadHydrator implements HydratorDTOInterface
         }
 
         // add elements to attribute
-//        $model = $attribute->getCategory()->getModel();
-//        if ($model !== null) {
-//            switch ($model) {
-//                case CategoryPayloadDTO::MODEL_NUMBER:
-//                    // select all numbers with this attribute
+        $attributeUuid = $attribute->getUuid();
+        $model = $attribute->getCategory()->getModel();
+        if ($model !== null) {
+            switch ($model) {
+                case CategoryPayloadDTO::MODEL_NUMBER:
+                    // select all numbers with this attribute
 //                    $elements = $em->getRepository(Number::class)->getAttributes($attributeUuid);
-//                    $dto->setModel(CategoryPayloadDTO::MODEL_NUMBER);
-//                    break;
-//                case CategoryPayloadDTO::MODEL_FILM:
-//                    // select all films with this attribute
+                    $dto->setModel(CategoryPayloadDTO::MODEL_NUMBER);
+                    break;
+                case CategoryPayloadDTO::MODEL_FILM:
+                    // select all films with this attribute
 //                    $elements = $em->getRepository(Film::class)->getAttributes($attributeUuid);
-//                    $dto->setModel(CategoryPayloadDTO::MODEL_FILM);
-//                    break;
-//                case CategoryPayloadDTO::MODEL_SONG:
-//                    // select all songs with this attribute
+                    $dto->setModel(CategoryPayloadDTO::MODEL_FILM);
+                    break;
+                case CategoryPayloadDTO::MODEL_SONG:
+                    // select all songs with this attribute
 //                    $elements = $em->getRepository(Song::class)->getAttributes($attributeUuid);
-//                    $dto->setModel(CategoryPayloadDTO::MODEL_SONG);
-//                    break;
-//                default:
-//                    throw new \Error($model.' is not a correct category model');
-//            }
-//        }
+                    $dto->setModel(CategoryPayloadDTO::MODEL_SONG);
+                    break;
+                default:
+                    throw new \Error($model.' is not a correct category model');
+            }
+        }
 //
 //        if (isset($elements)) {
 //            foreach ($elements as $element) {
