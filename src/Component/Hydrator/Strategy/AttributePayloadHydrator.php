@@ -23,7 +23,6 @@ class AttributePayloadHydrator implements HydratorDTOInterface
         /** @var Attribute $attribute */
         $attribute = $data['attribute'];
 
-        $attributeUuid = $attribute->getUuid();
         $dto->setTitle($attribute->getTitle());
         $dto->setCategoryTitle($attribute->getCategory()->getTitle());
         $dto->setCategoryUuid($attribute->getCategory()->getUuid());
@@ -38,6 +37,7 @@ class AttributePayloadHydrator implements HydratorDTOInterface
         }
 
         // add elements to attribute
+//        $attributeUuid = $attribute->getUuid();
 //        $model = $attribute->getCategory()->getModel();
 //        if ($model !== null) {
 //            switch ($model) {
