@@ -45,9 +45,12 @@ class NumberPayloadHydrator implements HydratorDTOInterface
         $dto->setStartingTc($number->getBeginTc());
         $dto->setEndingTc($number->getEndTc());
 
-        // set film in a string
-        $nestedFilm = $number->getFilm()->getTitle(). ' ('.$number->getFilm()->getReleasedYear().')';
+        // set film in a string and add some useful infos about films
+        $releasedYear = $number->getFilm()->getReleasedYear();
+        $nestedFilm = $number->getFilm()->getTitle(). ' ('.$releasedYear.')';
         $dto->setFilm($nestedFilm);
+        $dto->setReleasedYear($releasedYear);
+        $dto->setFilmUuid($number->getFilm()->getUuid());
 
         // set all attributes connected to a number
         $dto = self::setAttributes($number->getAttributes(), $dto, $em);
