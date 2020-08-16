@@ -6,7 +6,7 @@ api_platform:
     description: 'Research project studying hollywood musicals'
 
     # The version of the API.
-    version: '0.0.1'
+    version: '0.1.4'
 
     # Set this to false if you want Webby to disappear.
     show_webby: false
@@ -18,6 +18,10 @@ api_platform:
         json: ['application/merge-patch+json']
     swagger:
         versions: [3]
+
+    collection:
+        pagination:
+            items_per_page: 100 # Default value
 
     # Convert Camel case into snake case
 #    name_converter: 'Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter'
