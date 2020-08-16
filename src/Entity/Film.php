@@ -80,7 +80,7 @@ class Film extends AbstractTarget
     private $viaf;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Attribute")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Attribute", inversedBy="films")
      */
     private $attributes;
 

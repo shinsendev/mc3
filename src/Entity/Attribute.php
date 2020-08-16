@@ -6,6 +6,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Heredity\AbstractTarget;
 use Doctrine\ORM\Mapping as ORM;
 use App\Component\DTO\Payload\AttributePayloadDTO;
+use Doctrine\ORM\PersistentCollection;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 
 /**
  * @ApiResource(
@@ -40,7 +42,25 @@ class Attribute extends AbstractTarget
     /**
      * @ORM\Column(type="json", nullable=true)
      */
-    private $contributors = [];
+    private $contributors;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Film", mappedBy="attributes")
+     * @ApiSubresource
+     */
+    private PersistentCollection $films;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Song", mappedBy="attributes")
+     * @ApiSubresource
+     */
+    private PersistentCollection $songs;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Number", mappedBy="attributes")
+     * @ApiSubresource
+     */
+    private PersistentCollection $numbers;
 
     public function getTitle(): ?string
     {
@@ -101,4 +121,53 @@ class Attribute extends AbstractTarget
 
         return $this;
     }
+
+    /**
+     * @return PersistentCollection
+     */
+    public function getFilms(): PersistentCollection
+    {
+        return $this->films;
+    }
+
+    /**
+     * @param PersistentCollection $films
+     */
+    public function setFilms(PersistentCollection $films): void
+    {
+        $this->films = $films;
+    }
+
+    /**
+     * @return PersistentCollection
+     */
+    public function getSongs(): PersistentCollection
+    {
+        return $this->songs;
+    }
+
+    /**
+     * @param PersistentCollection $songs
+     */
+    public function setSongs(PersistentCollection $songs): void
+    {
+        $this->songs = $songs;
+    }
+
+    /**
+     * @return PersistentCollection
+     */
+    public function getNumbers(): PersistentCollection
+    {
+        return $this->numbers;
+    }
+
+    /**
+     * @param PersistentCollection $numbers
+     */
+    public function setNumbers(PersistentCollection $numbers): void
+    {
+        $this->numbers = $numbers;
+    }
+
 }
