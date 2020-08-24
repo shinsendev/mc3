@@ -27,6 +27,7 @@ class IndexationStartCommand extends Command
         $this->em = $em;
         $this->logger = $logger;
     }
+
     protected function configure()
     {
         $this
