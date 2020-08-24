@@ -59,7 +59,7 @@ class ExportCreateCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         // create a data folder and prepare the folder for the current version of the export
-        Export::init($this->filesystem, $this->kernel->getProjectDir());
+//        Export::init($this->filesystem, $this->kernel->getProjectDir());
 
         $export = new Export();
 
