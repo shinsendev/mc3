@@ -7,6 +7,7 @@ namespace App\Component\Factory;
 
 
 use App\Component\DTO\Definition\DTOInterface;
+use App\Component\DTO\Export\CsvExportDTO;
 use App\Component\DTO\Nested\AttributeNestedDTO;
 use App\Component\DTO\Nested\AttributeNestedDTOinCategory;
 use App\Component\DTO\Nested\CoworkerNestedDTO;
@@ -26,6 +27,7 @@ use App\Component\DTO\Payload\NumberPayloadDTO;
 use App\Component\DTO\Payload\PersonPayloadDTO;
 use App\Component\DTO\Payload\SongPayloadDTO;
 use App\Component\DTO\Stats\Person\NestedComparisonsDTO;
+use App\Component\Exporter\Strategy\CsvExportStrategy;
 use App\Component\Model\ModelConstants;
 
 class DTOFactory
@@ -58,6 +60,8 @@ class DTOFactory
             ModelConstants::PERSON_NESTED_DTO_MODEL => new PersonNestedDTO(),
             ModelConstants::PERSON_NESTED_IN_PERSON_DTO_MODEL => new PersonNestedInPersonDTO(),
             ModelConstants::PERSON_COWORKER => new CoworkerNestedDTO(),
+
+            ModelConstants::EXPORT_CSV_DTO => new CsvExportDTO(),
 
             ModelConstants::HOME_PAYLOAD_MODEL => new HomePayloadDTO(),
 

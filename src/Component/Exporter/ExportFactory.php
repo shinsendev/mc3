@@ -22,13 +22,9 @@ class ExportFactory
         EntityManagerInterface $em,
         string $projectDir,
         string $format,
-        \DateTime $createdAt =  null
+        \DateTime $createdAt
     ):Export
     {
-        if (!$createdAt) {
-            $createdAt = new \DateTime();
-        }
-
         return new Export($filesystem, $em, $projectDir, $createdAt, $format);
     }
 }

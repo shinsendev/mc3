@@ -10,6 +10,8 @@ use Symfony\Component\Filesystem\Filesystem;
 
 abstract class AbstractExportStrategy implements ExportStrategyInterface
 {
+    const SUCCESS_RESPONSE = "Export is finished with success";
+
     function createFile(Filesystem $filesystem, string $dataDir, string $datetime, string $filename):void
     {
         $filesystem->mkdir($dataDir);
