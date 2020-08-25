@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Component\Hydrator\Strategy;
-
+namespace App\Component\Hydrator\Strategy\Export;
 
 use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Export\CsvExportDTO;
+use App\Component\Hydrator\Strategy\HydratorStrategyInterface;
 use App\Component\Model\ModelConstants;
 use App\Entity\Film;
 use App\Entity\Person;
@@ -42,13 +42,14 @@ class ExportCsvHydrator implements HydratorStrategyInterface
         $dto->setFilmUuid($film->getuuid());
         $dto->setFilmImdb($film->getImdb());
         $dto->setFilmShows($film->getStageshows());
-        $dto->setRemake($film->getRemake());
-        $dto->setPca($film->getPca());
+        $dto->setFilmRemake($film->getRemake());
+        $dto->setFilmPca($film->getPca());
         $dto->setFilmCensorships(self::getAttributesByCategoryCode($filmAttributes, 'censorship'));
-        $dto->setStates(self::getAttributesByCategoryCode($filmAttributes, 'state'));
-        $dto->setLegion(self::getAttributesByCategoryCode($filmAttributes, 'legion'));
-        $dto->setProtestant(self::getAttributesByCategoryCode($filmAttributes, 'protestant'));
-        $dto->setBoard(self::getAttributesByCategoryCode($filmAttributes, 'board'));
+        $dto->setFilmStates(self::getAttributesByCategoryCode($filmAttributes, 'state'));
+        $dto->setFilmLegion(self::getAttributesByCategoryCode($filmAttributes, 'legion'));
+        $dto->setFilmProtestant(self::getAttributesByCategoryCode($filmAttributes, 'protestant'));
+        $dto->setFilmHarrison(self::getAttributesByCategoryCode($filmAttributes, 'harrison'));
+        $dto->setFilmBoard(self::getAttributesByCategoryCode($filmAttributes, 'board'));
 
 
         // number

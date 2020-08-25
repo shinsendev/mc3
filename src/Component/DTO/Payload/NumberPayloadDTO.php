@@ -11,7 +11,6 @@ use App\Component\DTO\Composition\Number\NumberDescriptionTrait;
 use App\Component\DTO\Composition\Number\NumberIntertextualityTrait;
 use App\Component\DTO\Composition\Number\NumberMusicAndDanceTrait;
 use App\Component\DTO\Composition\Number\NumberThemeTrait;
-use App\Component\DTO\Composition\UniqueDTOTrait;
 use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
 

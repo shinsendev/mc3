@@ -53,7 +53,7 @@ class CsvExportStrategy extends AbstractExportStrategy
     {
         // add header
         $reflect = new \ReflectionClass(CsvExportDTO::class);
-        $properties = $reflect->getProperties(\ReflectionProperty::IS_PRIVATE);
+        $properties = $reflect->getProperties(\ReflectionProperty::IS_PROTECTED);
 
         $header = null;
         foreach ($properties as $property) {
