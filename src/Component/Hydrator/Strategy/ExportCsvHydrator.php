@@ -6,6 +6,7 @@ namespace App\Component\Hydrator\Strategy;
 
 use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Export\CsvExportDTO;
+use App\Entity\Film;
 use App\Entity\Song;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\PersistentCollection;
@@ -21,13 +22,28 @@ class ExportCsvHydrator implements HydratorStrategyInterface
     public static function hydrate(DTOInterface $dto, array $data, EntityManagerInterface $em): DTOInterface
     {
         $number = $data['number'];
+        /** @var Film $film */
         $film = $number->getFilm();
         $filmAttributes = $film->getAttributes();
 
         // film
         $dto->setFilmTitle($film->getTitle());
-        $dto->setFilmCensorships(self::getAttributesByCategoryCode($filmAttributes, 'censorship'));
         $dto->setFilmReleased($film->getReleasedYear());
+        $dto->setFilmSample($film->getSample());
+//        $dto->setFilmDirectors();
+//        $dto->setFilmStudios();
+        $dto->setFilmUuid($film->getuuid());
+        $dto->setFilmImdb($film->getImdb());
+        $dto->setFilmShows($film->getStageshows());
+        $dto->setRemake($film->getRemake());
+        $dto->setPca($film->getPca());
+        $dto->setFilmCensorships(self::getAttributesByCategoryCode($filmAttributes, 'censorship'));
+        $dto->setStates(self::getAttributesByCategoryCode($filmAttributes, 'state'));
+        $dto->setLegion(self::getAttributesByCategoryCode($filmAttributes, 'legion'));
+        $dto->setProtestant(self::getAttributesByCategoryCode($filmAttributes, 'protestant'));
+        $dto->setBoard(self::getAttributesByCategoryCode($filmAttributes, 'board'));
+
+
 
         // number
         $dto->setNumberTitle($number->getTitle());
