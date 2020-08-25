@@ -24,46 +24,19 @@ class ExportCsvHydrator implements HydratorStrategyInterface
     public static function hydrate(DTOInterface $dto, array $data, EntityManagerInterface $em): DTOInterface
     {
         $number = $data['number'];
-        /** @var Film $film */
-        $film = $number->getFilm();
-        $filmAttributes = $film->getAttributes();
 
-        // film
-        $dto->setFilmTitle($film->getTitle());
-        $dto->setFilmReleased($film->getReleasedYear());
-        $dto->setFilmSample($film->getSample());
+        // hydrate film data
+        $dto = CsvFilmHydrator::hydrate($dto, ['film' => $number->getFilm()], $em);
 
-//        $directors = $em->getRepository(Work::class)->findPersonByTargetAndProfession('film', $film->getUuid(), 'director');
-        $dto->setFilmDirectors(self::getPeopleByProfession($em, ModelConstants::FILM_MODEL, $film->getUuid(), Person::DIRECTOR_PROFESSION));
+        // hydrate number data
+        $dto = CsvNumberHydrator::hydrate($dto, $data, $em);
 
-        if (count($film->getStudios()) > 0) {
-            $dto->setFilmStudios(self::getStudios($film->getStudios()));
-        }
-        $dto->setFilmUuid($film->getuuid());
-        $dto->setFilmImdb($film->getImdb());
-        $dto->setFilmShows($film->getStageshows());
-        $dto->setFilmRemake($film->getRemake());
-        $dto->setFilmPca($film->getPca());
-        $dto->setFilmCensorships(self::getAttributesByCategoryCode($filmAttributes, 'censorship'));
-        $dto->setFilmStates(self::getAttributesByCategoryCode($filmAttributes, 'state'));
-        $dto->setFilmLegion(self::getAttributesByCategoryCode($filmAttributes, 'legion'));
-        $dto->setFilmProtestant(self::getAttributesByCategoryCode($filmAttributes, 'protestant'));
-        $dto->setFilmHarrison(self::getAttributesByCategoryCode($filmAttributes, 'harrison'));
-        $dto->setFilmBoard(self::getAttributesByCategoryCode($filmAttributes, 'board'));
-
-
-        // number
-        $dto->setNumberTitle($number->getTitle());
-        $dto->setBeginTc($number->getBeginTc());
-        $dto->setEndTc($number->getEndTc());
-
-        // songs
+        // hydrate songs
         if (count($number->getSongs()) > 0) {
             $dto->setSongs(self::getSongs($number->getSongs()));
         }
 
         return $dto;
-
     }
 
     /**
@@ -71,7 +44,7 @@ class ExportCsvHydrator implements HydratorStrategyInterface
      * @param $needle
      * @return string|null
      */
-    private static function getAttributesByCategoryCode($attributes, $needle)
+    public static function getAttributesByCategoryCode($attributes, $needle)
     {
         $attributesTitle = null;
         foreach ($attributes as $attribute) {
@@ -95,7 +68,7 @@ class ExportCsvHydrator implements HydratorStrategyInterface
      * @param $profession
      * @return string|null
      */
-    private static function getPeopleByProfession(EntityManagerInterface $em, $targetModel, $targetUuid, $profession):?string
+    public static function getPeopleByProfession(EntityManagerInterface $em, $targetModel, $targetUuid, $profession):?string
     {
         $peopleStringified = null;
 
@@ -116,19 +89,10 @@ class ExportCsvHydrator implements HydratorStrategyInterface
     }
 
     /**
-     * @param Collection $studios
-     * @return string
-     */
-    private static function getStudios(Collection $studios):string
-    {
-        return self::stringifyCollection($studios, 'getName');
-    }
-
-    /**
      * @param Collection $songs
      * @return string
      */
-    private static function getSongs(Collection $songs):string
+    public static function getSongs(Collection $songs):string
     {
         return self::stringifyCollection($songs, 'getTitle');
     }

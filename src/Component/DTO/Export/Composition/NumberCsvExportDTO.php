@@ -11,8 +11,8 @@ trait NumberCsvExportDTO
     protected ?int $beginTc = null;
     protected ?int $endTc = null;
     protected ?string $shots = null;
-    protected ?string $averageShotLength = null;
     protected ?string $dubbing = null;
+    protected ?string $uuid = null;
 
     // number attributes
     protected ?string $beginning = null;
@@ -114,22 +114,6 @@ trait NumberCsvExportDTO
     /**
      * @return string|null
      */
-    public function getAverageShotLength(): ?string
-    {
-        return $this->averageShotLength;
-    }
-
-    /**
-     * @param string|null $averageShotLength
-     */
-    public function setAverageShotLength(?string $averageShotLength): void
-    {
-        $this->averageShotLength = $averageShotLength;
-    }
-
-    /**
-     * @return string|null
-     */
     public function getDubbing(): ?string
     {
         return $this->dubbing;
@@ -141,6 +125,22 @@ trait NumberCsvExportDTO
     public function setDubbing(?string $dubbing): void
     {
         $this->dubbing = $dubbing;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUuid(): ?string
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param string|null $uuid
+     */
+    public function setUuid(?string $uuid): void
+    {
+        $this->uuid = $uuid;
     }
 
     /**

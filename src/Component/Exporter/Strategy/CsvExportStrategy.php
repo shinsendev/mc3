@@ -7,7 +7,7 @@ namespace App\Component\Exporter\Strategy;
 use App\Component\DTO\Export\CsvExportDTO;
 use App\Component\Error\Mc3Error;
 use App\Component\Factory\DTOFactory;
-use App\Component\Hydrator\Strategy\ExportCsvHydrator;
+use App\Component\Hydrator\Strategy\Export\ExportCsvHydrator;
 use App\Component\Model\ModelConstants;
 use App\Entity\Number;
 use Doctrine\ORM\EntityManagerInterface;

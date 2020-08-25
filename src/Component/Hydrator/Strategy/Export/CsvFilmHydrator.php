@@ -6,13 +6,22 @@ use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Export\CsvExportDTO;
 use App\Component\Hydrator\Strategy\HydratorStrategyInterface;
 use App\Component\Model\ModelConstants;
+use App\Entity\Film;
 use App\Entity\Person;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CsvFilmHydrator implements HydratorStrategyInterface
 {
+    /**
+     * @param CsvExportDTO $dto
+     * @param array $data
+     * @param EntityManagerInterface $em
+     * @return CsvExportDTO
+     */
     public static function hydrate(DTOInterface $dto, array $data, EntityManagerInterface $em):CsvExportDTO
     {
+        /** @var Film $film */
         $film = $data['film'];
         $filmAttributes = $film->getAttributes();
 
@@ -21,7 +30,7 @@ class CsvFilmHydrator implements HydratorStrategyInterface
         $dto->setFilmReleased($film->getReleasedYear());
         $dto->setFilmSample($film->getSample());
 
-        $dto->setFilmDirectors(self::getPeopleByProfession($em, ModelConstants::FILM_MODEL, $film->getUuid(), Person::DIRECTOR_PROFESSION));
+        $dto->setFilmDirectors(ExportCsvHydrator::getPeopleByProfession($em, ModelConstants::FILM_MODEL, $film->getUuid(), Person::DIRECTOR_PROFESSION));
 
         if (count($film->getStudios()) > 0) {
             $dto->setFilmStudios(self::getStudios($film->getStudios()));
@@ -31,14 +40,23 @@ class CsvFilmHydrator implements HydratorStrategyInterface
         $dto->setFilmShows($film->getStageshows());
         $dto->setFilmRemake($film->getRemake());
         $dto->setFilmPca($film->getPca());
-        $dto->setFilmCensorships(self::getAttributesByCategoryCode($filmAttributes, 'censorship'));
-        $dto->setFilmStates(self::getAttributesByCategoryCode($filmAttributes, 'state'));
-        $dto->setFilmLegion(self::getAttributesByCategoryCode($filmAttributes, 'legion'));
-        $dto->setFilmProtestant(self::getAttributesByCategoryCode($filmAttributes, 'protestant'));
-        $dto->setFilmHarrison(self::getAttributesByCategoryCode($filmAttributes, 'harrison'));
-        $dto->setFilmBoard(self::getAttributesByCategoryCode($filmAttributes, 'board'));
+        $dto->setFilmCensorships(ExportCsvHydrator::getAttributesByCategoryCode($filmAttributes, 'censorship'));
+        $dto->setFilmStates(ExportCsvHydrator::getAttributesByCategoryCode($filmAttributes, 'state'));
+        $dto->setFilmLegion(ExportCsvHydrator::getAttributesByCategoryCode($filmAttributes, 'legion'));
+        $dto->setFilmProtestant(ExportCsvHydrator::getAttributesByCategoryCode($filmAttributes, 'protestant'));
+        $dto->setFilmHarrison(ExportCsvHydrator::getAttributesByCategoryCode($filmAttributes, 'harrison'));
+        $dto->setFilmBoard(ExportCsvHydrator::getAttributesByCategoryCode($filmAttributes, 'board'));
 
         return $dto;
 
+    }
+
+    /**
+     * @param Collection $studios
+     * @return string
+     */
+    public static function getStudios(Collection $studios):string
+    {
+        return ExportCsvHydrator::stringifyCollection($studios, 'getName');
     }
 }
