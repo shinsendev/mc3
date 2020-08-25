@@ -6,10 +6,12 @@ namespace App\Component\Hydrator\Strategy;
 
 use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Export\CsvExportDTO;
+use App\Component\Model\ModelConstants;
 use App\Entity\Film;
-use App\Entity\Song;
+use App\Entity\Person;
+use App\Entity\Work;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\PersistentCollection;
 
 class ExportCsvHydrator implements HydratorStrategyInterface
 {
@@ -30,8 +32,13 @@ class ExportCsvHydrator implements HydratorStrategyInterface
         $dto->setFilmTitle($film->getTitle());
         $dto->setFilmReleased($film->getReleasedYear());
         $dto->setFilmSample($film->getSample());
-//        $dto->setFilmDirectors();
-//        $dto->setFilmStudios();
+
+//        $directors = $em->getRepository(Work::class)->findPersonByTargetAndProfession('film', $film->getUuid(), 'director');
+        $dto->setFilmDirectors(self::getPeopleByProfession($em, ModelConstants::FILM_MODEL, $film->getUuid(), Person::DIRECTOR_PROFESSION));
+
+        if (count($film->getStudios()) > 0) {
+            $dto->setFilmStudios(self::getStudios($film->getStudios()));
+        }
         $dto->setFilmUuid($film->getuuid());
         $dto->setFilmImdb($film->getImdb());
         $dto->setFilmShows($film->getStageshows());
@@ -42,7 +49,6 @@ class ExportCsvHydrator implements HydratorStrategyInterface
         $dto->setLegion(self::getAttributesByCategoryCode($filmAttributes, 'legion'));
         $dto->setProtestant(self::getAttributesByCategoryCode($filmAttributes, 'protestant'));
         $dto->setBoard(self::getAttributesByCategoryCode($filmAttributes, 'board'));
-
 
 
         // number
@@ -59,6 +65,11 @@ class ExportCsvHydrator implements HydratorStrategyInterface
 
     }
 
+    /**
+     * @param $attributes
+     * @param $needle
+     * @return string|null
+     */
     private static function getAttributesByCategoryCode($attributes, $needle)
     {
         $attributesTitle = null;
@@ -76,12 +87,57 @@ class ExportCsvHydrator implements HydratorStrategyInterface
         return $attributesTitle;
     }
 
-    private static function getSongs(PersistentCollection $songs):string
+    /**
+     * @param EntityManagerInterface $em
+     * @param $targetModel
+     * @param $targetUuid
+     * @param $profession
+     * @return string|null
+     */
+    private static function getPeopleByProfession(EntityManagerInterface $em, $targetModel, $targetUuid, $profession):?string
+    {
+        $peopleStringified = null;
+
+        // we get all the people in entity
+        $collection = $em->getRepository(Work::class)->findPersonByTargetAndProfession($targetModel, $targetUuid, $profession);
+
+        // we convert their fullname into strings
+        foreach ($collection as $person) {
+            if (!$peopleStringified) {
+                $peopleStringified .= $person->getFirstname(). ''.$person->getLastname();
+            }
+            else {
+                $peopleStringified .= ','.$person->getFirstname(). ''.$person->getLastname();
+            }
+        }
+
+        return $peopleStringified;
+    }
+
+    /**
+     * @param Collection $studios
+     * @return string
+     */
+    private static function getStudios(Collection $studios):string
+    {
+        return self::stringifyCollection($studios, 'getName');
+    }
+
+    /**
+     * @param Collection $songs
+     * @return string
+     */
+    private static function getSongs(Collection $songs):string
     {
         return self::stringifyCollection($songs, 'getTitle');
     }
 
-    public static function stringifyCollection(PersistentCollection $array, string $getter):string
+    /**
+     * @param Collection $array
+     * @param string $getter
+     * @return string
+     */
+    public static function stringifyCollection(Collection $array, string $getter):string
     {
         $collectionInString = null;
         foreach ($array as $item) {
@@ -91,6 +147,12 @@ class ExportCsvHydrator implements HydratorStrategyInterface
         return $collectionInString;
     }
 
+    /**
+     * @param $item
+     * @param $string
+     * @param $getter
+     * @return string
+     */
     public static function stringifyItem($item, $string, $getter):string
     {
         if (!$string) {
