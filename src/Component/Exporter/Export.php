@@ -7,56 +7,46 @@ use App\Component\Error\Mc3Error;
 use App\Component\Exporter\Strategy\CsvExportStrategy;
 use App\Component\Exporter\Strategy\ExportStrategyInterface;
 use App\Component\Exporter\Strategy\JsonExportStrategy;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 class Export implements ExportInterface
 {
     private Filesystem $filesystem;
-    private string $rootDir;
+    private string $projectDir;
     private string $format;
-    private ExportStrategyInterface $strategy;
+    private \DateTime $createdAt;
+    private EntityManagerInterface $em;
 
-    public function __construct(Filesystem $filesystem, string $rootDir, string $format = 'csv')
+    public function __construct(Filesystem $filesystem, EntityManagerInterface $em, string $projectDir, \DateTime $createdAt, string $format = 'csv')
     {
         $this->filesystem = $filesystem;
-        $this->rootDir = $rootDir;
+        $this->projectDir = $projectDir;
         $this->format = $format;
+        $this->createdAt = $createdAt;
+        $this->em = $em;
     }
 
     public function execute():void
     {
-        $this->strategy = $this->getStrategy();
-        $this->strategy->import();
+        ($this->getStrategy())->export($this->filesystem, $this->em,$this->projectDir, $this->createdAt, $this->format);
     }
 
     private function getStrategy():ExportStrategyInterface
     {
         if ($this->format === 'csv') {
-            $strategy = new CsvExportStrategy($filesystem, $path);
+            $strategy = new CsvExportStrategy();
             // do a CSVExport
         }
         else if ($this->format === 'json'){
-            $strategy = new JsonExportStrategy($filesystem, $path);
+            $strategy = new JsonExportStrategy();
             // do a JsonExport
         }
         else {
-            return new Mc3Error('No valid format for this export.');
+            throw new Mc3Error('No valid format for this export.', 400);
         }
 
         return $strategy;
     }
-
-    public static function init(Filesystem $filesystem, string $rootDir, string $format = 'csv')
-    {
-        $filesystem->mkdir($rootDir.'/data');
-        $name = (new \DateTime())->format('Y-m-d_His') . '_mc2-export';
-        $dataDir = $rootDir.'/data/'.$name.'/';
-        $filesystem->mkdir($dataDir);
-
-//        // create the empty files in the same folder
-//        $filesystem->touch($dataDir.$name.'.csv');
-//        $filesystem->touch($dataDir.$name.'.json');
-    }
-
 
 }

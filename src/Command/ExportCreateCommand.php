@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Component\Exporter\Export;
+use App\Component\Exporter\ExportFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -58,31 +59,12 @@ class ExportCreateCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        // create a data folder and prepare the folder for the current version of the export
-//        Export::init($this->filesystem, $this->kernel->getProjectDir());
+        $csvExport = ExportFactory::create($this->filesystem, $this->em, $this->kernel->getProjectDir(), 'csv', new \DateTime());
+        $csvExport->execute();
 
-        $export = new Export();
-
-//        $rootDir = $this->kernel->getProjectDir();
-//        $this->filesystem->mkdir($rootDir.'/data');
-//        $name = (new \DateTime())->format('Y-m-d_His') . '_mc2-export';
-//        $dataDir = $rootDir.'/data/'.$name.'/';
-//        $this->filesystem->mkdir($dataDir);
-//
-//        // create the empty files in the same folder
-//        $this->filesystem->touch($dataDir.$name.'.csv');
-//        $this->filesystem->touch($dataDir.$name.'.json');
-
-        // put some date into the files
-
-        // by films
-
-        // generate categories
-        // generate attributes
-        // generate films
-        // generate numbers
-        // generate songs
-        // generate people
+        $jsonExport = ExportFactory::create($this->filesystem, $this->em, $this->kernel->getProjectDir(), 'json', new \DateTime());
+        $jsonExport->execute();
+//        $jsonExport->exportFromCsv();
 
         $io->success('Export command has successfully generated csv and json files.');
 

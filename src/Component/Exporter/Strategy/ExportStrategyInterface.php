@@ -6,10 +6,11 @@ declare(strict_types=1);
 namespace App\Component\Exporter\Strategy;
 
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 interface ExportStrategyInterface
 {
-    function import(Filesystem $filesystem, string $path);
-    function init(Filesystem $filesystem, string $rootDir, string $format = 'csv');
+    function export(Filesystem $filesystem, EntityManagerInterface $em, string $projectDir, \DateTime $createdAt, string $format);
+    function createFile(Filesystem $filesystem, string $dataDir, string $createdAt, string $filename);
 }
