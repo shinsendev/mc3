@@ -49,7 +49,7 @@ class ExportCreateCommand extends Command
     {
         $this
             ->setDescription('Export a file with all the website data in CSV and JSON.')
-            ->addArgument('format', InputArgument::OPTIONAL, 'Argument description')
+            ->addArgument('format', InputArgument::OPTIONAL, 'Type of format, if not precised exports have done in all formats supported.')
         ;
     }
 
