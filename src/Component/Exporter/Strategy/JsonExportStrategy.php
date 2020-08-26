@@ -22,13 +22,10 @@ class JsonExportStrategy extends AbstractExportStrategy
 {
     function export(Filesystem $filesystem, EntityManagerInterface $em, string $projectDir, \DateTime $createdAt, string $format):string
     {
-        $createdAt = $createdAt->format('Y-m-d_His');
-        $filename = $createdAt . '_export.'.$format;
-        $dataDir =  $projectDir . '/data/';
-        $completeFilename = $dataDir.$createdAt.'/'.$filename;
+        $params = $this->getParams($createdAt, $projectDir, $format);
 
         // create folder and file
-        $this->createFile($filesystem, $dataDir, $createdAt, $filename);
+        $this->createFile($filesystem, $params['dataDir'], $params['createdAtFolder'], $params['filename']);
 
         // get data and prepare normalizer
         $numbers = $em->getRepository(Number::class)->findAll();
@@ -37,7 +34,7 @@ class JsonExportStrategy extends AbstractExportStrategy
         $normalizers = [new ObjectNormalizer()];
         $serializer = new Serializer($normalizers, $encoders);
 
-        $filesystem->appendToFile($completeFilename, '[');
+        $filesystem->appendToFile($params['completeFilename'], '[');
 
         // by numbers, for all items
         $i = 0;
@@ -48,15 +45,15 @@ class JsonExportStrategy extends AbstractExportStrategy
             $exportDTO = $serializer->serialize($exportDTO, 'json');
 
             if ($i === $length - 1) {
-                $filesystem->appendToFile($completeFilename, $exportDTO);
+                $filesystem->appendToFile($params['completeFilename'], $exportDTO);
             }
             else {
-                $filesystem->appendToFile($completeFilename, $exportDTO. ',');
+                $filesystem->appendToFile($params['completeFilename'], $exportDTO. ',');
             }
             $i++;
         }
 
-        $filesystem->appendToFile($completeFilename, ']');
+        $filesystem->appendToFile($params['completeFilename'], ']');
 
         return parent::SUCCESS_RESPONSE;
     }

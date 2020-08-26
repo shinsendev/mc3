@@ -20,16 +20,13 @@ class CsvExportStrategy extends AbstractExportStrategy
     public function export(Filesystem $filesystem, EntityManagerInterface $em, string $projectDir, \DateTime $createdAt, string $format):string
     {
         // set vars
-        $createdAt = $createdAt->format('Y-m-d_His');
-        $filename = $createdAt . '_export.'.$format;
-        $dataDir =  $projectDir . '/data/';
-        $completeFilename = $dataDir.$createdAt.'/'.$filename;
+        $params = $this->getParams($createdAt, $projectDir, $format);
 
         // create folder and file
-        $this->createFile($filesystem, $dataDir, $createdAt, $filename);
+        $this->createFile($filesystem, $params['dataDir'], $params['createdAtFolder'], $params['filename']);
 
         // add header
-        $filesystem->appendToFile($completeFilename, $this->createHeader()."\n");
+        $filesystem->appendToFile($params['completeFilename'], $this->createHeader()."\n");
 
         // get data and prepare normalizer
         $numbers = $em->getRepository(Number::class)->findAll();
@@ -43,7 +40,7 @@ class CsvExportStrategy extends AbstractExportStrategy
             $exportDTO = ExportCsvHydrator::hydrate($exportDTO, ['number'  => $number], $em);
             $line = $serializer->normalize($exportDTO);
             $stringLine = implode(";", $line);
-            $filesystem->appendToFile($completeFilename, $stringLine."\n");
+            $filesystem->appendToFile($params['completeFilename'], $stringLine."\n");
         }
 
         return parent::SUCCESS_RESPONSE;

@@ -56,8 +56,9 @@ class ExportCreateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $response = ExportHandler::handle($this->filesystem, $this->em, $this->kernel->getProjectDir(), $input);
-        $io->success($response);
+        $output->writeln('Export just starts.');
+        ExportHandler::handle($this->filesystem, $this->em, $this->kernel->getProjectDir(), $input, $output);
+        $io->success('Export operations have been done successfully!');
 
         return 0;
     }

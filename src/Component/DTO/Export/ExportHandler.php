@@ -8,27 +8,26 @@ use App\Component\Error\Mc3Error;
 use App\Component\Exporter\ExportFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 class ExportHandler
 {
     const AUTHORIZED_FORMAT = ['csv', 'json'];
 
-    public static function handle(Filesystem $filesystem, EntityManagerInterface $em, string $projectDir, InputInterface $input)
+    public static function handle(Filesystem $filesystem, EntityManagerInterface $em, string $projectDir, InputInterface $input, OutputInterface $output):void
     {
         if ($format = $input->getArgument('format')) {
             if (!in_array($format, self::AUTHORIZED_FORMAT)) {
                 throw new Mc3Error('Format '.$format.' is not authorized for export.');
             }
-            return self::export($filesystem, $em, $projectDir, $format);
+            $output->writeln(self::export($filesystem, $em, $projectDir, $format));
         }
         // if there is no argument we export for all authorized format
         else {
-            $rsl = '';
             foreach (self::AUTHORIZED_FORMAT as $format) {
-                $rsl .= self::export($filesystem, $em, $projectDir, $format);
+                $output->writeln(self::export($filesystem, $em, $projectDir, $format));
             }
-            return $rsl;
         }
     }
 
