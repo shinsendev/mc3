@@ -12,6 +12,8 @@ use App\Component\Model\ModelConstants;
 use App\Entity\Number;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
@@ -42,6 +44,9 @@ class CsvExportStrategy extends AbstractExportStrategy
             $stringLine = implode(";", $line);
             $filesystem->appendToFile($params['completeFilename'], $stringLine."\n");
         }
+
+        // upload the file to the S3 server
+        parent::upload($params['completeFilename'], $format);
 
         return parent::SUCCESS_RESPONSE;
     }

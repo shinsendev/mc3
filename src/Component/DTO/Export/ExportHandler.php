@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Process\Process;
 
 class ExportHandler
 {
@@ -34,6 +35,7 @@ class ExportHandler
     public static function export(Filesystem $filesystem, EntityManagerInterface $em, string $projectDir, string $format):string
     {
         $csvExport = ExportFactory::create($filesystem, $em, $projectDir, $format, new \DateTime());
+
         return strtoupper($format).': '.$csvExport->execute();
     }
 }
