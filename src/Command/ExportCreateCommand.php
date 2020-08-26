@@ -2,14 +2,12 @@
 
 namespace App\Command;
 
-use App\Component\Exporter\Export;
-use App\Component\Exporter\ExportFactory;
+use App\Component\DTO\Export\ExportHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
@@ -58,17 +56,10 @@ class ExportCreateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $this->export('csv');
-        $this->export('json');
-
+        ExportHandler::handle($this->filesystem, $this->em, $this->kernel->getProjectDir(), $input);
         $io->success('Export command has successfully generated csv and json files.');
 
         return 0;
     }
 
-    protected function export(string $format)
-    {
-        $csvExport = ExportFactory::create($this->filesystem, $this->em, $this->kernel->getProjectDir(), $format, new \DateTime());
-        $csvExport->execute();
-    }
 }
