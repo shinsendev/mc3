@@ -55,6 +55,9 @@ class JsonExportStrategy extends AbstractExportStrategy
 
         $filesystem->appendToFile($params['completeFilename'], ']');
 
+        // upload file on S3 server
+        parent::upload($params['completeFilename'], $format);
+
         return parent::SUCCESS_RESPONSE;
     }
 

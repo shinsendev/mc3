@@ -7,6 +7,8 @@ namespace App\Component\Exporter\Strategy;
 
 
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 abstract class AbstractExportStrategy implements ExportStrategyInterface
 {
@@ -32,5 +34,15 @@ abstract class AbstractExportStrategy implements ExportStrategyInterface
         $filesystem->mkdir($dataDir);
         $filesystem->mkdir($dataDir.$datetime.'/');
         $filesystem->touch($dataDir.$datetime.'/'.$filename);
+    }
+
+    function upload(string $completeFilename, string $format):void
+    {
+        $process = Process::fromShellCommandline('aws s3 cp '.$completeFilename.' s3://mc3-website/data/last_export.'.$format);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
     }
 }

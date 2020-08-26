@@ -25,4 +25,5 @@
 .env.test
 bin/.phpunit
 bin/.phpunit.xml
+/data/*
 ###< custom ###
