@@ -37,6 +37,8 @@ class ModelConstants
 
     const EXPORT_CSV_DTO ='csvExportDTO';
 
+    const ELASTIC_NUMBER_DTO = 'ElasticNumberDTO';
+
     const COMPARISON_STATS = 'comparisonStats';
 
     const ELEMENT_NESTED_DTO_MODEL = 'elementNestedDTOModel';

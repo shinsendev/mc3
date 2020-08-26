@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace App\Component\Elastic\Indexation;
 
+use App\Component\Hydrator\Strategy\ElasticNumberHydrator;
 use App\Component\Hydrator\Strategy\NumberPayloadHydrator;
 use App\Component\Model\ModelConstants;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,6 +20,6 @@ class NumberIndexation
 {
     public static function index(EntityManagerInterface $em, Serializer $serializer, $client, OutputInterface $output)
     {
-        GenericIndexation::index($em, $serializer, $client, $output, ModelConstants::NUMBER_MODEL, NumberPayloadHydrator::class, ModelConstants::NUMBER_PAYLOAD_MODEL);
+        GenericIndexation::index($em, $serializer, $client, $output, ModelConstants::NUMBER_MODEL, ElasticNumberHydrator::class, ModelConstants::ELASTIC_NUMBER_DTO);
     }
 }

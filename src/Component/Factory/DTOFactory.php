@@ -7,6 +7,7 @@ namespace App\Component\Factory;
 
 
 use App\Component\DTO\Definition\DTOInterface;
+use App\Component\DTO\Elastic\ElasticIndexationDTO;
 use App\Component\DTO\Export\CsvExportDTO;
 use App\Component\DTO\Nested\AttributeNestedDTO;
 use App\Component\DTO\Nested\AttributeNestedDTOinCategory;
@@ -62,6 +63,8 @@ class DTOFactory
             ModelConstants::PERSON_COWORKER => new CoworkerNestedDTO(),
 
             ModelConstants::EXPORT_CSV_DTO => new CsvExportDTO(),
+
+            ModelConstants::ELASTIC_NUMBER_DTO => new ElasticIndexationDTO(),
 
             ModelConstants::HOME_PAYLOAD_MODEL => new HomePayloadDTO(),
 
