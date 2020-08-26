@@ -56,8 +56,8 @@ class ExportCreateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        ExportHandler::handle($this->filesystem, $this->em, $this->kernel->getProjectDir(), $input);
-        $io->success('Export command has successfully generated csv and json files.');
+        $response = ExportHandler::handle($this->filesystem, $this->em, $this->kernel->getProjectDir(), $input);
+        $io->success($response);
 
         return 0;
     }

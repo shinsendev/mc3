@@ -27,9 +27,9 @@ class Export implements ExportInterface
         $this->createdAt = $createdAt;
     }
 
-    public function execute():void
+    public function execute():string
     {
-        $this->getStrategy()->export($this->filesystem, $this->em, $this->projectDir, $this->createdAt, $this->format);
+        return $this->getStrategy()->export($this->filesystem, $this->em, $this->projectDir, $this->createdAt, $this->format);
     }
 
     private function getStrategy():AbstractExportStrategy

@@ -2,26 +2,62 @@
 
 declare(strict_types=1);
 
-
 namespace App\Component\Exporter\Strategy;
 
-
+use App\Component\Factory\DTOFactory;
+use App\Component\Hydrator\Strategy\NumberPayloadHydrator;
+use App\Component\Model\ModelConstants;
+use App\Entity\Number;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
+/**
+ * Class JsonExportStrategy
+ * @package App\Component\Exporter\Strategy
+ */
 class JsonExportStrategy extends AbstractExportStrategy
 {
     function export(Filesystem $filesystem, EntityManagerInterface $em, string $projectDir, \DateTime $createdAt, string $format):string
     {
-//        $createdAt = $createdAt->format('Y-m-d_His');
-//        $filename = $createdAt . '_export.'.$format;
-//        $dataDir =  $projectDir . '/data/';
-//        $completeFilename = $dataDir.$createdAt.'/'.$filename;
-//
-//        // create folder and file
-//        $this->createFile($filesystem, $dataDir, $createdAt, $filename);
+        $createdAt = $createdAt->format('Y-m-d_His');
+        $filename = $createdAt . '_export.'.$format;
+        $dataDir =  $projectDir . '/data/';
+        $completeFilename = $dataDir.$createdAt.'/'.$filename;
 
-        // TODO: Implement import() method.
+        // create folder and file
+        $this->createFile($filesystem, $dataDir, $createdAt, $filename);
+
+        // get data and prepare normalizer
+        $numbers = $em->getRepository(Number::class)->findAll();
+
+        $encoders = [new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer()];
+        $serializer = new Serializer($normalizers, $encoders);
+
+        $filesystem->appendToFile($completeFilename, '[');
+
+        // by numbers, for all items
+        $i = 0;
+        $length = count($numbers);
+        foreach ($numbers as $number) {
+            $exportDTO = DTOFactory::create(ModelConstants::NUMBER_PAYLOAD_MODEL);
+            $exportDTO = NumberPayloadHydrator::hydrate($exportDTO, ['number' => $number], $em);
+            $exportDTO = $serializer->serialize($exportDTO, 'json');
+
+            if ($i === $length - 1) {
+                $filesystem->appendToFile($completeFilename, $exportDTO);
+            }
+            else {
+                $filesystem->appendToFile($completeFilename, $exportDTO. ',');
+            }
+            $i++;
+        }
+
+        $filesystem->appendToFile($completeFilename, ']');
+
         return parent::SUCCESS_RESPONSE;
     }
 

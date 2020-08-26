@@ -49,7 +49,7 @@ class CsvExportStrategy extends AbstractExportStrategy
         return parent::SUCCESS_RESPONSE;
     }
 
-    private function createHeader()
+    private function createHeader():string
     {
         // add header
         $reflect = new \ReflectionClass(CsvExportDTO::class);
@@ -70,11 +70,6 @@ class CsvExportStrategy extends AbstractExportStrategy
         }
 
         return $header;
-
-    }
-
-    private function write()
-    {
 
     }
 

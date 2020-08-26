@@ -20,19 +20,21 @@ class ExportHandler
             if (!in_array($format, self::AUTHORIZED_FORMAT)) {
                 throw new Mc3Error('Format '.$format.' is not authorized for export.');
             }
-            self::export($filesystem, $em, $projectDir, $format);
+            return self::export($filesystem, $em, $projectDir, $format);
         }
         // if there is no argument we export for all authorized format
         else {
+            $rsl = '';
             foreach (self::AUTHORIZED_FORMAT as $format) {
-                self::export($filesystem, $em, $projectDir, $format);
+                $rsl .= self::export($filesystem, $em, $projectDir, $format);
             }
+            return $rsl;
         }
     }
 
-    public static function export(Filesystem $filesystem, EntityManagerInterface $em, string $projectDir, string $format)
+    public static function export(Filesystem $filesystem, EntityManagerInterface $em, string $projectDir, string $format):string
     {
         $csvExport = ExportFactory::create($filesystem, $em, $projectDir, $format, new \DateTime());
-        $csvExport->execute();
+        return strtoupper($format).': '.$csvExport->execute();
     }
 }
