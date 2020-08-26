@@ -38,7 +38,7 @@ abstract class AbstractExportStrategy implements ExportStrategyInterface
 
     function upload(string $completeFilename, string $format):void
     {
-        $process = Process::fromShellCommandline('aws s3 cp '.$completeFilename.' s3://mc3-website/data/last_export.'.$format);
+        $process = Process::fromShellCommandline('aws s3 cp '.$completeFilename.' s3://mc3-website/data/last_export.'.$format. '--acl public-read');
         $process->run();
 
         if (!$process->isSuccessful()) {
