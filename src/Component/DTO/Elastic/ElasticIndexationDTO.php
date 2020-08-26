@@ -14,10 +14,12 @@ class ElasticIndexationDTO extends AbstractNumberDTO
     private ElasticFilmNestedDTO $filmObject;
 
     // song
-    private ElasticSongNestedDTO $songObject;
+    /**
+     * @var ElasticSongNestedDTO[]
+     */
+    private array $songsObject;
 
     // number
-    // average shot length
     private ?string $releasedYearInDate = null;
 
     /**
@@ -37,19 +39,19 @@ class ElasticIndexationDTO extends AbstractNumberDTO
     }
 
     /**
-     * @return ElasticSongNestedDTO
+     * @return ElasticSongNestedDTO[]
      */
-    public function getSongObject(): ElasticSongNestedDTO
+    public function getSongsObject(): array
     {
-        return $this->songObject;
+        return $this->songsObject;
     }
 
     /**
-     * @param ElasticSongNestedDTO $songObject
+     * @param ElasticSongNestedDTO[] $songsObject
      */
-    public function setSongObject(ElasticSongNestedDTO $songObject): void
+    public function setSongsObject(array $songsObject): void
     {
-        $this->songObject = $songObject;
+        $this->songsObject = $songsObject;
     }
 
     /**
