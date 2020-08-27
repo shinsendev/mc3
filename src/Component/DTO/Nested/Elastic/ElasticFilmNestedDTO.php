@@ -12,7 +12,7 @@ class ElasticFilmNestedDTO extends AbstractUniqueDTO
     private ?int $releasedYear = null;
     private ?string $sample = null;
     private ?string $adaptation = null;
-    private array $filmCensorships = [];
+    private array $censorships = [];
     private array $legion = [];
     private array $pca = [];
     private array $states = [];
@@ -73,17 +73,17 @@ class ElasticFilmNestedDTO extends AbstractUniqueDTO
     /**
      * @return array
      */
-    public function getFilmCensorships(): array
+    public function getCensorships(): array
     {
-        return $this->filmCensorships;
+        return $this->censorships;
     }
 
     /**
-     * @param array $filmCensorships
+     * @param array $censorships
      */
-    public function setFilmCensorships(array $filmCensorships): void
+    public function setCensorships(array $censorships): void
     {
-        $this->filmCensorships = $filmCensorships;
+        $this->censorships = $censorships;
     }
 
     /**

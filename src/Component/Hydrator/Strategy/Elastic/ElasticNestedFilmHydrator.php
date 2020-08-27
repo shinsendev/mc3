@@ -11,10 +11,13 @@ use App\Component\Hydrator\Description\HydratorDTOInterface;
 use App\Component\Hydrator\Strategy\NestedPersonPayloadHydrator;
 use App\Component\Model\ModelConstants;
 use App\Entity\Film;
-use App\Entity\Number;
 use App\Entity\Work;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * Class ElasticNestedFilmHydrator
+ * @package App\Component\Hydrator\Strategy\Elastic
+ */
 class ElasticNestedFilmHydrator implements HydratorDTOInterface
 {
     /**
@@ -32,24 +35,22 @@ class ElasticNestedFilmHydrator implements HydratorDTOInterface
         $dto->setSample($film->getSample());
 
         if ($directors = $em->getRepository(Work::class)->findPersonByTargetAndProfession('film', $film->getUuid(),'director')) {
-            $dto->setDirectors(self::setPeople($directors, $em));
+            $dto->setDirectors(self::getPeople($directors, $em));
         }
 
-        // set attributes
-        
-//    $dto->setAdaptation($film->getAdaptation()); // string
-//    private array $filmCensorships = [];
-//    private array $legion = [];
-//    private array $pca = [];
-//    private array $states = [];
-//    private array $studios = [];
-
-        // TODO: Implement hydrate() method.
+        // set attributes$
+        $attributes = $film->getAttributes();
+        $dto->setAdaptation(self::getAttributeByCategoryCode($attributes, 'adaptation'));
+        $dto->setCensorships(self::getAttributesByCategoryCode($attributes, 'censorships'));
+        $dto->setLegion(self::getAttributesByCategoryCode($attributes, 'legion'));
+        $dto->setPca(self::getAttributesByCategoryCode($attributes, 'pca'));
+        $dto->setStates(self::getAttributesByCategoryCode($attributes, 'states'));
+        $dto->setStudios(self::getStudios($film->getStudios()));
 
         return $dto;
     }
 
-    public static function setPeople($people, EntityManagerInterface $em)
+    public static function getPeople($people, EntityManagerInterface $em)
     {
         $peopleList = [];
         foreach ($people as $person) {
@@ -60,4 +61,38 @@ class ElasticNestedFilmHydrator implements HydratorDTOInterface
         return $peopleList;
     }
 
+    public static function getAttributesByCategoryCode($attributes, $needle)
+    {
+        $attributesList = [];
+        foreach ($attributes as $attribute) {
+            if ($attribute->getCategory()->getCode() === $needle) {
+                $attributesList[] = $attribute->getTitle();
+            }
+        }
+
+        return $attributesList;
+    }
+
+    public static function getAttributeByCategoryCode($attributes, $needle)
+    {
+        $attributesString = null;
+        foreach ($attributes as $attribute) {
+            if ($attribute->getCategory()->getCode() === $needle) {
+                $attributesString = $attribute->getTitle();
+            }
+        }
+
+        return $attributesString;
+    }
+
+    public static function getStudios($studios)
+    {
+        $studiosList = [];
+        foreach ($studios as $studio) {
+            $studioList[] = $studio->getName();
+        }
+
+        return $studiosList;
+    }
+    
 }
