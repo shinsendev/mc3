@@ -7,9 +7,11 @@ namespace App\Component\Hydrator\Strategy\Elastic;
 use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Definition\NumberPayloadInterface;
 use App\Component\DTO\Elastic\ElasticIndexationDTO;
+use App\Component\DTO\Nested\Elastic\ElasticSongNestedDTO;
 use App\Component\Factory\DTOFactory;
 use App\Component\Hydrator\Description\HydratorDTOInterface;
 use App\Component\Hydrator\Strategy\Hierarchy\AbstractNumberHydrator;
+use App\Component\Hydrator\Strategy\NestedSongHydrator;
 use App\Component\Model\ModelConstants;
 use App\Entity\Film;
 use App\Entity\Number;
@@ -62,7 +64,12 @@ class ElasticNumberHydrator extends AbstractNumberHydrator implements HydratorDT
 
     private static function setSongsObject(Collection $songs, ElasticIndexationDTO $dto, EntityManagerInterface $em):NumberPayloadInterface
     {
-        $songDTO = DTOFactory::create(ModelConstants::ELASTIC_NESTED_SONG_DTO);
+        $songsDTO = [];
+        foreach($songs as $song) {
+            $songDTO = DTOFactory::create(ModelConstants::ELASTIC_NESTED_SONG_DTO);
+            $songsDTO[] = ElasticNestedSongHydrator::hydrate($songDTO, ['song' => $song], $em);
+        }
+        $dto->setSongs($songsDTO);
 
         return $dto;
     }
