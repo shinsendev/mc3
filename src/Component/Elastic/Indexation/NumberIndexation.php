@@ -5,8 +5,7 @@ declare(strict_types=1);
 
 namespace App\Component\Elastic\Indexation;
 
-use App\Component\Hydrator\Strategy\ElasticNumberHydrator;
-use App\Component\Hydrator\Strategy\NumberPayloadHydrator;
+use App\Component\Hydrator\Strategy\Elastic\ElasticNumberHydrator;
 use App\Component\Model\ModelConstants;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Output\OutputInterface;

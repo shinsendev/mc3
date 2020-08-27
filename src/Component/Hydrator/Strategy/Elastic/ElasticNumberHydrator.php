@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Component\Hydrator\Strategy;
+namespace App\Component\Hydrator\Strategy\Elastic;
 
 use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Definition\NumberPayloadInterface;
@@ -41,10 +41,10 @@ class ElasticNumberHydrator extends AbstractNumberHydrator implements HydratorDT
         }
 
         // add film
-        $dto = self::setFilmObject($number->getFilm(), $dto);
+        $dto = self::setFilmObject($number->getFilm(), $dto, $em);
 
         // add songs
-        $dto = self::setSongsObject($number->getSongs(), $dto);
+        $dto = self::setSongsObject($number->getSongs(), $dto, $em);
 
         // unset some useless var
         // todo add operations
@@ -52,14 +52,15 @@ class ElasticNumberHydrator extends AbstractNumberHydrator implements HydratorDT
         return $dto;
     }
 
-    private static function setFilmObject(Film $film, NumberPayloadInterface $dto):NumberPayloadInterface
+    private static function setFilmObject(Film $film, ElasticIndexationDTO $dto, EntityManagerInterface $em):NumberPayloadInterface
     {
         $filmDTO = DTOFactory::create(ModelConstants::ELASTIC_NESTED_FILM_DTO);
-
+        $filmDTO = ElasticNestedFilmHydrator::hydrate($filmDTO, ["film"=>$film], $em);
+        $dto->setFilmObject($filmDTO);
         return $dto;
     }
 
-    private static function setSongsObject(Collection $songs, NumberPayloadInterface $dto):NumberPayloadInterface
+    private static function setSongsObject(Collection $songs, ElasticIndexationDTO $dto, EntityManagerInterface $em):NumberPayloadInterface
     {
         $songDTO = DTOFactory::create(ModelConstants::ELASTIC_NESTED_SONG_DTO);
 

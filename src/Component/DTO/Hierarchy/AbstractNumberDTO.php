@@ -20,5 +20,4 @@ abstract class AbstractNumberDTO extends AbstractUniqueDTO implements NumberPayl
         NumberIntertextualityTrait;
 
     CONST NO_VALUE = 'blank';
-
 }
