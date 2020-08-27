@@ -36,44 +36,18 @@ class Indexer
         $serializer = self::configureSerializer();
 
         // reset and create index
-        $indexParams['index']  = ModelConstants::FILM_MODEL;
-        $client->indices()->delete($indexParams);
-        $client->indices()->create($indexParams);
-        FilmIndexation::index($em, $serializer, $client, $output);
-
-        // reset and create index
         $indexParams['index']  = ModelConstants::NUMBER_MODEL;
         $client->indices()->delete($indexParams);
         $client->indices()->create($indexParams);
         NumberIndexation::index($em, $serializer, $client, $output);
 
-        // reset and create index
-        $indexParams['index']  = ModelConstants::PERSON_MODEL;
-        $client->indices()->delete($indexParams);
-        $client->indices()->create($indexParams);
-        PersonIndexation::index($em, $serializer, $client, $output);
-
-        // reset and create index
-        $indexParams['index']  = ModelConstants::SONG_MODEL;
-        $client->indices()->delete($indexParams);
-        $client->indices()->create($indexParams);
-        SongIndexation::index($em, $serializer, $client, $output);
     }
 
     public static function createIndexes()
     {
         $client = ElasticConnection::connect();
 
-        $indexParams['index']  = ModelConstants::FILM_MODEL;
-        $client->indices()->create($indexParams);
-
         $indexParams['index']  = ModelConstants::NUMBER_MODEL;
-        $client->indices()->create($indexParams);
-
-        $indexParams['index']  = ModelConstants::PERSON_MODEL;
-        $client->indices()->create($indexParams);
-
-        $indexParams['index']  = ModelConstants::SONG_MODEL;
         $client->indices()->create($indexParams);
     }
 
@@ -81,16 +55,7 @@ class Indexer
     {
         $client = ElasticConnection::connect();
 
-        $indexParams['index']  = ModelConstants::FILM_MODEL;
-        $client->indices()->delete($indexParams);
-
         $indexParams['index']  = ModelConstants::NUMBER_MODEL;
-        $client->indices()->delete($indexParams);
-
-        $indexParams['index']  = ModelConstants::PERSON_MODEL;
-        $client->indices()->delete($indexParams);
-
-        $indexParams['index']  = ModelConstants::SONG_MODEL;
         $client->indices()->delete($indexParams);
     }
 

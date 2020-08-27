@@ -15,8 +15,8 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class PersonNestedDTO extends AbstractUniqueDTO
 {
-    /** @var string */
-    private $fullname = '';
+    private string $fullname = '';
+    private string $gender = '';
 
     /**
      * @return string
@@ -34,5 +34,20 @@ class PersonNestedDTO extends AbstractUniqueDTO
         $this->fullname = $fullname;
     }
 
+    /**
+     * @return string
+     */
+    public function getGender(): string
+    {
+        return $this->gender;
+    }
+
+    /**
+     * @param string $gender
+     */
+    public function setGender(string $gender): void
+    {
+        $this->gender = $gender;
+    }
 
 }

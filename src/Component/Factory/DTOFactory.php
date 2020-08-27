@@ -7,10 +7,13 @@ namespace App\Component\Factory;
 
 
 use App\Component\DTO\Definition\DTOInterface;
+use App\Component\DTO\Elastic\ElasticIndexationDTO;
 use App\Component\DTO\Export\CsvExportDTO;
 use App\Component\DTO\Nested\AttributeNestedDTO;
 use App\Component\DTO\Nested\AttributeNestedDTOinCategory;
 use App\Component\DTO\Nested\CoworkerNestedDTO;
+use App\Component\DTO\Nested\Elastic\ElasticFilmNestedDTO;
+use App\Component\DTO\Nested\Elastic\ElasticSongNestedDTO;
 use App\Component\DTO\Nested\ElementNestedDTO;
 use App\Component\DTO\Nested\FilmNestedDTO;
 use App\Component\DTO\Nested\FilmNestedInPersonDTO;
@@ -62,6 +65,10 @@ class DTOFactory
             ModelConstants::PERSON_COWORKER => new CoworkerNestedDTO(),
 
             ModelConstants::EXPORT_CSV_DTO => new CsvExportDTO(),
+
+            ModelConstants::ELASTIC_NUMBER_DTO => new ElasticIndexationDTO(),
+            ModelConstants::ELASTIC_NESTED_FILM_DTO => new ElasticFilmNestedDTO(),
+            ModelConstants::ELASTIC_NESTED_SONG_DTO => new ElasticSongNestedDTO(),
 
             ModelConstants::HOME_PAYLOAD_MODEL => new HomePayloadDTO(),
 
