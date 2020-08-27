@@ -10,30 +10,29 @@ use App\Component\DTO\Nested\Elastic\ElasticSongNestedDTO;
 class ElasticIndexationDTO extends AbstractNumberDTO
 {
     // films
-    // todo : create a Nested Film for elastic
-    private ElasticFilmNestedDTO $filmObject;
+    private ?ElasticFilmNestedDTO $filmObject = null;
 
     // song
     /**
      * @var ElasticSongNestedDTO[]
      */
-    private array $songsObject;
+    private array $songsObject = [];
 
     // number
     private ?string $releasedYearInDate = null;
 
     /**
-     * @return ElasticFilmNestedDTO
+     * @return ElasticFilmNestedDTO|null
      */
-    public function getFilmObject(): ElasticFilmNestedDTO
+    public function getFilmObject(): ?ElasticFilmNestedDTO
     {
         return $this->filmObject;
     }
 
     /**
-     * @param ElasticFilmNestedDTO $filmObject
+     * @param ElasticFilmNestedDTO|null $filmObject
      */
-    public function setFilmObject(ElasticFilmNestedDTO $filmObject): void
+    public function setFilmObject(?ElasticFilmNestedDTO $filmObject): void
     {
         $this->filmObject = $filmObject;
     }

@@ -40,6 +40,9 @@ class NestedPersonPayloadHydrator implements HydratorDTOInterface
         }
 
         $dto->setUuid($person->getUuid());
+        if ($person->getGender()) {
+            $dto->setGender($person->getGender());
+        }
 
         return $dto;
     }

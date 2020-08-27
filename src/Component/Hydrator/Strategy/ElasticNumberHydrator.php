@@ -7,21 +7,14 @@ namespace App\Component\Hydrator\Strategy;
 use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Definition\NumberPayloadInterface;
 use App\Component\DTO\Elastic\ElasticIndexationDTO;
-use App\Component\DTO\Payload\NumberPayloadDTO;
 use App\Component\Factory\DTOFactory;
-use App\Component\Hydrator\Attribute\AttributeManyToManyHydrator;
-use App\Component\Hydrator\Attribute\AttributeManyToOneHydrator;
 use App\Component\Hydrator\Description\HydratorDTOInterface;
-use App\Component\Hydrator\Helper\AttributeHelper;
-use App\Component\Hydrator\Helper\PersonHelper;
-use App\Component\Hydrator\HydratorBasics;
 use App\Component\Hydrator\Strategy\Hierarchy\AbstractNumberHydrator;
 use App\Component\Model\ModelConstants;
 use App\Entity\Film;
 use App\Entity\Number;
-use App\Entity\Person;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\PersistentCollection;
 
 class ElasticNumberHydrator extends AbstractNumberHydrator implements HydratorDTOInterface
 {
@@ -61,11 +54,15 @@ class ElasticNumberHydrator extends AbstractNumberHydrator implements HydratorDT
 
     private static function setFilmObject(Film $film, NumberPayloadInterface $dto):NumberPayloadInterface
     {
+        $filmDTO = DTOFactory::create(ModelConstants::ELASTIC_NESTED_FILM_DTO);
+
         return $dto;
     }
 
-    private static function setSongsObject(array $songs, NumberPayloadInterface $dto):NumberPayloadInterface
+    private static function setSongsObject(Collection $songs, NumberPayloadInterface $dto):NumberPayloadInterface
     {
+        $songDTO = DTOFactory::create(ModelConstants::ELASTIC_NESTED_SONG_DTO);
+
         return $dto;
     }
 
