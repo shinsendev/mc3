@@ -19,23 +19,13 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class AttributePayloadDTO extends AbstractUniqueDTO
 {
-    /** @var string */
-    private $title;
-
-    /** @var string */
-    private $categoryTitle;
-
-    /** @var string */
-    private $categoryUuid;
-
-    /** @var string */
-    private $description = '';
-
-    /** @var string */
-    private $example= '';
-
-    /** @var string */
-    private $model = ''; // model type of the element linked to this attribute : number, song, film
+    private string $title;
+    private string $categoryTitle;
+    private string $categoryUuid;
+    private string $description = '';
+    private string $example= '';
+    private string $model = ''; // model type of the element linked to this attribute : number, song, film
+    private array $countByYears = [];
 
     /**
      * @return string
@@ -131,6 +121,22 @@ class AttributePayloadDTO extends AbstractUniqueDTO
     public function setModel(string $model): void
     {
         $this->model = $model;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCountByYears(): array
+    {
+        return $this->countByYears;
+    }
+
+    /**
+     * @param array $countByYears
+     */
+    public function setCountByYears(array $countByYears): void
+    {
+        $this->countByYears = $countByYears;
     }
 
 }
