@@ -9,7 +9,6 @@ namespace App\Component\Stats;
 use App\Component\Error\Mc3Error;
 use App\Component\Stats\Strategy\AttributeStatsStrategy;
 use App\Component\Stats\Strategy\PersonStatsStrategy;
-use App\Entity\Person;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
