@@ -66,7 +66,7 @@ class StatsHandler
         return $message;
     }
 
-    private static function addOptions(array $options, string $model, EntityInterface $element):array
+    public static function addOptions(array $options, string $model, EntityInterface $element):array
     {
         if ($model === ModelConstants::ATTRIBUTE_MODEL) {
             $options['model'] = $element->getCategory()->getModel();
