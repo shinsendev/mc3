@@ -24,8 +24,12 @@ class PersonStatsStrategy implements StatsStrategyInteface
     /**
      * @param string $personUuid
      * @param EntityManagerInterface $em
+     * @param array $options
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      */
-    public static function saveStats(string $personUuid, EntityManagerInterface $em):void
+    public static function saveStats(string $personUuid, EntityManagerInterface $em, $options = []):void
     {
         // if stat already exists, it's an update, if not we create a new stat
         if (!$stat = $em->getRepository(Statistic::class)->findOneBy(['targetUuid' => $personUuid, 'key' => self::PERSON_STATS_KEY])) {

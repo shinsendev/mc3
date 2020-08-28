@@ -5,6 +5,8 @@ namespace App\Component\Stats;
 
 
 use App\Component\Error\Mc3Error;
+use App\Component\Model\ModelConstants;
+use App\Entity\Definition\EntityInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -22,6 +24,8 @@ class StatsHandler
         EntityManagerInterface $em
     ):string
     {
+        $options = [];
+
         // if there is a uuid, we only update ONE attribute stats
         if ($elementUuid = $input->getArgument('elementUuid')) {
             if (!$element = $repository->findOneByUuid($elementUuid)) {
@@ -32,7 +36,8 @@ class StatsHandler
                 'Generate Stats for '.$model.' '.$elementUuid,
             ]);
 
-            StatsGenerator::generate($strategy, $elementUuid, $em);
+            $options = self::addOptions($options, $model, $element);
+            StatsGenerator::generate($strategy, $elementUuid, $em, $options);
 
             $message = 'Stats for '.$model.' '.$element->getUuid()." has been updated.";
         }
@@ -49,7 +54,8 @@ class StatsHandler
             ]);
 
             foreach ($elements as $element) {
-                StatsGenerator::generate($strategy, $element->getUuid(), $em);
+                $options = self::addOptions($options, $model, $element);
+                StatsGenerator::generate($strategy, $element->getUuid(), $em, $options);
                 $progressBar->advance();
             }
 
@@ -58,5 +64,14 @@ class StatsHandler
         }
 
         return $message;
+    }
+
+    private static function addOptions(array $options, string $model, EntityInterface $element):array
+    {
+        if ($model === ModelConstants::ATTRIBUTE_MODEL) {
+            $options['model'] = $element->getCategory()->getModel();
+        }
+
+        return $options;
     }
 }

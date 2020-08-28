@@ -24,19 +24,21 @@ class StatsGenerator
      * @param string $strategy
      * @param string $itemUuid
      * @param EntityManagerInterface $em
+     * @param array $options
      */
     public static function generate(
         string $strategy,
         string $itemUuid,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        array $options = []
     ):void
     {
         if ($strategy === self::PERSON_STRATEGY) {
-            PersonStatsStrategy::saveStats($itemUuid, $em);
+            PersonStatsStrategy::saveStats($itemUuid, $em, $options);
         }
 
         else if($strategy === self::ATTRIBUTE_STRATEGY) {
-            AttributeStatsStrategy::saveStats($itemUuid, $em);
+            AttributeStatsStrategy::saveStats($itemUuid, $em, $options);
         }
 
         else {

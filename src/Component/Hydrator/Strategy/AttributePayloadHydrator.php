@@ -68,7 +68,7 @@ class AttributePayloadHydrator implements HydratorDTOInterface
         if ($attributeStats = $statsRepository->findOneByTargetUuid($attribute->getUuid())) {
             $value = $attributeStats->getValue();
 
-            if (isset($value['averageShotLength'])) {
+            if (isset($value['countByYears'])) {
                 $dto->setCountByYears($value['countByYears']);
             }
 
