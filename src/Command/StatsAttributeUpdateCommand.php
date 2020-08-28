@@ -31,7 +31,7 @@ class StatsAttributeUpdateCommand extends Command
     protected function configure()
     {
         $this
-            ->addArgument('attributeUuid', InputArgument::OPTIONAL, 'Optional : the uuid of the attribute you will update')
+            ->addArgument('elementUuid', InputArgument::OPTIONAL, 'Optional : the uuid of the attribute you will update')
         ;
     }
 
