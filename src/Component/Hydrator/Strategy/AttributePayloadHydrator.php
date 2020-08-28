@@ -5,18 +5,10 @@ declare(strict_types=1);
 namespace App\Component\Hydrator\Strategy;
 
 use App\Component\DTO\Definition\DTOInterface;
-use App\Component\DTO\Nested\ElementNestedDTO;
 use App\Component\DTO\Payload\AttributePayloadDTO;
 use App\Component\DTO\Payload\CategoryPayloadDTO;
-use App\Component\DTO\Payload\PersonPayloadDTO;
-use App\Component\Factory\DTOFactory;
 use App\Component\Hydrator\Description\HydratorDTOInterface;
-use App\Component\Model\ModelConstants;
 use App\Entity\Attribute;
-use App\Entity\Film;
-use App\Entity\Number;
-use App\Entity\Person;
-use App\Entity\Song;
 use App\Entity\Statistic;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -66,6 +58,7 @@ class AttributePayloadHydrator implements HydratorDTOInterface
         // add stats
         $dto = self::setStats($attribute, $dto, $em);
 
+        return $dto;
     }
 
     public static function setStats(Attribute $attribute, AttributePayloadDTO $dto, EntityManagerInterface  $em):AttributePayloadDTO
@@ -76,17 +69,9 @@ class AttributePayloadHydrator implements HydratorDTOInterface
             $value = $attributeStats->getValue();
 
             if (isset($value['averageShotLength'])) {
-                $dto->setCountByYear($value['countByYear']);
+                $dto->setCountByYears($value['countByYears']);
             }
 
-//            if (isset($value['films'])) {
-//                $dto->setPresenceInFilms($value['films']);
-//            }
-//
-//            //todo: add comparisons
-//            if (isset($value['comparisons'])) {
-//                $dto->setComparisons($value['comparisons']);
-//            }
         }
 
         return $dto;

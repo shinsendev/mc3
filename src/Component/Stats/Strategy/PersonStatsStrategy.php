@@ -7,6 +7,7 @@ namespace App\Component\Stats\Strategy;
 use App\Component\DTO\Stats\Person\PersonStatsDTO;
 use App\Component\Model\ModelConstants;
 use App\Component\Stats\Computation\ComputePersonStats;
+use App\Component\Stats\Definition\StatsStrategyInteface;
 use App\Entity\Statistic;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -16,7 +17,7 @@ use Symfony\Component\Serializer\Serializer;
  * Class PersonStatsStrategy
  * @package App\Component\Stats\Strategy
  */
-class PersonStatsStrategy
+class PersonStatsStrategy implements StatsStrategyInteface
 {
     const PERSON_STATS_KEY = 'personStats';
 
@@ -50,8 +51,10 @@ class PersonStatsStrategy
      * @param string $personUuid
      * @param EntityManagerInterface $em
      * @return PersonStatsDTO
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    private static function computeStats(string $personUuid, EntityManagerInterface $em):PersonStatsDTO
+    public static function computeStats(string $personUuid, EntityManagerInterface $em):PersonStatsDTO
     {
         $personStats = new PersonStatsDTO();
         $personStats->setAverageShotLength(ComputePersonStats::computeAverageShotLength($personUuid, $em));
