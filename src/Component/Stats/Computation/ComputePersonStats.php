@@ -174,6 +174,7 @@ class ComputePersonStats
     {
         $result = 'default';
 
+        //todo : export in a dedicated class or in configuration with a class
         $adaptater = [
             ["raw" => "structure", "computed"=> "structure"],
             ["raw" => "performance_thesaurus", "computed"=> "performance"],

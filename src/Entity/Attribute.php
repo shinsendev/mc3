@@ -62,6 +62,11 @@ class Attribute extends AbstractTarget
      */
     private PersistentCollection $numbers;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Statistic::class)
+     */
+    private $stats;
+
     public function getTitle(): ?string
     {
         return $this->title;
@@ -168,6 +173,18 @@ class Attribute extends AbstractTarget
     public function setNumbers(PersistentCollection $numbers): void
     {
         $this->numbers = $numbers;
+    }
+
+    public function getStats(): ?Statistic
+    {
+        return $this->stats;
+    }
+
+    public function setStats(?Statistic $stats): self
+    {
+        $this->stats = $stats;
+
+        return $this;
     }
 
 }

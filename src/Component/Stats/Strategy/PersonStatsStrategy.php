@@ -7,6 +7,7 @@ namespace App\Component\Stats\Strategy;
 use App\Component\DTO\Stats\Person\PersonStatsDTO;
 use App\Component\Model\ModelConstants;
 use App\Component\Stats\Computation\ComputePersonStats;
+use App\Component\Stats\Definition\StatsStrategyInteface;
 use App\Entity\Statistic;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -16,15 +17,19 @@ use Symfony\Component\Serializer\Serializer;
  * Class PersonStatsStrategy
  * @package App\Component\Stats\Strategy
  */
-class PersonStatsStrategy
+class PersonStatsStrategy implements StatsStrategyInteface
 {
     const PERSON_STATS_KEY = 'personStats';
 
     /**
      * @param string $personUuid
      * @param EntityManagerInterface $em
+     * @param array $options
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      */
-    public static function saveStats(string $personUuid, EntityManagerInterface $em):void
+    public static function saveStats(string $personUuid, EntityManagerInterface $em, $options = []):void
     {
         // if stat already exists, it's an update, if not we create a new stat
         if (!$stat = $em->getRepository(Statistic::class)->findOneBy(['targetUuid' => $personUuid, 'key' => self::PERSON_STATS_KEY])) {
@@ -50,8 +55,10 @@ class PersonStatsStrategy
      * @param string $personUuid
      * @param EntityManagerInterface $em
      * @return PersonStatsDTO
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    private static function computeStats(string $personUuid, EntityManagerInterface $em):PersonStatsDTO
+    public static function computeStats(string $personUuid, EntityManagerInterface $em):PersonStatsDTO
     {
         $personStats = new PersonStatsDTO();
         $personStats->setAverageShotLength(ComputePersonStats::computeAverageShotLength($personUuid, $em));

@@ -99,7 +99,6 @@ class PersonPayloadHydrator implements HydratorDTOInterface
                 $dto->setPresenceInFilms($value['films']);
             }
 
-            //todo: add comparisons
             if (isset($value['comparisons'])) {
                 $dto->setComparisons($value['comparisons']);
             }

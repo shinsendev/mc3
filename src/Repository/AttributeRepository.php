@@ -23,7 +23,7 @@ class AttributeRepository extends ServiceEntityRepository
      * @param string $code
      * @return int|mixed|string
      */
-    public function findAttributesByCategory(string $code)
+    public function findAttributesByCategory(string $code):array
     {
         $query = $this->getEntityManager()->createQuery('
             SELECT a FROM App\Entity\Attribute a JOIN a.category c WHERE c.code = :code 
@@ -46,7 +46,7 @@ class AttributeRepository extends ServiceEntityRepository
      * @param string $type
      * @return int|mixed|string
      */
-    public function computeAveragesForType(string $type)
+    public function computeAveragesForType(string $type):array
     {
         $query = $this->getEntityManager()->createQuery('
             SELECT a.title, a.uuid, c.uuid as categoryUuid, c.code as categoryCode, COUNT(a.uuid) as average FROM App\Entity\Number n 
@@ -66,7 +66,7 @@ class AttributeRepository extends ServiceEntityRepository
      * @param string $personUuid
      * @return int|mixed|string
      */
-    public function computeAveragesForTypeAndPerson(string $type, string $personUuid)
+    public function computeAveragesForTypeAndPerson(string $type, string $personUuid):array
     {
         $query = $this->getEntityManager()->createQuery('
             SELECT a.title, a.uuid, c.uuid as categoryUuid, c.code as categoryCode, COUNT(a.uuid) as current FROM App\Entity\Number n 
@@ -82,6 +82,69 @@ class AttributeRepository extends ServiceEntityRepository
             'code' => $type,
             'personUuid' => $personUuid,
             'performer' => 'performer'
+        ]);
+
+        return $query->getResult();
+    }
+
+    /**
+     * @param string $attributeUuid
+     * @return int|mixed|string
+     */
+    public function countAttributeFilmsByYears(string $attributeUuid):array
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT f.releasedYear, COUNT(f.releasedYear) as count FROM App\Entity\Film f 
+                JOIN f.attributes a
+                WHERE a.uuid = :attributeUuid
+                GROUP BY f.releasedYear
+        ');
+
+        $query->setParameters([
+            'attributeUuid' => $attributeUuid,
+        ]);
+
+        return $query->getResult();
+    }
+
+    /**
+     * @param string $attributeUuid
+     * @return array
+     */
+    public function countAttributeNumbersByYears(string $attributeUuid):array
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT f.releasedYear, COUNT(f.releasedYear) as count FROM App\Entity\Film f
+                JOIN f.numbers n
+                JOIN n.attributes a
+                WHERE a.uuid = :attributeUuid
+                GROUP BY f.releasedYear
+        ');
+
+        $query->setParameters([
+            'attributeUuid' => $attributeUuid,
+        ]);
+
+        return $query->getResult();
+    }
+
+    /**
+     * @param string $attributeUuid
+     * @return array
+     */
+    public function countAttributeSongsByYears(string $attributeUuid):array
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT f.releasedYear, COUNT(f.releasedYear) as count FROM App\Entity\Film f
+                JOIN f.numbers n
+                JOIN n.songs s
+                JOIN s.attributes a
+                WHERE a.uuid = :attributeUuid
+                GROUP BY f.releasedYear
+        ');
+
+        $query->setParameters([
+            'attributeUuid' => $attributeUuid,
         ]);
 
         return $query->getResult();
