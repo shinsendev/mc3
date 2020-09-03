@@ -128,59 +128,14 @@
     "ezimuel/ringphp": {
         "version": "1.1.2"
     },
-    "fig/http-message-util": {
-        "version": "1.1.4"
-    },
     "fig/link-util": {
         "version": "1.1.1"
-    },
-    "firebase/php-jwt": {
-        "version": "v5.2.0"
     },
     "fzaninotto/faker": {
         "version": "v1.9.1"
     },
     "gedmo/doctrine-extensions": {
         "version": "v2.4.41"
-    },
-    "giggsey/libphonenumber-for-php": {
-        "version": "8.12.7.1"
-    },
-    "giggsey/locale": {
-        "version": "1.9"
-    },
-    "google/auth": {
-        "version": "v1.11.1"
-    },
-    "google/cloud-core": {
-        "version": "v1.38.0"
-    },
-    "google/cloud-storage": {
-        "version": "v1.22.0"
-    },
-    "google/crc32": {
-        "version": "v0.1.0"
-    },
-    "guzzlehttp/guzzle": {
-        "version": "7.0.1"
-    },
-    "guzzlehttp/promises": {
-        "version": "v1.3.1"
-    },
-    "guzzlehttp/psr7": {
-        "version": "1.6.1"
-    },
-    "kreait/clock": {
-        "version": "1.0.1"
-    },
-    "kreait/firebase-bundle": {
-        "version": "2.2.0"
-    },
-    "kreait/firebase-php": {
-        "version": "5.7.0"
-    },
-    "kreait/firebase-tokens": {
-        "version": "1.10.0"
     },
     "laminas/laminas-code": {
         "version": "3.4.1"
@@ -191,17 +146,11 @@
     "laminas/laminas-zendframework-bridge": {
         "version": "1.0.4"
     },
-    "lcobucci/jwt": {
-        "version": "3.3.2"
-    },
     "liip/test-fixtures-bundle": {
         "version": "1.9.1"
     },
     "monolog/monolog": {
         "version": "2.1.0"
-    },
-    "mtdowling/jmespath.php": {
-        "version": "2.6.0"
     },
     "nelmio/cors-bundle": {
         "version": "1.5",
@@ -245,9 +194,6 @@
     "psr/event-dispatcher": {
         "version": "1.0.0"
     },
-    "psr/http-client": {
-        "version": "1.0.1"
-    },
     "psr/http-message": {
         "version": "1.0.1"
     },
@@ -260,20 +206,11 @@
     "psr/simple-cache": {
         "version": "1.0.1"
     },
-    "ralouphie/getallheaders": {
-        "version": "3.0.3"
-    },
     "ramsey/uuid": {
         "version": "3.9.3"
     },
     "react/promise": {
         "version": "v2.8.0"
-    },
-    "riverline/multipart-parser": {
-        "version": "2.0.8"
-    },
-    "rize/uri-template": {
-        "version": "0.3.2"
     },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
@@ -411,9 +348,6 @@
         "version": "v5.0.10"
     },
     "symfony/http-kernel": {
-        "version": "v5.0.10"
-    },
-    "symfony/inflector": {
         "version": "v5.0.10"
     },
     "symfony/intl": {
