@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use App\Component\DTO\Payload\NumberPayloadDTO;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
  * @ApiResource(
@@ -15,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     collectionOperations={"get"},
  *     itemOperations={"get"}
  * )
+ * @ApiFilter(OrderFilter::class, properties={"film.releasedYear":"ASC", "title":"ASC"}, arguments={"orderParameterName"="order"})
  *
  * @ORM\Entity(repositoryClass="App\Repository\NumberRepository")
  */
