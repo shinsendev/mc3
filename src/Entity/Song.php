@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Component\DTO\Payload\SongPayloadDTO;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
  * @ApiResource(
@@ -15,6 +17,9 @@ use App\Component\DTO\Payload\SongPayloadDTO;
  *     collectionOperations={"get"},
  *     itemOperations={"get"}
  * )
+ *
+ * @ApiFilter(OrderFilter::class, properties={"title"="ASC", "year"}, arguments={"orderParameterName"="order"})
+ *
  * @ORM\Entity(repositoryClass="App\Repository\SongRepository")
  */
 class Song extends AbstractTarget
