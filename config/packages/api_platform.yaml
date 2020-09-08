@@ -18,6 +18,11 @@ api_platform:
         json: ['application/merge-patch+json']
     swagger:
         versions: [3]
+        # added by Gaétan
+        api_keys:
+            apiKey:
+                name: Authorization
+                type: header
 
     collection:
         pagination:

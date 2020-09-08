@@ -27,3 +27,7 @@ bin/.phpunit
 bin/.phpunit.xml
 /data/*
 ###< custom ###
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
