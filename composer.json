@@ -8,6 +8,7 @@
         "ext-json": "*",
         "algolia/algoliasearch-client-php": "^2.7",
         "api-platform/api-pack": "^1.2",
+        "easycorp/easyadmin-bundle": "^3.1",
         "elasticsearch/elasticsearch": "^7.8",
         "gedmo/doctrine-extensions": "^2.4",
         "liip/test-fixtures-bundle": "^1.9",
