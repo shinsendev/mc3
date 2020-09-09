@@ -27,22 +27,16 @@ security:
 #            anonymous: lazy
 
             # authentication added by Gaétan
-            pattern: ^/login
-            stateless: true
+#            pattern: ^/login
+#            stateless: true
             anonymous: true
             json_login:
-                check_path: app_login
+#                check_path: app_login
+                check_path: /authentication_token
                 username_path: email
                 password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
-
-#            json_login:
-#                check_path: app_login
-#                username_path: email
-#                password_path: password
-#                success_handler: lexik_jwt_authentication.handler.authentication_success
-#                failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
             logout:
                 path: app_logout
@@ -57,7 +51,7 @@ security:
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/authentication_token, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-         - { path: ^/api, roles: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/api/docs, roles: IS_AUTHENTICATED_ANONYMOUSLY } # Allows accessing the Swagger UI
+         - { path: ^/api, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 
         # - { path: ^/profile, roles: ROLE_USER }
