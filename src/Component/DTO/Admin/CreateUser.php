@@ -25,7 +25,7 @@ class CreateUser
         $user->setEmail(User::ADMIN_EMAIL);
         $user->setUsername(User::ADMIN_NAME);
         $user->setPassword($encoder->encodePassword($user, $_ENV['ADMIN_PASSWORD']));
-        $user->setActive(true);
+        $user->setRoles(['ROLE_ADMIN']);
 
         $em->persist($user);
         $em->flush();
