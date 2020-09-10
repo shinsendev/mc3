@@ -14,11 +14,11 @@ use Doctrine\ORM\Mapping as ORM;
  *     input=ImportInputDTO::class,
  *     output=ImportOutputDTO::class,
  *     collectionOperations={
- *      "get" = { "security" = "is_granted('ACTIVATED_USER')" },
- *      "post" = { "security" = "is_granted('ACTIVATED_USER')" }
+ *      "get" = { "security" = "is_granted('ROLE_ADMIN')" },
+ *      "post" = { "security" = "is_granted('ROLE_ADMIN')" }
  *     },
  *     itemOperations={
- *      "get" = { "security" = "is_granted('ACTIVATED_USER')" }
+ *      "get" = { "security" = "is_granted('ROLE_ADMIN')" }
  *     }
  * )
  * @ORM\Entity(repositoryClass=ImportRepository::class)
