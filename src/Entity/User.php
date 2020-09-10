@@ -52,11 +52,6 @@ class User extends AbstractTarget implements UserInterface
     private string $username;
 
     /**
-     * @ORM\Column(type="boolean", options={"default" : false})
-     */
-    private bool $active = false;
-
-    /**
      * A visual identifier that represents this user.
      *
      * @see UserInterface
@@ -138,18 +133,6 @@ class User extends AbstractTarget implements UserInterface
     public function setUsername($username): void
     {
         $this->username = $username;
-    }
-
-    public function getActive(): ?bool
-    {
-        return $this->active;
-    }
-
-    public function setActive(bool $active): self
-    {
-        $this->active = $active;
-
-        return $this;
     }
 
 }
