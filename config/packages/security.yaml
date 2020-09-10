@@ -38,8 +38,6 @@ security:
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
-            logout:
-                path: app_logout
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
@@ -49,9 +47,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-         - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/authentication_token, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-         - { path: ^/api/docs, roles: IS_AUTHENTICATED_ANONYMOUSLY } # Allows accessing the Swagger UI
          - { path: ^/api, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-
-        # - { path: ^/profile, roles: ROLE_USER }
+#         - { path: ^/api/docs, roles: IS_AUTHENTICATED_ANONYMOUSLY } # Allows accessing the Swagger UI
+#         - { path: ^/api/import, roles: ROLE_ADMIN }
+#         - { path: ^/api/indexation, roles: ROLE_ADMIN }

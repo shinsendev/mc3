@@ -14,11 +14,11 @@ use App\Component\DTO\Import\IndexationOutputDTO;
  *     input=IndexationInputDTO::class,
  *     output=IndexationOutputDTO::class,
  *     collectionOperations={
- *      "get" = { "security" = "is_granted('ACTIVATED_USER')" },
- *      "post" = { "security" = "is_granted('ACTIVATED_USER')" }
+ *      "get" = { "security" = "is_granted('ROLE_ADMIN')" },
+ *      "post" = { "security" = "is_granted('ROLE_ADMIN')" }
  *     },
  *     itemOperations={
- *      "get" = { "security" = "is_granted('ACTIVATED_USER')" }
+ *      "get" = { "security" = "is_granted('ROLE_ADMIN')" }
  *     }
  * )
  * @ORM\Entity(repositoryClass=IndexationRepository::class)
