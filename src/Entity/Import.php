@@ -11,15 +11,18 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource(
- *     input=ImportInputDTO::class,
- *     output=ImportOutputDTO::class,
- *     collectionOperations={
- *      "get" = { "security" = "is_granted('ROLE_ADMIN')" },
- *      "post" = { "security" = "is_granted('ROLE_ADMIN')" }
- *     },
- *     itemOperations={
- *      "get" = { "security" = "is_granted('ROLE_ADMIN')" }
- *     }
+ *    input=ImportInputDTO::class,
+ *    output=ImportOutputDTO::class,
+ *    collectionOperations={
+ *     "get" = { "security" = "is_granted('ROLE_ADMIN')" },
+ *     "post" = { "security" = "is_granted('ROLE_ADMIN')" }
+ *    },
+ *    itemOperations={
+ *     "get" = { "security" = "is_granted('ROLE_ADMIN')" }
+ *    },
+ *    attributes={
+ *      "order"={"createdAt": "DESC"}
+ *    }
  * )
  * @ORM\Entity(repositoryClass=ImportRepository::class)
  */
