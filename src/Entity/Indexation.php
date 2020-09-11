@@ -19,7 +19,10 @@ use App\Component\DTO\Import\IndexationOutputDTO;
  *     },
  *     itemOperations={
  *      "get" = { "security" = "is_granted('ROLE_ADMIN')" }
- *     }
+ *     },
+ *    attributes={
+ *      "order"={"createdAt": "DESC"}
+ *    }
  * )
  * @ORM\Entity(repositoryClass=IndexationRepository::class)
  */
