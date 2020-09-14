@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Component\Importer;
-
 
 use App\Component\Error\Mc3Error;
 use App\Entity\Heredity\AbstractImportable;
