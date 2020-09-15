@@ -13,10 +13,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use App\Component\Elastic\Indexation\Indexer as ElasticIndexer;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class AllIndexationSteps
 {
-    public static function execute(EntityManagerInterface $em, LoggerInterface $logger, OutputInterface $output)
+    public static function execute(EntityManagerInterface $em, LoggerInterface $logger, OutputInterface $output, HttpClientInterface $client)
     {
         // compute stats
         $logger->info('Stats for people starts to be computed.');
@@ -47,7 +48,11 @@ class AllIndexationSteps
         $em->getRepository(Indexation::class)->updateLastIndexation($em->getRepository(Indexation::class)->getLastIndexation());
         $logger->info('Indexation is complete.');
 
-        // rebuild website
+        // rebuild website with a netlify hook https://docs.netlify.com/configure-builds/build-hooks/
+        $client->request(
+            'POST',
+            'https://api.netlify.com/build_hooks/'.$_SERVER['NETLIFY_KEY']
+        );
     }
 
     private static function index(EntityManagerInterface $em, LoggerInterface $logger, OutputInterface $output) {
