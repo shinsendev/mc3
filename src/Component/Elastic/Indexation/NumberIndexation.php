@@ -17,8 +17,15 @@ use Symfony\Component\Serializer\Serializer;
  */
 class NumberIndexation
 {
-    public static function index(EntityManagerInterface $em, Serializer $serializer, $client, OutputInterface $output)
+    public static function index(EntityManagerInterface $em, Serializer $serializer, $client, OutputInterface $output):void
     {
-        GenericIndexation::index($em, $serializer, $client, $output, ModelConstants::NUMBER_MODEL, ElasticNumberHydrator::class, ModelConstants::ELASTIC_NUMBER_DTO);
+        GenericIndexation::index(
+            $em,
+            $serializer,
+            $client,
+            $output,
+            ModelConstants::NUMBER_MODEL,
+            ElasticNumberHydrator::class,
+            ModelConstants::ELASTIC_NUMBER_DTO);
     }
 }

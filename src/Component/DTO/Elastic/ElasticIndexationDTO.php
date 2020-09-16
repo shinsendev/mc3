@@ -9,6 +9,8 @@ use App\Component\DTO\Nested\Elastic\ElasticSongNestedDTO;
 
 class ElasticIndexationDTO extends AbstractNumberDTO
 {
+    private ?int $length = null;
+
     // films
     private ?ElasticFilmNestedDTO $filmObject = null;
 
@@ -67,6 +69,22 @@ class ElasticIndexationDTO extends AbstractNumberDTO
     public function setReleasedYearInDate(?string $releasedYearInDate): void
     {
         $this->releasedYearInDate = $releasedYearInDate;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getLength(): ?int
+    {
+        return $this->length;
+    }
+
+    /**
+     * @param int|null $length
+     */
+    public function setLength(?int $length): void
+    {
+        $this->length = $length;
     }
 
 }

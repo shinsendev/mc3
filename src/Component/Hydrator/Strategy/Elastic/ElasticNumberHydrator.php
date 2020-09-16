@@ -13,6 +13,7 @@ use App\Component\Hydrator\Description\HydratorDTOInterface;
 use App\Component\Hydrator\Strategy\Hierarchy\AbstractNumberHydrator;
 use App\Component\Hydrator\Strategy\NestedSongHydrator;
 use App\Component\Model\ModelConstants;
+use App\Entity\Attribute;
 use App\Entity\Film;
 use App\Entity\Number;
 use Doctrine\Common\Collections\Collection;
@@ -39,8 +40,13 @@ class ElasticNumberHydrator extends AbstractNumberHydrator implements HydratorDT
         if ($number->getEndTc()>0 && $number->getShots() > 0) {
             $length = $number->getEndTc() - $number->getBeginTc();
             $average = (int)round($length / $number->getShots());
+            $dto->setLength($length);
             $dto->setAverageShotLength($average);
         }
+
+        // add outlines
+//        dd($number->getAttributes());
+
 
         // add film
         $dto = self::setFilmObject($number->getFilm(), $dto, $em);
@@ -49,17 +55,76 @@ class ElasticNumberHydrator extends AbstractNumberHydrator implements HydratorDT
         $dto = self::setSongsObject($number->getSongs(), $dto, $em);
 
         // unset some useless var
-        // todo add operations
-
         return $dto;
     }
 
-    private static function setFilmObject(Film $film, ElasticIndexationDTO $dto, EntityManagerInterface $em):NumberPayloadInterface
+    private static function setNumberAttributes(array $attributes, ElasticIndexationDTO $dto, $em):ElasticIndexationDTO
+    {
+        return $dto;
+    }
+
+    private static function setFilmObject(Film $film, ElasticIndexationDTO $dto, EntityManagerInterface $em):ElasticIndexationDTO
     {
         $filmDTO = DTOFactory::create(ModelConstants::ELASTIC_NESTED_FILM_DTO);
         $filmDTO = ElasticNestedFilmHydrator::hydrate($filmDTO, ["film"=>$film], $em);
+
+        if ($studios = $film->getStudios()) {
+            foreach ($studios as $studio) {
+                $studiosArray[] = ['name' => $studio->getName()];
+                $studio = null;
+            }
+            $filmDTO->setStudios($studiosArray);
+            $studiosArray = null;
+        }
+
+        if ($attributes = $film->getAttributes()) {
+            $censorships = [];
+            $pca = [];
+            $states = [];
+
+            foreach ($attributes as $attribute) {
+                $censorships = self::addAttributeByType($attribute,Attribute::CENSORSHIP_CATEGORY_CODE, $censorships);
+                $pca = self::addAttributeByType($attribute,Attribute::PCA_CATEGORY_CODE, $pca);
+                $states = self::addAttributeByType($attribute,Attribute::STATES_CATEGORY_CODE, $states);
+
+                // many to one
+                if ($attribute->getCategory()->getCode() === Attribute::ADAPTATION_CATEGORY_CODE) {
+                    $filmDTO->setAdaptation($attribute->getTitle());
+                }
+
+                $attribute = null;
+            }
+
+            // set all many to many attributes
+            if (isset ($censorships)) {
+                $filmDTO->setCensorships($censorships);
+                $censorships = null;
+            }
+
+            if (isset ($pca)) {
+                $filmDTO->setPca($pca);
+                $pca = null;
+            }
+
+            if (isset ($states)) {
+                $filmDTO->setStates($states);
+                $states = null;
+            }
+
+            $filmDTO->setLength($film->getLength());
+        }
+
         $dto->setFilmObject($filmDTO);
         return $dto;
+    }
+
+    private static function addAttributeByType(Attribute $attribute, string $categoryCode, array $attributes):array
+    {
+        if ($attribute->getCategory()->getCode() === Attribute::CENSORSHIP_CATEGORY_CODE) {
+            $attributes[] = ["title" => $attribute->getTitle()];
+        }
+
+        return $attributes;
     }
 
     private static function setSongsObject(Collection $songs, ElasticIndexationDTO $dto, EntityManagerInterface $em):NumberPayloadInterface

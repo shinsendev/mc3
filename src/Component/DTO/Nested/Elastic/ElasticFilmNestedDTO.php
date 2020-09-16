@@ -17,6 +17,7 @@ class ElasticFilmNestedDTO extends AbstractUniqueDTO
     private array $pca = [];
     private array $states = [];
     private array $studios = [];
+    private ?int $length = null;
     /**
      * @var PersonNestedDTO[]
      */
@@ -164,6 +165,22 @@ class ElasticFilmNestedDTO extends AbstractUniqueDTO
     public function setDirectors(array $directors): void
     {
         $this->directors = $directors;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getLength(): ?int
+    {
+        return $this->length;
+    }
+
+    /**
+     * @param int|null $length
+     */
+    public function setLength(?int $length): void
+    {
+        $this->length = $length;
     }
 
 }
