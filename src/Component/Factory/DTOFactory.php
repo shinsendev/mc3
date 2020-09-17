@@ -2,21 +2,19 @@
 
 declare(strict_types=1);
 
-
 namespace App\Component\Factory;
 
-
 use App\Component\DTO\Definition\DTOInterface;
-use App\Component\DTO\Elastic\ElasticIndexationDTO;
-use App\Component\DTO\Export\CsvExportDTO;
+use App\Component\DTO\Export\CSV\CsvExportDTO;
+use App\Component\DTO\Export\Elastic\ElasticIndexationDTO;
+use App\Component\DTO\Export\JSON\JsonExportDTO;
+use App\Component\DTO\Export\Nested\ExportableFilmNestedDTO;
+use App\Component\DTO\Export\Nested\ExportableSongNestedDTO;
 use App\Component\DTO\Nested\AttributeNestedDTO;
 use App\Component\DTO\Nested\AttributeNestedDTOinCategory;
 use App\Component\DTO\Nested\CoworkerNestedDTO;
-use App\Component\DTO\Nested\Elastic\ElasticFilmNestedDTO;
-use App\Component\DTO\Nested\Elastic\ElasticSongNestedDTO;
 use App\Component\DTO\Nested\ElementNestedDTO;
 use App\Component\DTO\Nested\FilmNestedDTO;
-use App\Component\DTO\Nested\FilmNestedInPersonDTO;
 use App\Component\DTO\Nested\NumberNestedInFilmDTO;
 use App\Component\DTO\Nested\NumberNestedInPersonDTO;
 use App\Component\DTO\Nested\PersonNestedDTO;
@@ -30,7 +28,6 @@ use App\Component\DTO\Payload\NumberPayloadDTO;
 use App\Component\DTO\Payload\PersonPayloadDTO;
 use App\Component\DTO\Payload\SongPayloadDTO;
 use App\Component\DTO\Stats\Person\NestedComparisonsDTO;
-use App\Component\Exporter\Strategy\CsvExportStrategy;
 use App\Component\Model\ModelConstants;
 
 class DTOFactory
@@ -65,10 +62,11 @@ class DTOFactory
             ModelConstants::PERSON_COWORKER => new CoworkerNestedDTO(),
 
             ModelConstants::EXPORT_CSV_DTO => new CsvExportDTO(),
+            ModelConstants::EXPORT_JSON_DTO => new JsonExportDTO(),
 
             ModelConstants::ELASTIC_NUMBER_DTO => new ElasticIndexationDTO(),
-            ModelConstants::ELASTIC_NESTED_FILM_DTO => new ElasticFilmNestedDTO(),
-            ModelConstants::ELASTIC_NESTED_SONG_DTO => new ElasticSongNestedDTO(),
+            ModelConstants::EXPORTABLE_NESTED_FILM_DTO => new ExportableFilmNestedDTO(),
+            ModelConstants::EXPORTABLE_NESTED_SONG_DTO => new ExportableSongNestedDTO(),
 
             ModelConstants::HOME_PAYLOAD_MODEL => new HomePayloadDTO(),
 

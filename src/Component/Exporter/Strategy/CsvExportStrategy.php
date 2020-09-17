@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Component\Exporter\Strategy;
 
-use App\Component\DTO\Export\CsvExportDTO;
+use App\Component\DTO\Export\CSV\CsvExportDTO;
 use App\Component\Error\Mc3Error;
 use App\Component\Factory\DTOFactory;
 use App\Component\Hydrator\Strategy\Export\ExportCsvHydrator;

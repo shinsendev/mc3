@@ -8,7 +8,7 @@ namespace App\Component\Hydrator\Strategy\Hierarchy;
 
 use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Definition\NumberPayloadInterface;
-use App\Component\DTO\Elastic\ElasticIndexationDTO;
+use App\Component\DTO\Export\Elastic\ElasticIndexationDTO;
 use App\Component\Factory\DTOFactory;
 use App\Component\Hydrator\Attribute\AttributeManyToManyHydrator;
 use App\Component\Hydrator\Attribute\AttributeManyToOneHydrator;

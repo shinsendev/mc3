@@ -4,11 +4,8 @@
 namespace App\Component\Hydrator\Strategy\Export;
 
 use App\Component\DTO\Definition\DTOInterface;
-use App\Component\DTO\Export\CsvExportDTO;
+use App\Component\DTO\Export\CSV\CsvExportDTO;
 use App\Component\Hydrator\Strategy\HydratorStrategyInterface;
-use App\Component\Model\ModelConstants;
-use App\Entity\Film;
-use App\Entity\Person;
 use App\Entity\Work;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;

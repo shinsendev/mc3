@@ -25,6 +25,15 @@ class Category extends AbstractTarget
     CONST COMPLETENESS_TYPE = 'completeness_thesaurus';
     CONST SOURCE_TYPE = 'source_thesaurus';
     CONST DIEGETIC_TYPE = 'diegetic_thesaurus';
+    const CENSORSHIP_CODE = 'censorship';
+    const PCA_CODE= 'verdict';
+    const STATES_CODE = 'state';
+    const ADAPTATION_CODE = 'adaptation';
+    const BEGIN_CODE = 'begin_thesaurus';
+    const ENDING_CODE = 'ending_thesaurus';
+    const LEGION_CODE = 'legion';
+    const HARRISSON_CODE = 'harrison';
+    const BOARD_CODE = 'board';
 
     /**
      * @ORM\Column(type="string", length=510)
