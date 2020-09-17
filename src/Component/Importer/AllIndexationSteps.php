@@ -5,6 +5,7 @@ namespace App\Component\Importer;
 
 
 use App\Component\Algolia\Indexation\Indexer as AlgoliaIndexer;
+use App\Component\DTO\Export\ExportHandler;
 use App\Component\Stats\StatsGenerator;
 use App\Entity\Attribute;
 use App\Entity\Indexation;
@@ -13,11 +14,19 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use App\Component\Elastic\Indexation\Indexer as ElasticIndexer;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class AllIndexationSteps
 {
-    public static function execute(EntityManagerInterface $em, LoggerInterface $logger, OutputInterface $output, HttpClientInterface $client)
+    public static function execute(
+        EntityManagerInterface $em,
+        LoggerInterface $logger,
+        OutputInterface $output,
+        HttpClientInterface $client,
+        Filesystem $filesystem,
+        string $projectDir
+    )
     {
         // compute stats
         $logger->info('Stats for people starts to be computed.');
@@ -47,6 +56,11 @@ class AllIndexationSteps
         // update Indexation entity when process is finished
         $em->getRepository(Indexation::class)->updateLastIndexation($em->getRepository(Indexation::class)->getLastIndexation());
         $logger->info('Indexation is complete.');
+
+        // rebuild and upload files
+        foreach (ExportHandler::AUTHORIZED_FORMAT as $format) {
+            $output->writeln(ExportHandler::export($filesystem, $em, $projectDir, $format));
+        }
 
         // rebuild website with a netlify hook https://docs.netlify.com/configure-builds/build-hooks/
         $client->request(
