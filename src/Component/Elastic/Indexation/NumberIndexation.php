@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace App\Component\Elastic\Indexation;
 
-use App\Component\Hydrator\Strategy\Elastic\ElasticNumberHydrator;
+use App\Component\Hydrator\Strategy\Elastic\ElasticNumberHydratorAbstract;
 use App\Component\Model\ModelConstants;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,7 +25,7 @@ class NumberIndexation
             $client,
             $output,
             ModelConstants::NUMBER_MODEL,
-            ElasticNumberHydrator::class,
+            ElasticNumberHydratorAbstract::class,
             ModelConstants::ELASTIC_NUMBER_DTO);
     }
 }

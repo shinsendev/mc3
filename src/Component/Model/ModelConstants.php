@@ -36,10 +36,11 @@ class ModelConstants
     const PERSON_COWORKER='coworkerNestedDTO';
 
     const EXPORT_CSV_DTO ='csvExportDTO';
+    const EXPORT_JSON_DTO = 'jsonExportableDTO';
 
     const ELASTIC_NUMBER_DTO = 'ElasticNumberDTO';
-    const ELASTIC_NESTED_FILM_DTO = 'ElasticFilmNestedDTO';
-    const ELASTIC_NESTED_SONG_DTO = 'ElasticSongNestedDTO';
+    const EXPORTABLE_NESTED_FILM_DTO = 'ExportableFilmNestedDTO';
+    const EXPORTABLE_NESTED_SONG_DTO = 'ExportableSongNestedDTO';
 
     const COMPARISON_STATS = 'comparisonStats';
 

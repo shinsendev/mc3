@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Component\DTO\Export\Composition;
+namespace App\Component\DTO\Export\CSV;
 
 /**
  * Trait FilmCsvExportDTO

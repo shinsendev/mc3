@@ -1,12 +1,10 @@
 <?php
 
-
-namespace App\Component\DTO\Nested\Elastic;
-
+namespace App\Component\DTO\Export\Nested;
 
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
 
-class ElasticSongNestedDTO extends AbstractUniqueDTO
+class ExportableSongNestedDTO extends AbstractUniqueDTO
 {
     /** @var string */
     private $title;

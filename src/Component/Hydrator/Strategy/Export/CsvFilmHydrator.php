@@ -3,7 +3,7 @@
 namespace App\Component\Hydrator\Strategy\Export;
 
 use App\Component\DTO\Definition\DTOInterface;
-use App\Component\DTO\Export\CsvExportDTO;
+use App\Component\DTO\Export\CSV\CsvExportDTO;
 use App\Component\Hydrator\Strategy\HydratorStrategyInterface;
 use App\Component\Model\ModelConstants;
 use App\Entity\Film;

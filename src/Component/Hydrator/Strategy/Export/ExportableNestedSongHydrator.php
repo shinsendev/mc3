@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Component\Hydrator\Strategy\Elastic;
+namespace App\Component\Hydrator\Strategy\Export;
 
 
 use App\Component\DTO\Definition\DTOInterface;
@@ -16,7 +16,7 @@ use App\Entity\Song;
 use App\Entity\Work;
 use Doctrine\ORM\EntityManagerInterface;
 
-class ElasticNestedSongHydrator implements HydratorDTOInterface
+class ExportableNestedSongHydrator implements HydratorDTOInterface
 {
     public static function hydrate(DTOInterface $dto, array $data, EntityManagerInterface $em):DTOInterface
     {

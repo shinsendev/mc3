@@ -1,13 +1,13 @@
 <?php
 
 
-namespace App\Component\DTO\Nested\Elastic;
+namespace App\Component\DTO\Export\Nested;
 
 
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
 use App\Component\DTO\Nested\PersonNestedDTO;
 
-class ElasticFilmNestedDTO extends AbstractUniqueDTO
+class ExportableFilmNestedDTO extends AbstractUniqueDTO
 {
     private ?int $releasedYear = null;
     private ?string $sample = null;
@@ -18,6 +18,9 @@ class ElasticFilmNestedDTO extends AbstractUniqueDTO
     private array $states = [];
     private array $studios = [];
     private ?int $length = null;
+    private array $board = [];
+    private array $harrison = [];
+
     /**
      * @var PersonNestedDTO[]
      */
@@ -181,6 +184,38 @@ class ElasticFilmNestedDTO extends AbstractUniqueDTO
     public function setLength(?int $length): void
     {
         $this->length = $length;
+    }
+
+    /**
+     * @return array
+     */
+    public function getBoard(): array
+    {
+        return $this->board;
+    }
+
+    /**
+     * @param array $board
+     */
+    public function setBoard(array $board): void
+    {
+        $this->board = $board;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHarrison(): array
+    {
+        return $this->harrison;
+    }
+
+    /**
+     * @param array $harrison
+     */
+    public function setHarrison(array $harrison): void
+    {
+        $this->harrison = $harrison;
     }
 
 }

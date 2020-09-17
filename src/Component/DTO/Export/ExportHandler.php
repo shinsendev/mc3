@@ -3,14 +3,12 @@
 
 namespace App\Component\DTO\Export;
 
-
 use App\Component\Error\Mc3Error;
 use App\Component\Exporter\ExportFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Process\Process;
 
 class ExportHandler
 {

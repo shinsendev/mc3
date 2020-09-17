@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Component\Exporter\Strategy;
 
 use App\Component\Factory\DTOFactory;
-use App\Component\Hydrator\Strategy\NumberPayloadHydrator;
+use App\Component\Hydrator\Strategy\Export\ExportJsonHydrator;
 use App\Component\Model\ModelConstants;
 use App\Entity\Number;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,8 +40,8 @@ class JsonExportStrategy extends AbstractExportStrategy
         $i = 0;
         $length = count($numbers);
         foreach ($numbers as $number) {
-            $exportDTO = DTOFactory::create(ModelConstants::NUMBER_PAYLOAD_MODEL);
-            $exportDTO = NumberPayloadHydrator::hydrate($exportDTO, ['number' => $number], $em);
+            $exportDTO = DTOFactory::create(ModelConstants::EXPORT_JSON_DTO);
+            $exportDTO = ExportJsonHydrator::hydrate($exportDTO, ['number' => $number], $em);
             $exportDTO = $serializer->serialize($exportDTO, 'json');
 
             if ($i === $length - 1) {

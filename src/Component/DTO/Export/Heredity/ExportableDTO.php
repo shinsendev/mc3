@@ -1,22 +1,23 @@
 <?php
 
+namespace App\Component\DTO\Export\Heredity;
 
-namespace App\Component\DTO\Elastic;
-
+use App\Component\DTO\Definition\DTOInterface;
+use App\Component\DTO\Export\Nested\ExportableFilmNestedDTO;
+use App\Component\DTO\Export\Nested\ExportableSongNestedDTO;
 use App\Component\DTO\Hierarchy\AbstractNumberDTO;
-use App\Component\DTO\Nested\Elastic\ElasticFilmNestedDTO;
-use App\Component\DTO\Nested\Elastic\ElasticSongNestedDTO;
 
-class ElasticIndexationDTO extends AbstractNumberDTO
+
+abstract class ExportableDTO extends AbstractNumberDTO implements DTOInterface
 {
     private ?int $length = null;
 
     // films
-    private ?ElasticFilmNestedDTO $filmObject = null;
+    private ?ExportableFilmNestedDTO $filmObject = null;
 
     // song
     /**
-     * @var ElasticSongNestedDTO[]
+     * @var ExportableSongNestedDTO[]
      */
     private array $songsObject = [];
 
@@ -24,23 +25,23 @@ class ElasticIndexationDTO extends AbstractNumberDTO
     private ?string $releasedYearInDate = null;
 
     /**
-     * @return ElasticFilmNestedDTO|null
+     * @return ExportableFilmNestedDTO|null
      */
-    public function getFilmObject(): ?ElasticFilmNestedDTO
+    public function getFilmObject(): ?ExportableFilmNestedDTO
     {
         return $this->filmObject;
     }
 
     /**
-     * @param ElasticFilmNestedDTO|null $filmObject
+     * @param ExportableFilmNestedDTO|null $filmObject
      */
-    public function setFilmObject(?ElasticFilmNestedDTO $filmObject): void
+    public function setFilmObject(?ExportableFilmNestedDTO $filmObject): void
     {
         $this->filmObject = $filmObject;
     }
 
     /**
-     * @return ElasticSongNestedDTO[]
+     * @return ExportableSongNestedDTO[]
      */
     public function getSongsObject(): array
     {
@@ -48,7 +49,7 @@ class ElasticIndexationDTO extends AbstractNumberDTO
     }
 
     /**
-     * @param ElasticSongNestedDTO[] $songsObject
+     * @param ExportableSongNestedDTO[] $songsObject
      */
     public function setSongsObject(array $songsObject): void
     {
@@ -86,5 +87,4 @@ class ElasticIndexationDTO extends AbstractNumberDTO
     {
         $this->length = $length;
     }
-
 }
