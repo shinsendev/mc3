@@ -63,7 +63,7 @@ class GenericIndexation
                 $params['type']  = $type;
                 $params['id']    = $item->getUuid();
 
-//                $client->index($params);
+                $client->index($params);
                 $progressBar->advance();
 
                 // for liberating some memory

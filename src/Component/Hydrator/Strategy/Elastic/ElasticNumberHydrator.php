@@ -14,6 +14,7 @@ use App\Component\Hydrator\Strategy\Hierarchy\AbstractNumberHydrator;
 use App\Component\Hydrator\Strategy\NestedSongHydrator;
 use App\Component\Model\ModelConstants;
 use App\Entity\Attribute;
+use App\Entity\Category;
 use App\Entity\Film;
 use App\Entity\Number;
 use Doctrine\Common\Collections\Collection;
@@ -37,16 +38,12 @@ class ElasticNumberHydrator extends AbstractNumberHydrator implements HydratorDT
         $releasedYearInDate = $datetime->setDate($number->getFilm()->getReleasedYear(), 1, 1)->format('Y-m-d');
         $dto->setReleasedYearInDate($releasedYearInDate);
 
-        if ($number->getEndTc()>0 && $number->getShots() > 0) {
+        if ($number->getEndTc() > 0 && $number->getShots() > 0) {
             $length = $number->getEndTc() - $number->getBeginTc();
             $average = (int)round($length / $number->getShots());
             $dto->setLength($length);
             $dto->setAverageShotLength($average);
         }
-
-        // add outlines
-//        dd($number->getAttributes());
-
 
         // add film
         $dto = self::setFilmObject($number->getFilm(), $dto, $em);
@@ -54,12 +51,6 @@ class ElasticNumberHydrator extends AbstractNumberHydrator implements HydratorDT
         // add songs
         $dto = self::setSongsObject($number->getSongs(), $dto, $em);
 
-        // unset some useless var
-        return $dto;
-    }
-
-    private static function setNumberAttributes(array $attributes, ElasticIndexationDTO $dto, $em):ElasticIndexationDTO
-    {
         return $dto;
     }
 
@@ -73,7 +64,9 @@ class ElasticNumberHydrator extends AbstractNumberHydrator implements HydratorDT
                 $studiosArray[] = ['name' => $studio->getName()];
                 $studio = null;
             }
-            $filmDTO->setStudios($studiosArray);
+            if (isset($studiosArray)) {
+                $filmDTO->setStudios($studiosArray);
+            }
             $studiosArray = null;
         }
 
@@ -83,12 +76,12 @@ class ElasticNumberHydrator extends AbstractNumberHydrator implements HydratorDT
             $states = [];
 
             foreach ($attributes as $attribute) {
-                $censorships = self::addAttributeByType($attribute,Attribute::CENSORSHIP_CATEGORY_CODE, $censorships);
-                $pca = self::addAttributeByType($attribute,Attribute::PCA_CATEGORY_CODE, $pca);
-                $states = self::addAttributeByType($attribute,Attribute::STATES_CATEGORY_CODE, $states);
+                $censorships = self::addAttributeByType($attribute,Category::CENSORSHIP_CODE, $censorships);
+                $pca = self::addAttributeByType($attribute,Category::PCA_CODE, $pca);
+                $states = self::addAttributeByType($attribute,Category::STATES_CODE, $states);
 
                 // many to one
-                if ($attribute->getCategory()->getCode() === Attribute::ADAPTATION_CATEGORY_CODE) {
+                if ($attribute->getCategory()->getCode() === Category::ADAPTATION_CODE) {
                     $filmDTO->setAdaptation($attribute->getTitle());
                 }
 
@@ -96,17 +89,17 @@ class ElasticNumberHydrator extends AbstractNumberHydrator implements HydratorDT
             }
 
             // set all many to many attributes
-            if (isset ($censorships)) {
+            if ($censorships) {
                 $filmDTO->setCensorships($censorships);
                 $censorships = null;
             }
 
-            if (isset ($pca)) {
+            if ($pca) {
                 $filmDTO->setPca($pca);
                 $pca = null;
             }
 
-            if (isset ($states)) {
+            if ($states) {
                 $filmDTO->setStates($states);
                 $states = null;
             }
@@ -120,7 +113,7 @@ class ElasticNumberHydrator extends AbstractNumberHydrator implements HydratorDT
 
     private static function addAttributeByType(Attribute $attribute, string $categoryCode, array $attributes):array
     {
-        if ($attribute->getCategory()->getCode() === Attribute::CENSORSHIP_CATEGORY_CODE) {
+        if ($attribute->getCategory()->getCode() === $categoryCode) {
             $attributes[] = ["title" => $attribute->getTitle()];
         }
 

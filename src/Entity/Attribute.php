@@ -19,11 +19,6 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
  */
 class Attribute extends AbstractTarget
 {
-    const CENSORSHIP_CATEGORY_CODE = 'censorship';
-    const PCA_CATEGORY_CODE= 'pca';
-    const STATES_CATEGORY_CODE = 'states';
-    const ADAPTATION_CATEGORY_CODE = 'adaptation';
-
     /**
      * @ORM\Column(type="string", length=255)
      */
