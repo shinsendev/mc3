@@ -74,6 +74,11 @@ class Number extends AbstractTarget
      */
     private $dubbing;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $reference;
+
     public function __construct()
     {
         parent::__construct();
@@ -240,6 +245,18 @@ class Number extends AbstractTarget
     public function setDubbing(?string $dubbing): self
     {
         $this->dubbing = $dubbing;
+
+        return $this;
+    }
+
+    public function getReference(): ?int
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?int $reference): self
+    {
+        $this->reference = $reference;
 
         return $this;
     }
