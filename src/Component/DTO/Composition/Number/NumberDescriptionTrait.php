@@ -18,6 +18,7 @@ trait NumberDescriptionTrait
     protected int $endingTc = 0;
     protected int $shots = 0;
     protected int $averageShotLength = 0;
+    protected int $reference = 0;
 
     // attributes
     protected array $beginning = []; // AttributeNestedDTO
@@ -319,6 +320,22 @@ trait NumberDescriptionTrait
     public function setNoParticipationStars(array $noParticipationStars): void
     {
         $this->noParticipationStars = $noParticipationStars;
+    }
+
+    /**
+     * @return int
+     */
+    public function getReference(): int
+    {
+        return $this->reference;
+    }
+
+    /**
+     * @param int $reference
+     */
+    public function setReference(int $reference): void
+    {
+        $this->reference = $reference;
     }
 
 }
