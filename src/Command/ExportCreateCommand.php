@@ -12,6 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ExportCreateCommand extends Command
 {
@@ -21,6 +22,7 @@ class ExportCreateCommand extends Command
     private LoggerInterface $logger;
     private Filesystem $filesystem;
     private KernelInterface $kernel;
+    private SerializerInterface $serializer;
 
     /**
      * ExportCreateCommand constructor.
@@ -28,6 +30,7 @@ class ExportCreateCommand extends Command
      * @param LoggerInterface $logger
      * @param Filesystem $filesystem
      * @param KernelInterface $kernel
+     * @param SerializerInterface $serializer
      * @param null $name
      */
     public function __construct(
@@ -35,6 +38,7 @@ class ExportCreateCommand extends Command
         LoggerInterface $logger,
         Filesystem $filesystem,
         KernelInterface $kernel,
+        SerializerInterface $serializer,
         $name = null
     )
     {
@@ -43,6 +47,7 @@ class ExportCreateCommand extends Command
         $this->logger = $logger;
         $this->filesystem = $filesystem;
         $this->kernel = $kernel;
+        $this->serializer = $serializer;
     }
 
     protected function configure()
@@ -57,7 +62,7 @@ class ExportCreateCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $output->writeln('Export just starts.');
-        ExportHandler::handle($this->filesystem, $this->em, $this->kernel->getProjectDir(), $input, $output);
+        ExportHandler::handle($this->filesystem, $this->em, $this->kernel->getProjectDir(), $input, $output, $this->serializer);
         $io->success('Export operations have been done successfully!');
 
         return 0;

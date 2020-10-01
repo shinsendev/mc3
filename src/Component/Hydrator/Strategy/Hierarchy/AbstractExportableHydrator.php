@@ -43,6 +43,9 @@ abstract class AbstractExportableHydrator extends AbstractNumberHydrator
         // add songs
         $dto = self::setSongsObject($number->getSongs(), $dto, $em);
 
+//        dd($dto);
+//        dd($dto->getFilmObject());
+//        dd($dto->getSongs());
         return $dto;
     }
 
@@ -51,6 +54,7 @@ abstract class AbstractExportableHydrator extends AbstractNumberHydrator
         $filmDTO = DTOFactory::create(ModelConstants::EXPORTABLE_NESTED_FILM_DTO);
         $filmDTO = ExportableNestedFilmHydrator::hydrate($filmDTO, ["film"=>$film], $em);
         $dto->setFilmObject($filmDTO);
+
         return $dto;
     }
 

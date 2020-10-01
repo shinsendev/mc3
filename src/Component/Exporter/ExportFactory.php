@@ -6,6 +6,7 @@ namespace App\Component\Exporter;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ExportFactory
 {
@@ -14,7 +15,8 @@ class ExportFactory
      * @param EntityManagerInterface $em
      * @param string $projectDir
      * @param string $format
-     * @param \DateTime|null $createdAt
+     * @param \DateTime $createdAt
+     * @param SerializerInterface $serializer
      * @return Export
      */
     public static function create(
@@ -22,9 +24,10 @@ class ExportFactory
         EntityManagerInterface $em,
         string $projectDir,
         string $format,
-        \DateTime $createdAt
+        \DateTime $createdAt,
+        SerializerInterface $serializer
     ):Export
     {
-        return new Export($filesystem, $em, $projectDir, $createdAt, $format);
+        return new Export($filesystem, $em, $projectDir, $createdAt, $serializer, $format);
     }
 }

@@ -6,13 +6,19 @@ use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Export\Nested\ExportableFilmNestedDTO;
 use App\Component\DTO\Export\Nested\ExportableSongNestedDTO;
 use App\Component\DTO\Hierarchy\AbstractNumberDTO;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 
 abstract class ExportableDTO extends AbstractNumberDTO implements DTOInterface
 {
+    /**
+     * @Groups({"export"})
+     */
     private ?int $length = null;
 
     // films
+    /**
+     * @Groups({"nochhe"})
+     */
     private ?ExportableFilmNestedDTO $filmObject = null;
 
     // song

@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Class JsonExportStrategy
@@ -20,6 +20,13 @@ use Symfony\Component\Serializer\Serializer;
  */
 class JsonExportStrategy extends AbstractExportStrategy
 {
+    private SerializerInterface $serializer;
+
+    public function __construct(SerializerInterface $serializer)
+    {
+        $this->serializer = $serializer;
+    }
+
     function export(Filesystem $filesystem, EntityManagerInterface $em, string $projectDir, \DateTime $createdAt, string $format):string
     {
         $params = $this->getParams($createdAt, $projectDir, $format);
@@ -30,9 +37,10 @@ class JsonExportStrategy extends AbstractExportStrategy
         // get data and prepare normalizer
         $numbers = $em->getRepository(Number::class)->findAll();
 
-        $encoders = [new JsonEncoder()];
-        $normalizers = [new ObjectNormalizer()];
-        $serializer = new Serializer($normalizers, $encoders);
+//        dd('ici');
+//        $encoders = [new JsonEncoder()];
+//        $normalizers = [new ObjectNormalizer()];
+//        $serializer = new Serializer($normalizers, $encoders);
 
         $filesystem->appendToFile($params['completeFilename'], '[');
 
@@ -42,7 +50,10 @@ class JsonExportStrategy extends AbstractExportStrategy
         foreach ($numbers as $number) {
             $exportDTO = DTOFactory::create(ModelConstants::EXPORT_JSON_DTO);
             $exportDTO = ExportJsonHydrator::hydrate($exportDTO, ['number' => $number], $em);
-            $exportDTO = $serializer->serialize($exportDTO, 'json');
+            // need to add numbers elements
+
+            $exportDTO = $this->serializer->serialize($exportDTO, 'json', ['groups' => 'export']);
+            dd($exportDTO);
 
             if ($i === $length - 1) {
                 $filesystem->appendToFile($params['completeFilename'], $exportDTO);
@@ -55,6 +66,7 @@ class JsonExportStrategy extends AbstractExportStrategy
 
         $filesystem->appendToFile($params['completeFilename'], ']');
 
+        dd('end');
         // upload file on S3 server
         parent::upload($params['completeFilename'], $format);
 
