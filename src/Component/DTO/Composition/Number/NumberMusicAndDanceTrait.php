@@ -5,22 +5,67 @@ declare(strict_types=1);
 
 namespace App\Component\DTO\Composition\Number;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * Trait NumberMusicAndDanceTrait
  * @package App\Component\DTO\Composition\Number
  */
 trait NumberMusicAndDanceTrait
 {
+    /**
+     * @Groups({"export"})
+     */
     protected array $songs = []; // NestedSongDTO[]
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $musicalEnsemble = []; //
+
+    /**
+     * @Groups({"export"})
+     */
     protected string $dubbing = 'NA'; // from number, not an attribute
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $tempo = []; // SongDTO or NestedSongDTO
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $musicalStyles = []; // SongDTO or NestedSongDTO
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $arrangers = []; // PersonNestedDTO
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $danceDirectors = []; // PersonNestedDTO
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $danceEnsemble = []; // AttributeNestedDTO
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $dancingType = []; // AttributeNestedDTO
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $danceSubgenre = []; // AttributeNestedDTO
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $danceContent = []; // AttributeNestedDTO
 
     /**

@@ -6,8 +6,7 @@ declare(strict_types=1);
 namespace App\Component\DTO\Nested;
 
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
-use App\Entity\Person;
-use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Class ElementNestedDTO
@@ -15,7 +14,14 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class PersonNestedDTO extends AbstractUniqueDTO
 {
+    /**
+     * @Groups({"export"})
+     */
     private string $fullname = '';
+
+    /**
+     * @Groups({"export"})
+     */
     private string $gender = '';
 
     /**

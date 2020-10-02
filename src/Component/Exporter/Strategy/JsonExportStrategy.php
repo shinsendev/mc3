@@ -10,8 +10,6 @@ use App\Component\Model\ModelConstants;
 use App\Entity\Number;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -37,11 +35,7 @@ class JsonExportStrategy extends AbstractExportStrategy
         // get data and prepare normalizer
         $numbers = $em->getRepository(Number::class)->findAll();
 
-//        dd('ici');
-//        $encoders = [new JsonEncoder()];
-//        $normalizers = [new ObjectNormalizer()];
-//        $serializer = new Serializer($normalizers, $encoders);
-
+        // begin to create file with a json array
         $filesystem->appendToFile($params['completeFilename'], '[');
 
         // by numbers, for all items

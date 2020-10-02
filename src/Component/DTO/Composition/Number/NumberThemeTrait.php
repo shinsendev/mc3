@@ -5,13 +5,33 @@ declare(strict_types=1);
 
 namespace App\Component\DTO\Composition\Number;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 
 trait NumberThemeTrait
 {
+    /**
+     * @Groups({"export"})
+     */
     protected array $topic = []; // AttributeNestedDTO
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $diegeticPlace = []; // AttributeNestedDTO
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $imaginaryPlace = []; // AttributeNestedDTO
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $ethnicStereotypes = []; // AttributeNestedDTO
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $exoticism = []; // AttributeNestedDTO
 
     /**

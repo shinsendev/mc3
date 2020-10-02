@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Component\DTO\Composition\Number;
 
 use App\Component\DTO\Payload\NumberPayloadDTO;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Trait NumberIntertextualityTrait
@@ -12,7 +13,14 @@ use App\Component\DTO\Payload\NumberPayloadDTO;
  */
 trait NumberIntertextualityTrait
 {
+    /**
+     * @Groups({"export"})
+     */
     private array $sources = []; // AttributeNestedDTO
+
+    /**
+     * @Groups({"export"})
+     */
     private array $quotation = []; // AttributeNestedDTO
 
     /**

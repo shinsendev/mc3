@@ -43,9 +43,6 @@ abstract class AbstractExportableHydrator extends AbstractNumberHydrator
         // add songs
         $dto = self::setSongsObject($number->getSongs(), $dto, $em);
 
-//        dd($dto);
-//        dd($dto->getFilmObject());
-//        dd($dto->getSongs());
         return $dto;
     }
 
@@ -58,15 +55,6 @@ abstract class AbstractExportableHydrator extends AbstractNumberHydrator
         return $dto;
     }
 
-    private static function addAttributeByType(Attribute $attribute, string $categoryCode, array $attributes):array
-    {
-        if ($attribute->getCategory()->getCode() === $categoryCode) {
-            $attributes[] = ["title" => $attribute->getTitle()];
-        }
-
-        return $attributes;
-    }
-
     private static function setSongsObject(Collection $songs, ExportableDTO $dto, EntityManagerInterface $em):NumberPayloadInterface
     {
         $songsDTO = [];
@@ -74,7 +62,7 @@ abstract class AbstractExportableHydrator extends AbstractNumberHydrator
             $songDTO = DTOFactory::create(ModelConstants::EXPORTABLE_NESTED_SONG_DTO);
             $songsDTO[] = ExportableNestedSongHydrator::hydrate($songDTO, ['song' => $song], $em);
         }
-        $dto->setSongs($songsDTO);
+        $dto->setSongsObject($songsDTO);
 
         return $dto;
     }

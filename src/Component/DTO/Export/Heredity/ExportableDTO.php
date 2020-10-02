@@ -17,17 +17,21 @@ abstract class ExportableDTO extends AbstractNumberDTO implements DTOInterface
 
     // films
     /**
-     * @Groups({"nochhe"})
+     * @Groups({"export"})
      */
     private ?ExportableFilmNestedDTO $filmObject = null;
 
     // song
     /**
+     * @Groups({"export"})
      * @var ExportableSongNestedDTO[]
      */
     private array $songsObject = [];
 
     // number
+    /**
+     * @Groups({"export"})
+     */
     private ?string $releasedYearInDate = null;
 
     /**

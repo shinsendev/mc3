@@ -6,6 +6,7 @@ namespace App\Component\DTO\Payload;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Class NarrativeDTO
@@ -16,29 +17,45 @@ use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
  */
 class SongPayloadDTO extends AbstractUniqueDTO
 {
-    /** @var string */
-    private $title;
+    /**
+     * @Groups({"export"})
+     */
+    private string $title;
 
-    /** @var integer */
-    private $year = 0;
+    /**
+     * @Groups({"export"})
+     */
+    private ?int $year = 0;
 
-    /** @var string */
-    private $externalId;
+    /**
+     * @Groups({"export"})
+     */
+    private ?string $externalId;
 
-    /** @var array */
-    private $numbers = [];
+    /**
+     * @Groups({"export"})
+     */
+    private array $numbers = [];
 
-    /** @var array */
-    private $films = [];
+    /**
+     * @Groups({"export"})
+     */
+    private array $films = [];
 
-    /** @var array */
-    private $songTypes = [];
+    /**
+     * @Groups({"export"})
+     */
+    private array $songTypes = [];
 
-    /** @var array  */
-    private $lyricists = [];
+    /**
+     * @Groups({"export"})
+     */
+    private array $lyricists = [];
 
-    /** @var array  */
-    private $composers = [];
+    /**
+     * @Groups({"export"})
+     */
+    private array $composers = [];
 
     /**
      * @return string

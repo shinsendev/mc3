@@ -44,7 +44,7 @@ class ExportableNestedSongHydrator implements HydratorDTOInterface
         }
 
         // get lyricists
-        $persons = $em->getRepository(Work::class)->findPersonByTargetAndProfession(ModelConstants::SONG_MODEL, $song->getUuid(), 'lyricist');
+        $persons = self::getPersonsByWork($song->getUuid(), 'lyricist', $em);
         foreach ($persons as $person) {
             /** @var PersonNestedDTO $personPayload */
             $nestedPersonDTO = DTOFactory::create(ModelConstants::PERSON_NESTED_DTO_MODEL);
@@ -56,7 +56,7 @@ class ExportableNestedSongHydrator implements HydratorDTOInterface
         }
 
         // get composers
-        $persons = $em->getRepository(Work::class)->findPersonByTargetAndProfession(ModelConstants::SONG_MODEL, $song->getUuid(), 'composer');
+        $persons = self::getPersonsByWork($song->getUuid(), 'composer', $em);
         foreach ($persons as $person) {
             /** @var PersonNestedDTO $personPayload */
             $nestedPersonDTO = DTOFactory::create(ModelConstants::PERSON_NESTED_DTO_MODEL);
@@ -68,6 +68,11 @@ class ExportableNestedSongHydrator implements HydratorDTOInterface
         }
 
         return $dto;
+    }
+
+    private static function getPersonsByWork(string $uuid, string $work, EntityManagerInterface $em):array
+    {
+        return $em->getRepository(Work::class)->findPersonByTargetAndProfession(ModelConstants::SONG_MODEL, $uuid, $work);
     }
 
 }
