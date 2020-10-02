@@ -43,7 +43,6 @@ class ModelConstants
     const EXPORTABLE_NESTED_FILM_DTO = 'ExportableFilmNestedDTO';
     const EXPORTABLE_NESTED_SONG_DTO = 'ExportableSongNestedDTO';
 
-
     const COMPARISON_STATS = 'comparisonStats';
 
     const ELEMENT_NESTED_DTO_MODEL = 'elementNestedDTOModel';
