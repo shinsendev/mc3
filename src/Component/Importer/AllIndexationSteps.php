@@ -15,6 +15,7 @@ use Psr\Log\LoggerInterface;
 use App\Component\Elastic\Indexation\Indexer as ElasticIndexer;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class AllIndexationSteps
@@ -25,7 +26,8 @@ class AllIndexationSteps
         OutputInterface $output,
         HttpClientInterface $client,
         Filesystem $filesystem,
-        string $projectDir
+        string $projectDir,
+        SerializerInterface $serializer
     )
     {
         // compute stats
@@ -59,7 +61,7 @@ class AllIndexationSteps
 
         // rebuild and upload files
         foreach (ExportHandler::AUTHORIZED_FORMAT as $format) {
-            $output->writeln(ExportHandler::export($filesystem, $em, $projectDir, $format));
+            $output->writeln(ExportHandler::export($filesystem, $em, $projectDir, $format, $serializer));
         }
 
         // rebuild website with a netlify hook https://docs.netlify.com/configure-builds/build-hooks/

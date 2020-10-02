@@ -14,7 +14,11 @@ use App\Component\DTO\Payload\CategoryPayloadDTO;
  *     output=CategoryPayloadDTO::class,
  *     attributes={"pagination_items_per_page"=100},
  *     collectionOperations={"get"},
- *     itemOperations={"get"}
+ *     itemOperations={"get"},
+ *     graphql={
+ *      "item_query",
+ *      "collection_query"
+ *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
  */

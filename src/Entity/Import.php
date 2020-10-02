@@ -22,6 +22,10 @@ use Doctrine\ORM\Mapping as ORM;
  *    },
  *    attributes={
  *      "order"={"createdAt": "DESC"}
+ *    },
+ *    graphql={
+ *      "item_query",
+ *      "collection_query"
  *    }
  * )
  * @ORM\Entity(repositoryClass=ImportRepository::class)

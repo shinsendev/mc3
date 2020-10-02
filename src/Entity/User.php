@@ -20,7 +20,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *     },
  *     itemOperations={
  *      "get" = { "security" = "is_granted('ROLE_ADMIN') or object.owner == user"},
- *     }
+ *     },
+ *     graphql={}
  * )
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")

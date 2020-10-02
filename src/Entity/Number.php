@@ -15,8 +15,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * @ApiResource(
  *     output=NumberPayloadDTO::class,
  *     collectionOperations={"get"},
- *     itemOperations={"get"}
- * )
+ *     itemOperations={"get"},
+ *     graphql={
+ *      "item_query",
+ *      "collection_query"
+ *     }
+ * ),
  * @ApiFilter(OrderFilter::class, properties={"film.releasedYear":"ASC", "title":"ASC"}, arguments={"orderParameterName"="order"})
  *
  * @ORM\Entity(repositoryClass="App\Repository\NumberRepository")
