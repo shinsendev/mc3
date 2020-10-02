@@ -13,7 +13,11 @@ use Doctrine\ORM\Mapping as ORM;
  * @ApiResource(
  *     output=PersonPayloadDTO::class,
  *     collectionOperations={"get"},
- *     itemOperations={"get"}
+ *     itemOperations={"get"},
+ *     graphql={
+ *      "item_query",
+ *      "collection_query"
+ *     }
  * )
  *
  * @ORM\Entity(repositoryClass="App\Repository\PersonRepository")

@@ -22,7 +22,11 @@ use App\Component\DTO\Import\IndexationOutputDTO;
  *     },
  *    attributes={
  *      "order"={"createdAt": "DESC"}
- *    }
+ *    },
+ *     graphql={
+ *      "item_query",
+ *      "collection_query"
+ *     }
  * )
  * @ORM\Entity(repositoryClass=IndexationRepository::class)
  */

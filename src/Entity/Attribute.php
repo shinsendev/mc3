@@ -13,8 +13,13 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
  * @ApiResource(
  *     output=AttributePayloadDTO::class,
  *     collectionOperations={"get"},
- *     itemOperations={"get"}
- * )
+ *     itemOperations={"get"},
+ *     graphql={
+ *      "item_query",
+ *      "collection_query"
+ *     }
+ * ),
+ *
  * @ORM\Entity(repositoryClass="App\Repository\AttributeRepository")
  */
 class Attribute extends AbstractTarget

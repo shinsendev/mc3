@@ -15,7 +15,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * @ApiResource(
  *     output=SongPayloadDTO::class,
  *     collectionOperations={"get"},
- *     itemOperations={"get"}
+ *     itemOperations={"get"},
+ *     graphql={
+ *      "item_query",
+ *      "collection_query"
+ *     }
  * )
  *
  * @ApiFilter(OrderFilter::class, properties={"title"="ASC", "year"}, arguments={"orderParameterName"="order"})
