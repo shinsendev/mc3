@@ -20,6 +20,7 @@ class ModelConstants
     const NUMBER_PAYLOAD_MODEL = 'numberPayload';
     const NUMBER_NESTED_IN_FILM_DTO_MODEL = 'numberNestedInFilmDTO';
     const NUMBER_NESTED_IN_PERSON_DTO_MODEL = 'numberNestedInPersonDTO';
+    const ALGOLIA_NUMBER_DTO = 'AlgoliaNumberDTO';
 
     const FILM_MODEL = 'film';
     const FILM_NESTED_DTO_MODEL = 'filmNestedDTOModel';

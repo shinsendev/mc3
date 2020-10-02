@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Component\Factory;
 
+use App\Component\DTO\Algolia\AlgoliaNumberPayloadDTO;
 use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Export\CSV\CsvExportDTO;
 use App\Component\DTO\Export\Elastic\ElasticIndexationDTO;
@@ -45,6 +46,7 @@ class DTOFactory
             ModelConstants::NUMBER_PAYLOAD_MODEL => new NumberPayloadDTO(),
             ModelConstants::NUMBER_NESTED_IN_FILM_DTO_MODEL => new NumberNestedInFilmDTO(),
             ModelConstants::NUMBER_NESTED_IN_PERSON_DTO_MODEL => new NumberNestedInPersonDTO(),
+            ModelConstants::ALGOLIA_NUMBER_DTO => new AlgoliaNumberPayloadDTO(),
 
             ModelConstants::FILM_PAYLOAD_MODEL => new FilmPayloadDTO(),
             ModelConstants::FILM_NESTED_DTO_MODEL => new FilmNestedDTO(),

@@ -62,6 +62,7 @@ class GenericIndexation
                 $itemArray['modelType'] = $type;
                 $itemArray['objectID'] = $itemDTO->getUuid();
                 $index->saveObject($itemArray);
+
                 // for liberating some memory
                 $item = null;
                 $itemArray = null;
