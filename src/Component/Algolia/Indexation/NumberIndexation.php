@@ -6,7 +6,9 @@ declare(strict_types=1);
 namespace App\Component\Algolia\Indexation;
 
 use App\Component\Factory\DTOFactory;
+use App\Component\Hydrator\Strategy\Algolia\AlgoliaNumberHydrator;
 use App\Component\Hydrator\Strategy\FilmPayloadHydrator;
+use App\Component\Hydrator\Strategy\Hierarchy\AbstractExportableHydrator;
 use App\Component\Hydrator\Strategy\NumberPayloadHydrator;
 use App\Component\Model\ModelConstants;
 use App\Entity\Film;
@@ -25,6 +27,14 @@ class NumberIndexation implements IndexationInterface
 {
     public static function index(EntityManagerInterface $em, Serializer $serializer, $client, OutputInterface $output)
     {
-        GenericIndexation::index($em, $serializer, $client, $output, ModelConstants::NUMBER_MODEL, NumberPayloadHydrator::class, ModelConstants::NUMBER_PAYLOAD_MODEL);
+        GenericIndexation::index(
+            $em,
+            $serializer,
+            $client,
+            $output,
+            ModelConstants::NUMBER_MODEL,
+            AlgoliaNumberHydrator::class,
+            ModelConstants::ALGOLIA_NUMBER_DTO
+        );
     }
 }

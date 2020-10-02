@@ -20,6 +20,7 @@ class ModelConstants
     const NUMBER_PAYLOAD_MODEL = 'numberPayload';
     const NUMBER_NESTED_IN_FILM_DTO_MODEL = 'numberNestedInFilmDTO';
     const NUMBER_NESTED_IN_PERSON_DTO_MODEL = 'numberNestedInPersonDTO';
+    const ALGOLIA_NUMBER_DTO = 'AlgoliaNumberDTO';
 
     const FILM_MODEL = 'film';
     const FILM_NESTED_DTO_MODEL = 'filmNestedDTOModel';
@@ -41,6 +42,7 @@ class ModelConstants
     const ELASTIC_NUMBER_DTO = 'ElasticNumberDTO';
     const EXPORTABLE_NESTED_FILM_DTO = 'ExportableFilmNestedDTO';
     const EXPORTABLE_NESTED_SONG_DTO = 'ExportableSongNestedDTO';
+
 
     const COMPARISON_STATS = 'comparisonStats';
 
