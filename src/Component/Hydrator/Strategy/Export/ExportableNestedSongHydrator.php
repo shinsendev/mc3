@@ -5,6 +5,7 @@ namespace App\Component\Hydrator\Strategy\Export;
 
 
 use App\Component\DTO\Definition\DTOInterface;
+use App\Component\DTO\Export\Nested\ExportableSongNestedDTO;
 use App\Component\DTO\Nested\PersonNestedDTO;
 use App\Component\DTO\Payload\SongPayloadDTO;
 use App\Component\Factory\DTOFactory;
@@ -23,7 +24,7 @@ class ExportableNestedSongHydrator implements HydratorDTOInterface
         /** @var Song $song */
         $song = $data['song'];
 
-        /** @var SongPayloadDTO $dto */
+        /** @var ExportableSongNestedDTO $dto */
         $dto->setTitle($song->getTitle());
 
         if ($song->getYear()){

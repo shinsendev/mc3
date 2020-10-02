@@ -47,7 +47,6 @@ class JsonExportStrategy extends AbstractExportStrategy
             // need to add numbers elements
 
             $exportDTO = $this->serializer->serialize($exportDTO, 'json', ['groups' => 'export']);
-            dd($exportDTO);
 
             if ($i === $length - 1) {
                 $filesystem->appendToFile($params['completeFilename'], $exportDTO);
@@ -60,7 +59,6 @@ class JsonExportStrategy extends AbstractExportStrategy
 
         $filesystem->appendToFile($params['completeFilename'], ']');
 
-        dd('end');
         // upload file on S3 server
         parent::upload($params['completeFilename'], $format);
 
