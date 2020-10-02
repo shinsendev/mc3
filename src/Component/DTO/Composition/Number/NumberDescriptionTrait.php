@@ -7,31 +7,105 @@ namespace App\Component\DTO\Composition\Number;
 
 use App\Component\DTO\Nested\FilmNestedDTO;
 use App\Component\DTO\Payload\NumberPayloadDTO;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 trait NumberDescriptionTrait
 {
+    /**
+     * @Groups({"export"})
+     */
     protected string $title;
+
+    /**
+     * @Groups({"export"})
+     */
     protected string $film;
+
+    /**
+     * @Groups({"export"})
+     */
     protected string $filmUuid = '';
+
+    /**
+     * @Groups({"export"})
+     */
     protected int $releasedYear = 0;
+
+    /**
+     * @Groups({"export"})
+     */
     protected int $startingTc = 0;
+
+    /**
+     * @Groups({"export"})
+     */
     protected int $endingTc = 0;
+
+    /**
+     * @Groups({"export"})
+     */
     protected int $shots = 0;
+
+    /**
+     * @Groups({"export"})
+     */
     protected int $averageShotLength = 0;
+
+    /**
+     * @Groups({"export"})
+     */
     protected int $reference = 0;
 
     // attributes
+    /**
+     * @Groups({"export"})
+     */
     protected array $beginning = []; // AttributeNestedDTO
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $ending = []; // AttributeNestedDTO
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $completeness = []; // AttributeNestedDTO
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $completenessOption = []; // AttributeNestedDTO
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $structure = []; // AttributeNestedDTO
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $cast = []; // AttributeNestedDTO
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $performance = []; // AttributeNestedDTO - one choice
 
     // people
+    /**
+     * @Groups({"export"})
+     */
     protected array $performers = []; // PersonNestedDTO
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $directors = []; // PersonNestedDTO
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $noParticipationStars = []; // PersonNestedDTO
 
     /**

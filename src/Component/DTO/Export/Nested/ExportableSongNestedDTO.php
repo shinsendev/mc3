@@ -3,23 +3,34 @@
 namespace App\Component\DTO\Export\Nested;
 
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 class ExportableSongNestedDTO extends AbstractUniqueDTO
 {
-    /** @var string */
-    private $title;
+    /**
+     * @Groups({"export"})
+     */
+    private string $title;
 
-    /** @var integer */
-    private $year = 0;
+    /**
+     * @Groups({"export"})
+     */
+    private ?int $year = 0;
 
-    /** @var array */
-    private $songTypes = [];
+    /**
+     * @Groups({"export"})
+     */
+    private array $songTypes = [];
 
-    /** @var array  */
-    private $lyricists = [];
+    /**
+     * @Groups({"export"})
+     */
+    private array $lyricists = [];
 
-    /** @var array  */
-    private $composers = [];
+    /**
+     * @Groups({"export"})
+     */
+    private array $composers = [];
 
     /**
      * @return string

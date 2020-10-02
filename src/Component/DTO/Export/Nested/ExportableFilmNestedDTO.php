@@ -6,26 +6,70 @@ namespace App\Component\DTO\Export\Nested;
 
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
 use App\Component\DTO\Nested\PersonNestedDTO;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 class ExportableFilmNestedDTO extends AbstractUniqueDTO
 {
+    /**
+     * @Groups({"export"})
+     */
     private ?int $releasedYear = null;
+
+    /**
+     * @Groups({"export"})
+     */
     private ?string $sample = null;
+
+    /**
+     * @Groups({"export"})
+     */
     private ?string $adaptation = null;
+
+    /**
+     * @Groups({"export"})
+     */
     private array $censorships = [];
+
+    /**
+     * @Groups({"export"})
+     */
     private array $legion = [];
+
+    /**
+     * @Groups({"export"})
+     */
     private array $pca = [];
+
+    /**
+     * @Groups({"export"})
+     */
     private array $states = [];
+
+    /**
+     * @Groups({"export"})
+     */
     private array $studios = [];
+
+    /**
+     * @Groups({"export"})
+     */
     private ?int $length = null;
+
+    /**
+     * @Groups({"export"})
+     */
     private array $board = [];
+
+    /**
+     * @Groups({"export"})
+     */
     private array $harrison = [];
 
     /**
      * @var PersonNestedDTO[]
      */
     private array $directors = [];
-    
+
     /**
      * @return int|null
      */

@@ -9,6 +9,7 @@ use App\Component\Exporter\Strategy\CsvExportStrategy;
 use App\Component\Exporter\Strategy\JsonExportStrategy;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class Export implements ExportInterface
 {
@@ -17,13 +18,15 @@ class Export implements ExportInterface
     private string $format;
     private \DateTime $createdAt;
     private EntityManagerInterface $em;
+    private SerializerInterface $serializer;
 
-    public function __construct(Filesystem $filesystem, EntityManagerInterface $em, string $projectDir, \DateTime $createdAt, string $format = 'csv')
+    public function __construct(Filesystem $filesystem, EntityManagerInterface $em, string $projectDir, \DateTime $createdAt, SerializerInterface $serializer, string $format = 'csv')
     {
         $this->filesystem = $filesystem;
         $this->projectDir = $projectDir;
         $this->format = $format;
         $this->em = $em;
+        $this->serializer = $serializer;
         $this->createdAt = $createdAt;
     }
 
@@ -38,7 +41,7 @@ class Export implements ExportInterface
             $strategy = new CsvExportStrategy();
         }
         else if ($this->format === 'json') {
-            $strategy = new JsonExportStrategy();
+            $strategy = new JsonExportStrategy($this->serializer);
         }
         else {
             return new Mc3Error('No valid format for this export.');

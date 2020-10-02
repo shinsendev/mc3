@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Component\DTO\Nested;
 
 use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Class AttributeNestedDTOinCategory
@@ -12,11 +13,13 @@ use App\Component\DTO\Hierarchy\AbstractUniqueDTO;
  */
 class AttributeNestedDTO extends AbstractUniqueDTO
 {
-    /** @var string */
+    /**
+     * @Groups({"export"})
+     */
     private $title = '';
 
     /**
-     * @return string
+     * @Groups({"export"})
      */
     public function getTitle(): string
     {

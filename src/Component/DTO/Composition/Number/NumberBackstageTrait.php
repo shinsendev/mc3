@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Component\DTO\Composition\Number;
 
 use App\Component\DTO\Payload\NumberPayloadDTO;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**+
  * Trait NumberBackstageTrait
@@ -12,8 +13,19 @@ use App\Component\DTO\Payload\NumberPayloadDTO;
  */
 trait NumberBackstageTrait
 {
+    /**
+     * @Groups({"export"})
+     */
     protected array $spectators = []; // AttributeNestedDTO - one value
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $diegeticPerformance = []; // AttributeNestedDTO - one value
+
+    /**
+     * @Groups({"export"})
+     */
     protected array $visibleMusicians = []; // AttributeNestedDTO - one value
 
     /**

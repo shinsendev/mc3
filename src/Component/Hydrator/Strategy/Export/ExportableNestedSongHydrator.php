@@ -5,6 +5,7 @@ namespace App\Component\Hydrator\Strategy\Export;
 
 
 use App\Component\DTO\Definition\DTOInterface;
+use App\Component\DTO\Export\Nested\ExportableSongNestedDTO;
 use App\Component\DTO\Nested\PersonNestedDTO;
 use App\Component\DTO\Payload\SongPayloadDTO;
 use App\Component\Factory\DTOFactory;
@@ -23,7 +24,7 @@ class ExportableNestedSongHydrator implements HydratorDTOInterface
         /** @var Song $song */
         $song = $data['song'];
 
-        /** @var SongPayloadDTO $dto */
+        /** @var ExportableSongNestedDTO $dto */
         $dto->setTitle($song->getTitle());
 
         if ($song->getYear()){
@@ -44,7 +45,7 @@ class ExportableNestedSongHydrator implements HydratorDTOInterface
         }
 
         // get lyricists
-        $persons = $em->getRepository(Work::class)->findPersonByTargetAndProfession(ModelConstants::SONG_MODEL, $song->getUuid(), 'lyricist');
+        $persons = self::getPersonsByWork($song->getUuid(), 'lyricist', $em);
         foreach ($persons as $person) {
             /** @var PersonNestedDTO $personPayload */
             $nestedPersonDTO = DTOFactory::create(ModelConstants::PERSON_NESTED_DTO_MODEL);
@@ -56,7 +57,7 @@ class ExportableNestedSongHydrator implements HydratorDTOInterface
         }
 
         // get composers
-        $persons = $em->getRepository(Work::class)->findPersonByTargetAndProfession(ModelConstants::SONG_MODEL, $song->getUuid(), 'composer');
+        $persons = self::getPersonsByWork($song->getUuid(), 'composer', $em);
         foreach ($persons as $person) {
             /** @var PersonNestedDTO $personPayload */
             $nestedPersonDTO = DTOFactory::create(ModelConstants::PERSON_NESTED_DTO_MODEL);
@@ -68,6 +69,11 @@ class ExportableNestedSongHydrator implements HydratorDTOInterface
         }
 
         return $dto;
+    }
+
+    private static function getPersonsByWork(string $uuid, string $work, EntityManagerInterface $em):array
+    {
+        return $em->getRepository(Work::class)->findPersonByTargetAndProfession(ModelConstants::SONG_MODEL, $uuid, $work);
     }
 
 }
