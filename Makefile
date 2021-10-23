@@ -1,6 +1,3 @@
-APP ?= preformatter
-REF_FILE ?= 0001
-
 console c:
 	docker-compose -f docker-compose.yml exec php sh
 
@@ -27,3 +24,12 @@ prune-all prune:
 
 make create-db cdb:
 	docker-compose -f docker-compose.yml exec php php bin/console do:da:cr
+
+fixtures:
+	php bin/console doctrine:fixtures:load
+
+stats:
+	php bin/console stats:person:update
+
+deploy:
+	bash mep.sh
