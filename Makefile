@@ -25,11 +25,11 @@ prune-all prune:
 make create-db cdb:
 	docker-compose -f docker-compose.yml exec php php bin/console do:da:cr
 
-fixtures:
-	php bin/console doctrine:fixtures:load
+fixtures f:
+	docker-compose -f docker-compose.yml exec php php bin/console doctrine:fixtures:load
 
 stats:
-	php bin/console stats:person:update
+	docker-compose -f docker-compose.yml exec php php bin/console stats:person:update
 
 deploy:
 	bash mep.sh
