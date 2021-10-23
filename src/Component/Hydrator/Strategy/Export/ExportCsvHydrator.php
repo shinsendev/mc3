@@ -6,6 +6,7 @@ namespace App\Component\Hydrator\Strategy\Export;
 use App\Component\DTO\Definition\DTOInterface;
 use App\Component\DTO\Export\CSV\CsvExportDTO;
 use App\Component\Hydrator\Strategy\HydratorStrategyInterface;
+use App\Entity\Attribute;
 use App\Entity\Work;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -41,16 +42,17 @@ class ExportCsvHydrator implements HydratorStrategyInterface
      * @param $needle
      * @return string|null
      */
-    public static function getAttributesByCategoryCode($attributes, $needle)
+    public static function getAttributesByCategoryCode(Collection $attributes, string $needle)
     {
         $attributesTitle = null;
+        /** @var Attribute $attribute */
         foreach ($attributes as $attribute) {
             if ($attribute->getCategory()->getCode() === $needle) {
                 if (!$attributesTitle) {
                     $attributesTitle = $attribute->getTitle();
                 }
                 else {
-                    $attributesTitle .= ','.$attribute->getTitle();
+                    $attributesTitle .= ', '.$attribute->getTitle();
                 }
              }
         }

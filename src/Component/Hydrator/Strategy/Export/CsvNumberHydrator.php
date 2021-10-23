@@ -3,7 +3,7 @@
 namespace App\Component\Hydrator\Strategy\Export;
 
 use App\Component\DTO\Definition\DTOInterface;
-use App\Component\DTO\Export\CsvExportDTO;
+use App\Component\DTO\Export\CSV\CsvExportDTO;
 use App\Component\Hydrator\Strategy\HydratorStrategyInterface;
 use App\Component\Model\ModelConstants;
 use App\Entity\Number;
@@ -12,18 +12,13 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class CsvNumberHydrator implements HydratorStrategyInterface
 {
-    /**
-     * @param CsvExportDTO $dto
-     * @param array $data
-     * @param EntityManagerInterface $em
-     * @return DTOInterface
-     */
     public static function hydrate(DTOInterface $dto, array $data, EntityManagerInterface $em): DTOInterface
     {
         /** @var Number $number */
         $number = $data['number'];
 
         // number general informations
+        /** @var $dto CsvExportDTO */
         $dto->setNumberTitle($number->getTitle());
         $dto->setBeginTc($number->getBeginTc());
         $dto->setShots($number->getShots());

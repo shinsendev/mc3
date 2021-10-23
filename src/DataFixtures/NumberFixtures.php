@@ -102,6 +102,7 @@ class NumberFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return array(
+            AttributeFixtures::class,
             FilmFixtures::class,
             PersonFixtures::class
         );
