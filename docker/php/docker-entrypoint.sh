@@ -12,29 +12,9 @@ if [ "$1" = 'php-fpm' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 
 	mkdir -p var/cache var/log
 
-	# The first time volumes are mounted, the project needs to be recreated
-	if [ ! -f composer.json ]; then
-		CREATION=1
-		composer create-project "$SKELETON $SYMFONY_VERSION" tmp --stability="$STABILITY" --prefer-dist --no-progress --no-interaction --no-install
-
-		cd tmp
-		composer config --json extra.symfony.docker 'true'
-		cp -Rp . ..
-		cd -
-
-		rm -Rf tmp/
-	elif [ "$APP_ENV" != 'prod' ]; then
-		rm -f .env.local.php
-	fi
-
 	composer install --prefer-dist --no-progress --no-interaction
 
 	if grep -q ^DATABASE_URL= .env; then
-		if [ "$CREATION" = "1" ]; then
-			echo "To finish the installation please press Ctrl+C to stop Docker Compose and run: docker-compose up --build"
-			sleep infinity
-		fi
-
 		echo "Waiting for db to be ready..."
 		ATTEMPTS_LEFT_TO_REACH_DATABASE=60
 		until [ $ATTEMPTS_LEFT_TO_REACH_DATABASE -eq 0 ] || DATABASE_ERROR=$(bin/console dbal:run-sql "SELECT 1" 2>&1); do
@@ -56,9 +36,9 @@ if [ "$1" = 'php-fpm' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 			echo "The db is now ready and reachable"
 		fi
 
-		if ls -A migrations/*.php >/dev/null 2>&1; then
-			bin/console doctrine:migrations:migrate --no-interaction
-		fi
+#		if ls -A migrations/*.php >/dev/null 2>&1; then
+#			bin/console doctrine:migrations:migrate --no-interaction
+#		fi
 	fi
 
 	setfacl -R -m u:www-data:rwX -m u:"$(whoami)":rwX var

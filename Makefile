@@ -24,3 +24,6 @@ log logs l:
 
 prune-all prune:
 	docker system prune -a
+
+make create-db cdb:
+	docker-compose -f docker-compose.yml exec php php bin/console do:da:cr
