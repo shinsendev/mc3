@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Component\Model\ModelConstants;
 use App\Entity\Person;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\ORM\Tools\Pagination\Paginator;

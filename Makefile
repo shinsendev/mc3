@@ -33,3 +33,6 @@ stats:
 
 deploy:
 	bash mep.sh
+
+test t:
+	docker-compose -f docker-compose.yml exec php bin/phpunit
