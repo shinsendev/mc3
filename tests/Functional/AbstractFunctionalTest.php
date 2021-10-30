@@ -15,9 +15,9 @@ abstract class AbstractFunctionalTest extends ApiTestCase
     use FixturesTrait;
 
     /** @var Client */
-    protected $client;
+    protected Client $client;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->client = static::createClient();
