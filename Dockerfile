@@ -89,9 +89,9 @@
   COPY . .
     RUN set -eux; \
     mkdir -p var/cache var/log; \
-#    composer install --prefer-dist --no-progress --no-scripts --no-interaction; \
-#    composer dump-autoload --classmap-authoritative; \
-#    composer symfony:dump-env dev; \
+    composer install --prefer-dist --no-progress --no-scripts --no-interaction; \
+    composer dump-autoload --classmap-authoritative; \
+    composer symfony:dump-env dev; \
 #    composer run-script post-install-cmd; \
     chmod +x bin/console; sync
   VOLUME /srv/app/var
