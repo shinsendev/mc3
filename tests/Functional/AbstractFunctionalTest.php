@@ -6,23 +6,29 @@ namespace App\Tests\Functional;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\Client;
-use Liip\TestFixturesBundle\Test\FixturesTrait;
+use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 abstract class AbstractFunctionalTest extends ApiTestCase
 {
-    use FixturesTrait;
-
     /** @var Client */
     protected Client $client;
+
+    /**
+     * @var AbstractDatabaseTool
+     */
+    protected AbstractDatabaseTool $databaseTool;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->client = static::createClient();
         self::generateStats();
-        $this->loadFixtures([
+        $container = static::getContainer();
+        $this->databaseTool = $container->get(DatabaseToolCollection::class)->get();
+        $this->databaseTool->loadFixtures([
             'App\DataFixtures\PersonFixtures',
             'App\DataFixtures\CategoryFixtures',
             'App\DataFixtures\AttributeFixtures',
