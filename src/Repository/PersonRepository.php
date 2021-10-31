@@ -7,7 +7,6 @@ use App\Entity\Person;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
@@ -162,13 +161,16 @@ class PersonRepository extends ServiceEntityRepository
     /**
      * @param string $personUuid
      * @return array
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws \Doctrine\DBAL\Exception
      */
     public function findRelatedNumbersWithNativeSQL(string $personUuid):array
     {
-        $dbal = $this->getEntityManager()->getConnection('default');
+//        $dbal = $this->getEntityManager()->getConnection('default');
+        $conn = $this->getEntityManager()->getConnection('default');
 
-        $stmt = "SELECT * FROM (SELECT DISTINCT ON(uuid, profession) *  FROM (
+        $sql = '
+          SELECT * FROM (SELECT DISTINCT ON(uuid, profession) *  FROM (
           SELECT n.title,
                  n.uuid,
                  w.profession,
@@ -196,12 +198,13 @@ class PersonRepository extends ServiceEntityRepository
                    INNER JOIN number n on ns.number_id = n.id
                    INNER JOIN film f ON n.film_id = f.id
           WHERE p.uuid = :uuid
-        ) as UniqueNumbers) orderedUniqueNumbers ORDER BY film_released_year";
+        ) as UniqueNumbers) orderedUniqueNumbers ORDER BY film_released_year
+        ';
 
-        $rsl = $dbal->prepare($stmt);
-        $rsl->execute(['uuid' => $personUuid]);
+        $stmt = $conn->prepare($sql);
+        $result = $stmt->executeQuery(['uuid' => $personUuid]);
 
-        return  $rsl->fetchAll();
+        return  $result->fetchAllAssociative();
     }
 
     /**
