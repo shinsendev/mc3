@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Component\DTO\Export\ExportHandler;
+use App\Component\Exporter\ExportHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -60,6 +60,7 @@ class ExportCreateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->logger->info('Export command is launched');
         $io = new SymfonyStyle($input, $output);
         $output->writeln('Export just starts.');
         ExportHandler::handle($this->filesystem, $this->em, $this->kernel->getProjectDir(), $input, $output, $this->serializer);

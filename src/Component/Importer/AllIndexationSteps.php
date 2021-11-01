@@ -5,7 +5,7 @@ namespace App\Component\Importer;
 
 
 use App\Component\Algolia\Indexation\Indexer as AlgoliaIndexer;
-use App\Component\DTO\Export\ExportHandler;
+use App\Component\Exporter\ExportHandler;
 use App\Component\Stats\StatsGenerator;
 use App\Entity\Attribute;
 use App\Entity\Indexation;

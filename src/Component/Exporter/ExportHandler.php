@@ -1,10 +1,9 @@
 <?php
 
 
-namespace App\Component\DTO\Export;
+namespace App\Component\Exporter;
 
 use App\Component\Error\Mc3Error;
-use App\Component\Exporter\ExportFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

@@ -32,7 +32,7 @@ class JsonExportStrategy extends AbstractExportStrategy
         // create folder and file
         $this->createFile($filesystem, $params['dataDir'], $params['createdAtFolder'], $params['filename']);
 
-        // get data and prepare normalizer
+        // get data
         $numbers = $em->getRepository(Number::class)->findAll();
 
         // begin to create file with a json array
