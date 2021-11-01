@@ -20,7 +20,14 @@ class Export implements ExportInterface
     private EntityManagerInterface $em;
     private SerializerInterface $serializer;
 
-    public function __construct(Filesystem $filesystem, EntityManagerInterface $em, string $projectDir, \DateTime $createdAt, SerializerInterface $serializer, string $format = 'csv')
+    public function __construct(
+        Filesystem $filesystem,
+        EntityManagerInterface $em,
+        string $projectDir,
+        \DateTime $createdAt,
+        SerializerInterface $serializer,
+        string $format = 'csv'
+    )
     {
         $this->filesystem = $filesystem;
         $this->projectDir = $projectDir;
@@ -38,13 +45,13 @@ class Export implements ExportInterface
     private function getStrategy():AbstractExportStrategy
     {
         if ($this->format === 'csv') {
-            $strategy = new CsvExportStrategy();
+            $strategy = new CsvExportStrategy($this->serializer);
         }
         else if ($this->format === 'json') {
             $strategy = new JsonExportStrategy($this->serializer);
         }
         else {
-            return new Mc3Error('No valid format for this export.');
+            throw new Mc3Error('No valid format for this export.');
         }
 
         return $strategy;

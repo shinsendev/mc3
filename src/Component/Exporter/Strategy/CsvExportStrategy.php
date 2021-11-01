@@ -14,10 +14,24 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class CsvExportStrategy extends AbstractExportStrategy
 {
-    public function export(Filesystem $filesystem, EntityManagerInterface $em, string $projectDir, \DateTime $createdAt, string $format):string
+    private SerializerInterface $serializer;
+
+    public function __construct(SerializerInterface $serializer)
+    {
+        $this->serializer = $serializer;
+    }
+
+    public function export(
+        Filesystem $filesystem,
+        EntityManagerInterface $em,
+        string $projectDir,
+        \DateTime $createdAt,
+        string $format
+    ):string
     {
         // set vars
         $params = $this->getParams($createdAt, $projectDir, $format);
@@ -31,14 +45,14 @@ class CsvExportStrategy extends AbstractExportStrategy
         // get data and prepare normalizer
         $numbers = $em->getRepository(Number::class)->findAll();
         $normalizers = [new ObjectNormalizer()];
-        $serializer = new Serializer($normalizers);
+        $this->serializer = new Serializer($normalizers);
 
         // add all lines
         foreach ($numbers as $number) {
             // create a DTO for each line and convert it into an array
             $exportDTO = DTOFactory::create(ModelConstants::EXPORT_CSV_DTO);
             $exportDTO = ExportCsvHydrator::hydrate($exportDTO, ['number'  => $number], $em);
-            $line = $serializer->normalize($exportDTO);
+            $line = $this->serializer->normalize($exportDTO);
             $stringLine = implode(";", $line);
             $filesystem->appendToFile($params['completeFilename'], $stringLine."\n");
         }
